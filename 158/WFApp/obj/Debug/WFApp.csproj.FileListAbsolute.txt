@@ -1,0 +1,10 @@
+E:\Stu\DemoExamPrep\158\WFApp\bin\Debug\WFApp.exe.config
+E:\Stu\DemoExamPrep\158\WFApp\bin\Debug\WFApp.exe
+E:\Stu\DemoExamPrep\158\WFApp\bin\Debug\WFApp.pdb
+E:\Stu\DemoExamPrep\158\WFApp\obj\Debug\WFApp.csproj.AssemblyReference.cache
+E:\Stu\DemoExamPrep\158\WFApp\obj\Debug\WFApp.LoginForm.resources
+E:\Stu\DemoExamPrep\158\WFApp\obj\Debug\WFApp.Properties.Resources.resources
+E:\Stu\DemoExamPrep\158\WFApp\obj\Debug\WFApp.csproj.GenerateResource.cache
+E:\Stu\DemoExamPrep\158\WFApp\obj\Debug\WFApp.csproj.CoreCompileInputs.cache
+E:\Stu\DemoExamPrep\158\WFApp\obj\Debug\WFApp.exe
+E:\Stu\DemoExamPrep\158\WFApp\obj\Debug\WFApp.pdb
