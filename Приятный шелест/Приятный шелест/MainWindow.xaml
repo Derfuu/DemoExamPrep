@@ -5,18 +5,34 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Приятный_шелест"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800" Initialized="Window_Initialized">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="511*"/>
+            <ColumnDefinition Width="281*"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition MinHeight="50"></RowDefinition>
-            <RowDefinition Height="6*"></RowDefinition>
-            <RowDefinition MinHeight="50"></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
         </Grid.RowDefinitions>
-        
-        <ScrollViewer Grid.Row="1">
-            <GroupBox Header="GroupBox" Margin="15" MinHeight="50">
-                
-            </GroupBox>
+        <ScrollViewer Grid.Row="1" Grid.ColumnSpan="2">
+            <Grid Grid.Row="1" ShowGridLines="True">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="75"></RowDefinition>
+                    <RowDefinition Height="75"></RowDefinition>
+                    <RowDefinition Height="75"></RowDefinition>
+                    <RowDefinition Height="75"></RowDefinition>
+                    <RowDefinition Height="75"></RowDefinition>
+                    <RowDefinition Height="75"></RowDefinition>
+                    <RowDefinition Height="75"></RowDefinition>
+                    <RowDefinition Height="75"></RowDefinition>
+                    <RowDefinition Height="75"></RowDefinition>
+                    <RowDefinition Height="75"></RowDefinition>
+                </Grid.RowDefinitions>
+                <GroupBox Header="Тип | Наименование агента" Height="75" Grid.Row="0"/>
+            </Grid>
+
         </ScrollViewer>
     </Grid>
 </Window>

@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Data.SqlClient;
 
 namespace Приятный_шелест
 {
@@ -20,9 +21,16 @@ namespace Приятный_шелест
     /// </summary>
     public partial class MainWindow : Window
     {
+        string connectionString;
+        SqlDataAdapter adapter;
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void Window_Initialized(object sender, EventArgs e)
+        {
+            
         }
     }
 }
