@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Data.SqlClient;
 
 namespace PSh
 {
@@ -23,6 +24,38 @@ namespace PSh
         public MainWindow()
         {
             InitializeComponent();
+        }
+        string connectionString = "Data Source=(local);Initial Catalog=dbaseTestWPF; Integrated Security=true";
+        
+        IEnumerable<SqlDataReader> queryUser(string queryString = "")
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+
+                try
+                {
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        yield return reader;
+                    }
+                    reader.Close();
+                }
+                finally
+                { }
+            }
+        }
+        
+        private void Window_Initialized(object sender, EventArgs e)
+        {
+            var A = queryUser("SELECT COUNT(*) FROM `Product`");
+
+        }
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+
         }
     }
 }

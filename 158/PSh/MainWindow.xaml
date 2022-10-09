@@ -5,4 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PSh"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="800" Icon="/Приятный шелест.ico"/>
+        Title="MainWindow" Height="600" Width="800" Icon="/Приятный шелест.ico" Initialized="Window_Initialized" Closing="Window_Closing">
+
+    <Grid x:Name="Main" ShowGridLines="True">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1.5*"></RowDefinition>
+            <RowDefinition Height="9*"/>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid x:Name="Middle" ShowGridLines="True" Grid.Row="1" ScrollViewer.CanContentScroll="True">
+            <Grid.RowDefinitions>
+                <!--Data from dataVase-->
+            </Grid.RowDefinitions>
+            <ScrollViewer Grid.Row="1"/>
+        </Grid>
+        <Button Content="СДЕЛАЙ ЧТО-ТО!" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" Width="124" Click="Button_Click"/>
+    </Grid>
+
+</Window>
+
+    
