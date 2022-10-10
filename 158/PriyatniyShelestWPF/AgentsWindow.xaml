@@ -6,5 +6,18 @@
         xmlns:local="clr-namespace:PriyatniyShelestWPF"
         mc:Ignorable="d"
         Title="Приятный Шелест (Агенты)" Height="600" Width="800" Icon="Приятный шелест.ico">
-    
+    <Grid x:Name="mainGrid" ShowGridLines="True">
+        <Grid.RowDefinitions>
+            <RowDefinition MinHeight="75" MaxHeight="75" />
+            <RowDefinition Height="*" />
+            <RowDefinition MinHeight="50" MaxHeight="50" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" x:Name="upperBar" ShowGridLines="True">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="5*"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+        </Grid>
+    </Grid>
 </Window>
