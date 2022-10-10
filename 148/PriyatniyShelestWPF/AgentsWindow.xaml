@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PriyatniyShelestWPF"
         mc:Ignorable="d"
         Title="Приятный Шелест (Агенты)" Height="600" Width="800" Icon="Приятный шелест.ico" FontFamily="Monotype Corsiva" FontSize="20">
-    <Grid x:Name="mainGrid" ShowGridLines="True">
+    <Grid x:Name="mainGrid" ShowGridLines="False">
         <Grid.RowDefinitions>
             <RowDefinition MinHeight="50" MaxHeight="50" />
             <RowDefinition Height="*" />
@@ -32,8 +32,8 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="30"/>
                     </Grid.ColumnDefinitions>
-                    <ComboBox Grid.Column="0" x:Name="SortBox" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1" BorderBrush="White" SelectionChanged="SortBox_SelectionChanged">
-                        <TextBlock>Наименование</TextBlock>
+                    <ComboBox Grid.Column="0" x:Name="SortBox" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1" BorderBrush="White" SelectionChanged="SortBox_SelectionChanged" SelectedIndex="0">
+                        <TextBlock >Наименование</TextBlock>
                         <TextBlock>Продажи</TextBlock>
                         <TextBlock>Размер скидки</TextBlock>
                         <TextBlock>Приоритет</TextBlock>
