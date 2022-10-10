@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PriyatniyShelestWPF"
         mc:Ignorable="d"
-        Title="Приятный Шелест (Агенты)" Height="600" Width="800" Icon="Приятный шелест.ico">
+        Title="Приятный Шелест (Агенты)" Height="600" Width="800" Icon="Приятный шелест.ico" FontFamily="Monotype Corsiva" FontSize="20">
     <Grid x:Name="mainGrid" ShowGridLines="True">
         <Grid.RowDefinitions>
             <RowDefinition MinHeight="75" MaxHeight="75" />
@@ -18,6 +18,9 @@
                 <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
+            <Border Margin="10" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1.5" BorderBrush="Black" CornerRadius="1">
+                <TextBlock HorizontalAlignment="Center" TextAlignment="Left" TextWrapping="WrapWithOverflow" Text="Введите для поиска" VerticalAlignment="Center" Height="55" Width="420"/>
+            </Border>
         </Grid>
     </Grid>
 </Window>
