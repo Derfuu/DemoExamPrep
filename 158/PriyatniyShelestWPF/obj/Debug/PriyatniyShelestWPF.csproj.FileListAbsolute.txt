@@ -1,0 +1,15 @@
+E:\Stu\DemoExamPrep\158\PriyatniyShelestWPF\bin\Debug\PriyatniyShelestWPF.exe.config
+E:\Stu\DemoExamPrep\158\PriyatniyShelestWPF\bin\Debug\PriyatniyShelestWPF.exe
+E:\Stu\DemoExamPrep\158\PriyatniyShelestWPF\bin\Debug\PriyatniyShelestWPF.pdb
+E:\Stu\DemoExamPrep\158\PriyatniyShelestWPF\obj\Debug\PriyatniyShelestWPF.csproj.AssemblyReference.cache
+E:\Stu\DemoExamPrep\158\PriyatniyShelestWPF\obj\Debug\AgentsWindow.g.cs
+E:\Stu\DemoExamPrep\158\PriyatniyShelestWPF\obj\Debug\App.g.cs
+E:\Stu\DemoExamPrep\158\PriyatniyShelestWPF\obj\Debug\PriyatniyShelestWPF_MarkupCompile.cache
+E:\Stu\DemoExamPrep\158\PriyatniyShelestWPF\obj\Debug\PriyatniyShelestWPF_MarkupCompile.lref
+E:\Stu\DemoExamPrep\158\PriyatniyShelestWPF\obj\Debug\AgentsWindow.baml
+E:\Stu\DemoExamPrep\158\PriyatniyShelestWPF\obj\Debug\PriyatniyShelestWPF.g.resources
+E:\Stu\DemoExamPrep\158\PriyatniyShelestWPF\obj\Debug\PriyatniyShelestWPF.Properties.Resources.resources
+E:\Stu\DemoExamPrep\158\PriyatniyShelestWPF\obj\Debug\PriyatniyShelestWPF.csproj.GenerateResource.cache
+E:\Stu\DemoExamPrep\158\PriyatniyShelestWPF\obj\Debug\PriyatniyShelestWPF.csproj.CoreCompileInputs.cache
+E:\Stu\DemoExamPrep\158\PriyatniyShelestWPF\obj\Debug\PriyatniyShelestWPF.exe
+E:\Stu\DemoExamPrep\158\PriyatniyShelestWPF\obj\Debug\PriyatniyShelestWPF.pdb
