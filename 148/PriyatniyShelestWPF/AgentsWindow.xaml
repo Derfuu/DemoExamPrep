@@ -5,50 +5,141 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PriyatniyShelestWPF"
         mc:Ignorable="d"
-        Title="Приятный Шелест (Агенты)" Height="600" Width="800" Icon="Приятный шелест.ico" FontFamily="Monotype Corsiva" FontSize="20">
-    <Grid x:Name="mainGrid" ShowGridLines="False">
+        Title="Приятный Шелест (Агенты)"
+        Height="600" Width="800"
+        Icon="Приятный шелест.ico"
+        FontFamily="Monotype Corsiva" FontSize="20">
+
+    <Window.Resources>
+        <Style TargetType="Border">
+            <Setter Property="BorderBrush" Value="#46B29D"/>
+            <Setter Property="CornerRadius" Value="2"/>
+            <Setter Property="BorderThickness" Value="1.5"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid x:Name="mainGrid"
+          ShowGridLines="False">
         <Grid.RowDefinitions>
-            <RowDefinition MinHeight="50" MaxHeight="50" />
+            <RowDefinition MinHeight="40" MaxHeight="40" />
             <RowDefinition Height="*" />
-            <RowDefinition MinHeight="30" MaxHeight="30" />
+            <RowDefinition MinHeight="40" MaxHeight="40" />
         </Grid.RowDefinitions>
-        <Border Grid.Row="0" Background="#C6D7FF"/>
-        <Grid Grid.Row="0" x:Name="upperBar" ShowGridLines="False">
+        <Border Grid.Row="0"
+                Background="#C6D7FF"
+                Style="{x:Null}"/>
+        
+        <Grid Grid.Row="0"
+              x:Name="upperBar"
+              ShowGridLines="False">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="250"/>
                 <ColumnDefinition Width="220"/>
             </Grid.ColumnDefinitions>
-            
-            <Border Grid.Column="0" Margin="10" HorizontalAlignment="Stretch" VerticalAlignment="Center" BorderThickness="1.5" BorderBrush="#46B29D" CornerRadius="1">
-                <TextBox x:Name="SearchBox" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Left" Margin="1" BorderBrush="White" TextChanged="SearchTextBox_TextChanged">
-                    Поиск
+
+            <Border Grid.Column="0">
+                <TextBox x:Name="SearchBox"
+                         HorizontalAlignment="Stretch"
+                         VerticalAlignment="Stretch"
+                         TextAlignment="Left"
+                         TextWrapping="NoWrap"
+                         Margin="1"
+                         BorderBrush="White" 
+                         TextChanged="SearchTextBox_TextChanged">
                 </TextBox>
             </Border>
-            
-            <Border Grid.Column="1" Margin="10" HorizontalAlignment="Stretch" VerticalAlignment="Center" BorderThickness="1.5" BorderBrush="#46B29D" CornerRadius="1">
+
+            <Border Grid.Column="1">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="30"/>
                     </Grid.ColumnDefinitions>
-                    <ComboBox Grid.Column="0" x:Name="SortBox" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1" BorderBrush="White" SelectionChanged="SortBox_SelectionChanged" SelectedIndex="0">
-                        <TextBlock >Наименование</TextBlock>
+                    <ComboBox Grid.Column="0"
+                              x:Name="SortBox"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Stretch"
+                              Margin="1"
+                              BorderBrush="White"
+                              Background="White"
+                              SelectionChanged="SortBox_SelectionChanged"
+                              SelectedIndex="0">
+                        <TextBlock>Наименование</TextBlock>
                         <TextBlock>Продажи</TextBlock>
                         <TextBlock>Размер скидки</TextBlock>
                         <TextBlock>Приоритет</TextBlock>
                     </ComboBox>
-                    <Button x:Name="ChangeOrderButton" Grid.Column="1" Content="↑↑" Click="ChangeOrderBtn_Click"/>
+                    <Button x:Name="ChangeOrderButton"
+                            Grid.Column="1"
+                            Content="↑↑"
+                            Background="White"
+                            Click="ChangeOrderBtn_Click"/>
                 </Grid>
             </Border>
-            
-            <Border Grid.Column="3" Margin="10" HorizontalAlignment="Stretch" VerticalAlignment="Center" BorderThickness="1.5" BorderBrush="#46B29D" CornerRadius="1">
-                <ComboBox x:Name="FilterBox" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1" BorderBrush="White" Text="Фильтрация" SelectionChanged="FilterBox_SelectionChanged">
+
+            <Border Grid.Column="2">
+                <ComboBox x:Name="FilterBox"
+                          HorizontalAlignment="Stretch"
+                          VerticalAlignment="Stretch"
+                          Margin="1"
+                          Background="White"
+                          SelectionChanged="FilterBox_SelectionChanged"
+                          SelectedIndex="0">
+                    <TextBlock>Без фильтра</TextBlock>
+                    <TextBlock>ООО</TextBlock>
+                    <TextBlock>ПАО</TextBlock>
+                    <TextBlock>ОАО</TextBlock>
+                    <TextBlock>МФО</TextBlock>
+                    <TextBlock>ЗАО</TextBlock>
+                    <TextBlock>МКК</TextBlock>
                 </ComboBox>
             </Border>
         </Grid>
 
-        <Border Grid.Row="2" Background="#C6D7FF">
+        <Border Grid.Row="1">
+            <Grid x:Name="centerGrid">
+                <Grid.RowDefinitions>
+                    <!--AGENTS ON SELECTED PAGE-->
+                </Grid.RowDefinitions>
+            </Grid>
         </Border>
+
+        <Border Grid.Row="2"
+                Background="#C6D7FF"
+                Style="{x:Null}">
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid x:Name="toolBarGrid"
+                      Grid.Column="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Border Grid.Column="0">
+                        <Button x:Name="updateAgentsButton" Content="Обновить" Background="White" Click="updateAgentsButton_Click"/>
+                    </Border>
+                </Grid>
+                
+                <Grid x:Name="navigationButtonsGrid"
+                      Grid.Column="2">
+                    <Grid.ColumnDefinitions>
+                        <!--PAGE SELECTOR-->
+                    </Grid.ColumnDefinitions>
+                </Grid>
+                
+            </Grid>
+            
+        </Border>
+        
     </Grid>
 </Window>

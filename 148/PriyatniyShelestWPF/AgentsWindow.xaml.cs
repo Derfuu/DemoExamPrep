@@ -12,46 +12,73 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Data.SqlClient;
 
 namespace PriyatniyShelestWPF
 {
-    /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
         }
+        /*
+         LAUNCH PROPERTIES 
+        */
 
-        // sortType True >> 12345...
-        // sortType False >> 54321...
-        bool sortType = true;
+        // sortOrder True >> 12345...
+        // sortOrder False >> 54321...
+        Agent[] agents = new Agent[0];
+
+        string connStr = "Data Source=DESKTOP-0000001; Initial Catalog=priyatniyDEV; Integrated Security=TRUE";
+
+        /*
+         FUNCTIONS
+        */
+
+        void getAgentsFromDB(string connectionString)
+        {
+
+        }
+
+        /*
+         EVENT HANDLERS 
+        */
+
+
 
         private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (SearchBox.Text == "") 
-            {
-                SearchBox.Text = "Поиск";
-            }
+
         }
 
         private void ChangeOrderBtn_Click(object sender, RoutedEventArgs e)
         {
             switch (ChangeOrderButton.Content)
             {
-                case "↓↓": ChangeOrderButton.Content = "↑↑"; sortType = true; break;
-                case "↑↑": ChangeOrderButton.Content = "↓↓"; sortType = false; break;
+                case "↓↓": ChangeOrderButton.Content = "↑↑"; break;
+                case "↑↑": ChangeOrderButton.Content = "↓↓"; break;
             }
+            agents.Reverse();
         }
 
         private void SortBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (SortBox.SelectedIndex != 0)
+            {
 
+            }
         }
 
         private void FilterBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (FilterBox.SelectedIndex != 0)
+            {
+                
+            }
+        }
+
+        private void updateAgentsButton_Click(object sender, RoutedEventArgs e)
         {
 
         }

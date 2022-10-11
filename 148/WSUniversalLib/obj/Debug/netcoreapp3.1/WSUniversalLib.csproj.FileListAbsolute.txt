@@ -1,0 +1,10 @@
+E:\Stu\DemoExamPrep\148\WSUniversalLib\bin\Debug\netcoreapp3.1\WSUniversalLib.deps.json
+E:\Stu\DemoExamPrep\148\WSUniversalLib\bin\Debug\netcoreapp3.1\WSUniversalLib.dll
+E:\Stu\DemoExamPrep\148\WSUniversalLib\bin\Debug\netcoreapp3.1\WSUniversalLib.pdb
+E:\Stu\DemoExamPrep\148\WSUniversalLib\obj\Debug\netcoreapp3.1\WSUniversalLib.csproj.AssemblyReference.cache
+E:\Stu\DemoExamPrep\148\WSUniversalLib\obj\Debug\netcoreapp3.1\WSUniversalLib.GeneratedMSBuildEditorConfig.editorconfig
+E:\Stu\DemoExamPrep\148\WSUniversalLib\obj\Debug\netcoreapp3.1\WSUniversalLib.AssemblyInfoInputs.cache
+E:\Stu\DemoExamPrep\148\WSUniversalLib\obj\Debug\netcoreapp3.1\WSUniversalLib.AssemblyInfo.cs
+E:\Stu\DemoExamPrep\148\WSUniversalLib\obj\Debug\netcoreapp3.1\WSUniversalLib.csproj.CoreCompileInputs.cache
+E:\Stu\DemoExamPrep\148\WSUniversalLib\obj\Debug\netcoreapp3.1\WSUniversalLib.dll
+E:\Stu\DemoExamPrep\148\WSUniversalLib\obj\Debug\netcoreapp3.1\WSUniversalLib.pdb
