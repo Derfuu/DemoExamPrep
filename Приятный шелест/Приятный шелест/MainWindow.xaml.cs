@@ -19,10 +19,12 @@ namespace Приятный_шелест
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
+    /// 
+
     public partial class MainWindow : Window
     {
-        string connectionString;
-        SqlDataAdapter adapter;
+        DB db = new DB();
+        
         public MainWindow()
         {
             InitializeComponent();
@@ -30,7 +32,17 @@ namespace Приятный_шелест
 
         private void Window_Initialized(object sender, EventArgs e)
         {
-            
+            string[] test = new string[1000];
+            string queryString = $"select * from Лист1$";
+            SqlCommand command = new SqlCommand(queryString, db.getConnection());
+            db.openConnection();
+            SqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+               // test += reader.GetString(1);
+            }
+            reader.Close();
+            MessageBox.Show(test[1]);
         }
     }
 }
