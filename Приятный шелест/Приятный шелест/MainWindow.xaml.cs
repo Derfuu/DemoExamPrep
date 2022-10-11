@@ -32,17 +32,19 @@ namespace Приятный_шелест
 
         private void Window_Initialized(object sender, EventArgs e)
         {
-            string[] test = new string[1000];
-            string queryString = $"select * from Лист1$";
+            string[] test = new string[10];
+            // string test = "";
+            string queryString = $"select top (10) [Наименование агента] from agents_b_import2$";
             SqlCommand command = new SqlCommand(queryString, db.getConnection());
             db.openConnection();
             SqlDataReader reader = command.ExecuteReader();
+            int i = 0;
             while (reader.Read())
             {
-               // test += reader.GetString(1);
+                test[i] += reader.GetString(0);
+                i++;
             }
             reader.Close();
-            MessageBox.Show(test[1]);
         }
     }
 }
