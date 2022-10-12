@@ -8,8 +8,8 @@ namespace PriyatniyShelestWPF
 {
     class Agent
     {
-        public string ID;
-        public string agentType;
+        public int ID;
+        public int agentTypeID;
         public string Title;
         public string Email;
         public string Phone;
@@ -19,6 +19,6 @@ namespace PriyatniyShelestWPF
         public string directorName;
         public string INN;
         public string KPP;
-        public string Discount;
+        public int Discount;
     }
 }

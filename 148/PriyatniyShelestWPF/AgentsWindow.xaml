@@ -10,7 +10,9 @@
         Height="600" Width="800"
         Icon="Приятный шелест.ico"
         FontFamily="Monotype Corsiva" FontSize="20"
-        SizeChanged="window_SizeChanged" MinWidth="800" MinHeight="600">
+        SizeChanged="window_SizeChanged"
+        Initialized="window_Initialized"
+        MinWidth="800" MinHeight="600">
 
     <Window.Resources>
         <Style TargetType="Border">

@@ -28,18 +28,16 @@ namespace PriyatniyShelestWPF
 
         // sortOrder True >> 12345...
         // sortOrder False >> 54321...
-        Agent[] agents = new Agent[0];
-        int possibleRows = 10;
+        Agent[] agents;
 
         SolidColorBrush bgcolor = new SolidColorBrush(Color.FromArgb(0xFF, 0xC6, 0xD7, 0xFF));
 
-        string connStr = "Data Source=DESKTOP-0000001; Initial Catalog=priyatniyDEV; Integrated Security=TRUE";
-
+        string connStr = "Data Source=(local); Initial Catalog=priyatniyDEV; Integrated Security=TRUE";
         /*
          FUNCTIONS
         */
 
-        void updateTableConfiguretion(int page=1)
+        void updateTableConfiguretion(int page = 1)
         {
             double rowThikness = 150;
             
@@ -59,7 +57,7 @@ namespace PriyatniyShelestWPF
                 ColumnDefinition descriptionColumn = new ColumnDefinition();
                 innerGrid.ColumnDefinitions.Add(imageColumn);
                 innerGrid.ColumnDefinitions.Add(descriptionColumn);
-                
+
                 imageColumn.Width = new GridLength(200);
                 descriptionColumn.Width = new GridLength();
 
@@ -117,6 +115,7 @@ namespace PriyatniyShelestWPF
 
                 //inserting ready row in grid
                 RowDefinition rowDef = new RowDefinition();
+
                 rowDef.MinHeight = rowThikness;
                 rowDef.MaxHeight = rowThikness;
                 rowDef.Name = $"row{row}";
@@ -126,11 +125,44 @@ namespace PriyatniyShelestWPF
                 centerGrid.Children.Add(innerGrid);
             }
             centerGrid.UpdateLayout();
+        } //wrong width
+
+        int countDiscount(int agentID)
+        {
+            return 0;
         }
 
-        Agent[] getAgentsFromDB(string connectionString)
+        void getAgentsFromDB(string connectionString, string searchFor=" ", int filterBy=0, int sortBy=0)
         {
-            return agents;
+            string sortType = "";
+
+            string queryString = $"SELECT * FROM dbo.Agent WHERE agentTypeID = '{filterBy}' AND Title IN %{searchFor}% ";
+            string agentsQuantityString = $"SELECT COUNT(*) FROM dbo.Agent WHERE agentTypeID = '{filterBy}' AND Title IN %{searchFor}% ";
+
+            switch (sortBy)
+            {
+                case 0: { sortType = "ORDER BY Title "; ; break; }
+                case 1: { sortType = ""; break; } // Sales
+                case 2: { sortType = ""; break; } // Discount
+                case 3: { sortType = "ORDER BY Priority "; break; }
+            }
+
+            queryString += sortType + ";";
+            agentsQuantityString += ";";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(agentsQuantityString, connection);
+                connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    agents = new Agent[reader.GetInt64(0)];
+                    MessageBox.Show("" + reader.GetInt32(0));
+                }
+                reader.Close();
+            }
         }
 
         /*
@@ -179,6 +211,11 @@ namespace PriyatniyShelestWPF
         private void window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             updateTableConfiguretion();
+        }
+
+        private void window_Initialized(object sender, EventArgs e)
+        {
+            getAgentsFromDB(connStr);
         }
     }
 }
