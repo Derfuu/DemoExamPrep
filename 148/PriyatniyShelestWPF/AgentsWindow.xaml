@@ -5,10 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PriyatniyShelestWPF"
         mc:Ignorable="d"
+        x:Name="agentsWindow"
         Title="Приятный Шелест (Агенты)"
         Height="600" Width="800"
         Icon="Приятный шелест.ico"
-        FontFamily="Monotype Corsiva" FontSize="20">
+        FontFamily="Monotype Corsiva" FontSize="20"
+        SizeChanged="window_SizeChanged" MinWidth="800" MinHeight="600">
 
     <Window.Resources>
         <Style TargetType="Border">
@@ -101,11 +103,15 @@
         </Grid>
 
         <Border Grid.Row="1">
-            <Grid x:Name="centerGrid">
-                <Grid.RowDefinitions>
-                    <!--AGENTS ON SELECTED PAGE-->
-                </Grid.RowDefinitions>
-            </Grid>
+            <ScrollViewer x:Name="centerScrollBar" VerticalScrollBarVisibility="Auto">
+                <Grid x:Name="centerGrid"
+                      VerticalAlignment="Stretch"
+                      HorizontalAlignment="Stretch">
+                    <Grid.RowDefinitions>
+                        <!--AGENTS ON SELECTED PAGE-->
+                    </Grid.RowDefinitions>
+                </Grid>
+            </ScrollViewer>
         </Border>
 
         <Border Grid.Row="2"
