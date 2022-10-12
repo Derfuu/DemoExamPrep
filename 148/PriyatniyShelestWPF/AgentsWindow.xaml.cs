@@ -111,7 +111,7 @@ namespace PriyatniyShelestWPF
                 innerGrid.Children.Add(agentDataBorder);
                 innerGrid.Children.Add(agentNameLabel);
                 innerGrid.Children.Add(agentDiscountLabel);
-
+                Grid.SetRow(innerGrid, row);
 
                 //inserting ready row in grid
                 RowDefinition rowDef = new RowDefinition();
@@ -120,7 +120,6 @@ namespace PriyatniyShelestWPF
                 rowDef.MaxHeight = rowThikness;
                 rowDef.Name = $"row{row}";
                 centerGrid.RowDefinitions.Add(rowDef);
-                Grid.SetRow(innerGrid, row);
                 innerGrid.UpdateLayout();
                 centerGrid.Children.Add(innerGrid);
             }
