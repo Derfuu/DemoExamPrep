@@ -12,6 +12,13 @@
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="50"></RowDefinition>
         </Grid.RowDefinitions>
-        <ListBox x:Name="test" Grid.Row="1"></ListBox>
+        <ScrollViewer Grid.Row="1">
+            <Grid x:Name="list">
+                <Grid.RowDefinitions>
+                    <!--AGENTS ON SELECTED PAGE-->
+                </Grid.RowDefinitions>
+            </Grid>
+        </ScrollViewer>
+           
     </Grid>
 </Window>

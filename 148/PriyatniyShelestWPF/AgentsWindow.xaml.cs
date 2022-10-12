@@ -29,7 +29,7 @@ namespace PriyatniyShelestWPF
         // sortOrder True >> 12345...
         // sortOrder False >> 54321...
         Agent[] agents = new Agent[0];
-        int possibleRows = 10;
+        // int possibleRows = 10;
 
         SolidColorBrush bgcolor = new SolidColorBrush(Color.FromArgb(0xFF, 0xC6, 0xD7, 0xFF));
 

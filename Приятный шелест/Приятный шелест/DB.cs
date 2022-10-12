@@ -9,7 +9,9 @@ namespace Приятный_шелест
 {
     internal class DB
     {
-        SqlConnection sqlConnection = new SqlConnection(@"Data Source=LAPTOP-TK7JKUOV; Initial Catalog=test; Integrated Security=True");
+        //DESKTOP-PUEBN7O
+        //LAPTOP-TK7JKUOV
+        SqlConnection sqlConnection = new SqlConnection(@"Data Source=DESKTOP-PUEBN7O; Initial Catalog=test; Integrated Security=True");
 
         public void openConnection()
         {

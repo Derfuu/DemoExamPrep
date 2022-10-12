@@ -8,24 +8,19 @@
     ".NETCoreApp,Version=v3.1": []
   },
   "packageFolders": {
-    "C:\\Users\\Alexander\\.nuget\\packages\\": {},
-    "E:\\Programs\\VS\\SDK\\NuGetPackages": {}
+    "C:\\Users\\Димчик\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\Stu\\DemoExamPrep\\148\\WSUniversalLib\\WSUniversalLib.csproj",
+      "projectUniqueName": "D:\\Projects\\С#\\git\\DemoExamPrep\\148\\WSUniversalLib\\WSUniversalLib.csproj",
       "projectName": "WSUniversalLib",
-      "projectPath": "E:\\Stu\\DemoExamPrep\\148\\WSUniversalLib\\WSUniversalLib.csproj",
-      "packagesPath": "C:\\Users\\Alexander\\.nuget\\packages\\",
-      "outputPath": "E:\\Stu\\DemoExamPrep\\148\\WSUniversalLib\\obj\\",
+      "projectPath": "D:\\Projects\\С#\\git\\DemoExamPrep\\148\\WSUniversalLib\\WSUniversalLib.csproj",
+      "packagesPath": "C:\\Users\\Димчик\\.nuget\\packages\\",
+      "outputPath": "D:\\Projects\\С#\\git\\DemoExamPrep\\148\\WSUniversalLib\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "E:\\Programs\\VS\\SDK\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\Alexander\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Users\\Димчик\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -65,7 +60,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.404\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.300\\RuntimeIdentifierGraph.json"
       }
     }
   }

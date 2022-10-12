@@ -52,7 +52,44 @@ namespace Приятный_шелест
                 i++;
             }
             reader.Close();
-            test.ItemsSource = test1;
+            // test.ItemsSource = test1;
+            for (i = 0; i < 10; i++)
+            {
+                Grid el = new Grid();
+                //list.Height = 75;
+                ColumnDefinition img = new ColumnDefinition();
+                ColumnDefinition descript = new ColumnDefinition();
+                el.ColumnDefinitions.Add(img);
+                el.ColumnDefinitions.Add(descript);
+
+                //agentNameLabel settings
+                Label agentNameLabel = new Label();
+                agentNameLabel.Content = test2[i];
+                //MessageBox.Show(test2[i]);
+                // agentNameLabel.HorizontalAlignment = HorizontalAlignment.Left;
+                // agentNameLabel.VerticalAlignment = VerticalAlignment.Top;
+                // agentNameLabel.Margin = new Thickness(10);
+                // agentNameLabel.Width = Double.NaN;
+                Grid.SetColumn(agentNameLabel, 1);
+
+                //create instanses for grid
+                //innerGrid.Children.Add(agentLogo);
+                //innerGrid.Children.Add(agentLogoBorder);
+                //innerGrid.Children.Add(agentDataBorder);
+                el.Children.Add(agentNameLabel);
+                //innerGrid.Children.Add(agentDiscountLabel);
+
+                //inserting ready row in grid
+                RowDefinition rowDef = new RowDefinition();
+                rowDef.MinHeight = 75;
+                rowDef.MaxHeight = 75;
+                rowDef.Name = $"row{i}";
+                list.RowDefinitions.Add(rowDef);
+                Grid.SetRow(el, i);
+                list.Children.Add(el);
+                el.UpdateLayout();
+            }
+            list.UpdateLayout();
             // Binding binding = new Binding();
             // binding.ElementName = "test1";
             // binding.Source = test;

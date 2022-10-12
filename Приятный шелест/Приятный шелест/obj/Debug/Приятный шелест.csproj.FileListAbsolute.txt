@@ -30,3 +30,19 @@ D:\Projects\C#\DemoExamPrep\Приятный шелест\Приятный ше�
 D:\Projects\C#\DemoExamPrep\Приятный шелест\Приятный шелест\obj\Debug\Приятный шелест.exe
 D:\Projects\C#\DemoExamPrep\Приятный шелест\Приятный шелест\obj\Debug\Приятный шелест.pdb
 D:\Projects\C#\DemoExamPrep\Приятный шелест\Приятный шелест\obj\Debug\GeneratedInternalTypeHelper.g.cs
+D:\Projects\С#\git\DemoExamPrep\Приятный шелест\Приятный шелест\bin\Debug\Приятный шелест.exe.config
+D:\Projects\С#\git\DemoExamPrep\Приятный шелест\Приятный шелест\bin\Debug\Приятный шелест.exe
+D:\Projects\С#\git\DemoExamPrep\Приятный шелест\Приятный шелест\bin\Debug\Приятный шелест.pdb
+D:\Projects\С#\git\DemoExamPrep\Приятный шелест\Приятный шелест\obj\Debug\Приятный шелест.csproj.AssemblyReference.cache
+D:\Projects\С#\git\DemoExamPrep\Приятный шелест\Приятный шелест\obj\Debug\Приятный шелест.csproj.SuggestedBindingRedirects.cache
+D:\Projects\С#\git\DemoExamPrep\Приятный шелест\Приятный шелест\obj\Debug\MainWindow.g.cs
+D:\Projects\С#\git\DemoExamPrep\Приятный шелест\Приятный шелест\obj\Debug\App.g.cs
+D:\Projects\С#\git\DemoExamPrep\Приятный шелест\Приятный шелест\obj\Debug\Приятный шелест_MarkupCompile.cache
+D:\Projects\С#\git\DemoExamPrep\Приятный шелест\Приятный шелест\obj\Debug\Приятный шелест_MarkupCompile.lref
+D:\Projects\С#\git\DemoExamPrep\Приятный шелест\Приятный шелест\obj\Debug\MainWindow.baml
+D:\Projects\С#\git\DemoExamPrep\Приятный шелест\Приятный шелест\obj\Debug\Приятный шелест.g.resources
+D:\Projects\С#\git\DemoExamPrep\Приятный шелест\Приятный шелест\obj\Debug\Приятный_шелест.Properties.Resources.resources
+D:\Projects\С#\git\DemoExamPrep\Приятный шелест\Приятный шелест\obj\Debug\Приятный шелест.csproj.GenerateResource.cache
+D:\Projects\С#\git\DemoExamPrep\Приятный шелест\Приятный шелест\obj\Debug\Приятный шелест.csproj.CoreCompileInputs.cache
+D:\Projects\С#\git\DemoExamPrep\Приятный шелест\Приятный шелест\obj\Debug\Приятный шелест.exe
+D:\Projects\С#\git\DemoExamPrep\Приятный шелест\Приятный шелест\obj\Debug\Приятный шелест.pdb
