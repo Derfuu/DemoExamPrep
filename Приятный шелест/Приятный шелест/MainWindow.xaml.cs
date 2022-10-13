@@ -38,9 +38,11 @@ namespace Приятный_шелест
             string[] phone = new string[10];
             double[] priorety = new double[10];
             // string test = "";
-            string queryString = $"select top (10) [Тип агента], [Наименование агента]," +
-                $"[Телефон агента], [Приоритет] from agents_b_import2$;";
-            //$"select top (10) [Количество продукции] from Лист1$";
+            string queryString = "select top (10) [Тип агента], agents_b_import2$.[Наименование агента]," +
+                "[Телефон агента], [Приоритет] from agents_b_import2$";
+            //"[Телефон агента], [Приоритет], [Количество продукции] from agents_b_import2$, Лист1$";
+            //"and select top (10) [Количество продукции] from Лист1$";
+            //"select top (10) [Количество продукции] from Лист1$";
             SqlCommand command = new SqlCommand(queryString, db.getConnection());
             db.openConnection();
             SqlDataReader reader = command.ExecuteReader();
@@ -48,61 +50,99 @@ namespace Приятный_шелест
             while (reader.Read())
             {
                 //test1[i] = reader.GetString(0);
-                name[i] = reader.GetString(0) + " | " +reader.GetString(1);
+                name[i] = reader.GetString(0) + " | " + reader.GetString(1);
                 phone[i] = reader.GetString(2);
                 priorety[i] = reader.GetDouble(3);
                 //prod[i] = reader.GetDouble(4);
                 i++;
             }
-            reader.Close();
-            //SqlDataReader reader1 = command.ExecuteReader();
+            //queryString = "select top (10) [Количество продукции] from Лист1$";
             //i = 0;
-            //string queryString1 = $"select top (10) [Количество продукции] from [Лист1$]";
-            //SqlCommand command1 = new SqlCommand(queryString1, db.getConnection());
-            //while (reader1.Read())
+            //while (reader.Read())
             //{
-            //    prod[i] = reader.GetDouble(0);
+            //    prod[i] = reader.GetDouble(1);
             //    i++;
             //}
-            //reader1.Close();
-            
+            reader.Close();
+
             // test.ItemsSource = test1;
-            SolidColorBrush bgcolor = new SolidColorBrush(Color.FromArgb(0xFF, 0xC6, 0xD7, 0xFF));
+            SolidColorBrush bgcolor = new SolidColorBrush(Color.FromArgb(255,0,0,0));
             for (i = 0; i < 10; i++)
             {
                 Grid el = new Grid();
-                //list.Height = 75;
+                //el.ShowGridLines = true;
                 ColumnDefinition img = new ColumnDefinition();
                 ColumnDefinition descript = new ColumnDefinition();
+                ColumnDefinition procent = new ColumnDefinition();
                 img.Width = new GridLength(100);
+                //descript.Width = new GridLength();
+                procent.Width = new GridLength(100);
+
+
+                RowDefinition row1 = new RowDefinition();
+                RowDefinition row2 = new RowDefinition();
+                RowDefinition row3 = new RowDefinition();
+                RowDefinition row4 = new RowDefinition();
+                RowDefinition row5 = new RowDefinition();
+                row1.Height = new GridLength(30);
+                row2.Height = new GridLength(27);
+                row3.Height = new GridLength(27);
+                row4.Height = new GridLength(27);
+                row5.Height = new GridLength(5);
+                el.RowDefinitions.Add(row1);
+                el.RowDefinitions.Add(row2);
+                el.RowDefinitions.Add(row3);
+                el.RowDefinitions.Add(row4);
+                el.RowDefinitions.Add(row5);
 
                 el.ColumnDefinitions.Add(img);
                 el.ColumnDefinitions.Add(descript);
+               // el.ColumnDefinitions.Add(procent);
 
                 //agentNameLabel settings
                 Image leftSide = new Image();
-                leftSide.Source = new BitmapImage(new Uri("/picture.png", UriKind.Relative)) { CreateOptions = BitmapCreateOptions.IgnoreImageCache };;
-                leftSide.Height = 75;
-                leftSide.Margin = new Thickness(5,5,0,5);
+                leftSide.Source = new BitmapImage(new Uri("/picture.png", UriKind.Relative)) { CreateOptions = BitmapCreateOptions.IgnoreImageCache};
+                Grid.SetRowSpan(leftSide, 4);
+                leftSide.Height = 100;
+                leftSide.Margin = new Thickness(5);
                 leftSide.VerticalAlignment = VerticalAlignment.Top;
-                //this.image1.Source = new BitmapImage(new Uri("/Resources/00223.jpg", UriKind.Relative)) { CreateOptions = BitmapCreateOptions.IgnoreImageCache };
-            
-                //MessageBox.Show(test2[i]);
-                // agentNameLabel.HorizontalAlignment = HorizontalAlignment.Left;
-                // agentNameLabel.VerticalAlignment = VerticalAlignment.Top;
-                // agentNameLabel.Margin = new Thickness(10);
-                // agentNameLabel.Width = Double.NaN;
                 Grid.SetColumn(leftSide, 0);
 
                 //agentNameLabel settings
                 Label agentNameLabel = new Label();
                 agentNameLabel.Content = name[i];
+                agentNameLabel.Margin = new Thickness(0);
+                agentNameLabel.FontSize = 15;
+                Grid.SetRow(agentNameLabel, 0);
                 Grid.SetColumn(agentNameLabel, 1);
 
-                //create instanses for grid
-                //innerGrid.Children.Add(agentLogo);
-                //innerGrid.Children.Add(agentLogoBorder);
-                //innerGrid.Children.Add(agentDataBorder);
+                //prod
+                //Label sell = new Label();
+                //sell.Content = prod[i];
+                //sell.Margin = new Thickness(0,15,0,15);
+                //Grid.SetColumn(sell, 1);
+
+                phone[i] = phone[i].Replace(" ", "");
+                Label phoneLabel = new Label();
+                phoneLabel.Content = phone[i];
+                //phoneLabel.Margin = new Thickness(0,17,0,0);
+                phoneLabel.FontSize = 13;
+                Grid.SetRow(phoneLabel, 1);
+                Grid.SetColumn(phoneLabel, 1);
+
+
+                //priorety
+                Label prioretyLabel = new Label();
+                prioretyLabel.Content = "Приоритетность: " + priorety[i];
+                prioretyLabel.FontSize = 13;
+                //prioretyLabel.Margin = new Thickness(0,35,0,0);
+                Grid.SetRow(prioretyLabel, 2);
+                Grid.SetColumn(prioretyLabel, 1);
+
+
+                //el.Children.Add(sell);
+                el.Children.Add(phoneLabel);
+                el.Children.Add(prioretyLabel);
                 el.Children.Add(leftSide);
                 el.Children.Add(agentNameLabel);
                 //innerGrid.Children.Add(agentDiscountLabel);
@@ -111,22 +151,20 @@ namespace Приятный_шелест
                 Border1.BorderThickness = new Thickness(1);
                 //Border1.Background = bgcolor;
                 Border1.BorderBrush = bgcolor;
-                Border1.Margin = new Thickness(0, 0, 15, 15);
+                Border1.Margin = new Thickness(0, 0, 25, 15);
                 //Grid.SetRow(Border1, 0);
                 //inserting ready row in grid
                 
                 RowDefinition rowDef = new RowDefinition();
-                rowDef.MinHeight = 100;
-                rowDef.MaxHeight = 100;
+                rowDef.MinHeight = 125;
+                rowDef.MaxHeight = 125;
                 rowDef.Name = $"row{i}";
                 list.RowDefinitions.Add(rowDef);
                 Grid.SetRow(el, i);
                 Grid.SetColumnSpan(el, 3);
-                //Grid.SetColumn(el, 1);
                 list.Children.Add(el);
                 Grid.SetRow(Border1, i);
                 Grid.SetColumnSpan(Border1, 3);
-                //Grid.SetColumn(Border1, 1);
                 list.Children.Add(Border1);
                 el.UpdateLayout();
             }
