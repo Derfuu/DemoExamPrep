@@ -32,61 +32,89 @@ namespace Приятный_шелест
 
         private void Window_Initialized(object sender, EventArgs e)
         {
-            string[] test1 = new string[10];
-            string[] test2 = new string[10];
-            string[] test3 = new string[10];
-            double[] test4 = new double[10];
+            //string[] test1 = new string[10];
+            string[] name = new string[10];
+            string[] prod = new string[10];
+            double[] phone = new double[10];
+            string[] priorety = new string[10];
             // string test = "";
             string queryString = $"select top (10) [Тип агента], [Наименование агента]," +
-                $" [Телефон агента], [Приоритет] from agents_b_import2$";
+                $"[Телефон агента], [Приоритет] from agents_b_import2$";
             SqlCommand command = new SqlCommand(queryString, db.getConnection());
             db.openConnection();
             SqlDataReader reader = command.ExecuteReader();
             int i = 0;
             while (reader.Read())
             {
-                test1[i] = reader.GetString(0);
-                test2[i] = reader.GetString(1);
-                test3[i] = reader.GetString(2);
-                test4[i] = reader.GetDouble(3);
+                //test1[i] = reader.GetString(0);
+                name[i] = reader.GetString(0) + " | " +reader.GetString(1);
+                phone[i] = reader.GetDouble(2);
+                priorety[i] = reader.GetString(3);
                 i++;
             }
             reader.Close();
             // test.ItemsSource = test1;
+            SolidColorBrush bgcolor = new SolidColorBrush(Color.FromArgb(0xFF, 0xC6, 0xD7, 0xFF));
             for (i = 0; i < 10; i++)
             {
                 Grid el = new Grid();
                 //list.Height = 75;
                 ColumnDefinition img = new ColumnDefinition();
                 ColumnDefinition descript = new ColumnDefinition();
+                img.Width = new GridLength(100);
+
                 el.ColumnDefinitions.Add(img);
                 el.ColumnDefinitions.Add(descript);
 
                 //agentNameLabel settings
-                Label agentNameLabel = new Label();
-                agentNameLabel.Content = test2[i];
+                Image leftSide = new Image();
+                leftSide.Source = new BitmapImage(new Uri("/picture.png", UriKind.Relative)) { CreateOptions = BitmapCreateOptions.IgnoreImageCache };;
+                leftSide.Height = 75;
+                leftSide.Margin = new Thickness(5,5,0,5);
+                leftSide.VerticalAlignment = VerticalAlignment.Top;
+                //this.image1.Source = new BitmapImage(new Uri("/Resources/00223.jpg", UriKind.Relative)) { CreateOptions = BitmapCreateOptions.IgnoreImageCache };
+            
                 //MessageBox.Show(test2[i]);
                 // agentNameLabel.HorizontalAlignment = HorizontalAlignment.Left;
                 // agentNameLabel.VerticalAlignment = VerticalAlignment.Top;
                 // agentNameLabel.Margin = new Thickness(10);
                 // agentNameLabel.Width = Double.NaN;
+                Grid.SetColumn(leftSide, 0);
+
+                //agentNameLabel settings
+                Label agentNameLabel = new Label();
+                agentNameLabel.Content = name[i];
                 Grid.SetColumn(agentNameLabel, 1);
 
                 //create instanses for grid
                 //innerGrid.Children.Add(agentLogo);
                 //innerGrid.Children.Add(agentLogoBorder);
                 //innerGrid.Children.Add(agentDataBorder);
+                el.Children.Add(leftSide);
                 el.Children.Add(agentNameLabel);
                 //innerGrid.Children.Add(agentDiscountLabel);
 
+                Border Border1 = new Border();
+                Border1.BorderThickness = new Thickness(1);
+                //Border1.Background = bgcolor;
+                Border1.BorderBrush = bgcolor;
+                Border1.Margin = new Thickness(0, 0, 15, 15);
+                //Grid.SetRow(Border1, 0);
                 //inserting ready row in grid
+                
                 RowDefinition rowDef = new RowDefinition();
-                rowDef.MinHeight = 75;
-                rowDef.MaxHeight = 75;
+                rowDef.MinHeight = 100;
+                rowDef.MaxHeight = 100;
                 rowDef.Name = $"row{i}";
                 list.RowDefinitions.Add(rowDef);
                 Grid.SetRow(el, i);
+                Grid.SetColumnSpan(el, 3);
+                //Grid.SetColumn(el, 1);
                 list.Children.Add(el);
+                Grid.SetRow(Border1, i);
+                Grid.SetColumnSpan(Border1, 3);
+                //Grid.SetColumn(Border1, 1);
+                list.Children.Add(Border1);
                 el.UpdateLayout();
             }
             list.UpdateLayout();

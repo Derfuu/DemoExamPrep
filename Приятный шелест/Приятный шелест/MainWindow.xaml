@@ -7,18 +7,28 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" Initialized="Window_Initialized">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="15"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="15"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="50"></RowDefinition>
         </Grid.RowDefinitions>
-        <ScrollViewer Grid.Row="1">
+        <ScrollViewer Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3">
             <Grid x:Name="list">
                 <Grid.RowDefinitions>
                     <!--AGENTS ON SELECTED PAGE-->
                 </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="15"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="15"/>
+                </Grid.ColumnDefinitions>
             </Grid>
+
         </ScrollViewer>
-           
     </Grid>
 </Window>
