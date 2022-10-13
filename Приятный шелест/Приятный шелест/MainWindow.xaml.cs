@@ -34,12 +34,13 @@ namespace Приятный_шелест
         {
             //string[] test1 = new string[10];
             string[] name = new string[10];
-            string[] prod = new string[10];
-            double[] phone = new double[10];
-            string[] priorety = new string[10];
+            double[] prod = new double[10];
+            string[] phone = new string[10];
+            double[] priorety = new double[10];
             // string test = "";
             string queryString = $"select top (10) [Тип агента], [Наименование агента]," +
-                $"[Телефон агента], [Приоритет] from agents_b_import2$";
+                $"[Телефон агента], [Приоритет] from agents_b_import2$;";
+            //$"select top (10) [Количество продукции] from Лист1$";
             SqlCommand command = new SqlCommand(queryString, db.getConnection());
             db.openConnection();
             SqlDataReader reader = command.ExecuteReader();
@@ -48,11 +49,23 @@ namespace Приятный_шелест
             {
                 //test1[i] = reader.GetString(0);
                 name[i] = reader.GetString(0) + " | " +reader.GetString(1);
-                phone[i] = reader.GetDouble(2);
-                priorety[i] = reader.GetString(3);
+                phone[i] = reader.GetString(2);
+                priorety[i] = reader.GetDouble(3);
+                //prod[i] = reader.GetDouble(4);
                 i++;
             }
             reader.Close();
+            //SqlDataReader reader1 = command.ExecuteReader();
+            //i = 0;
+            //string queryString1 = $"select top (10) [Количество продукции] from [Лист1$]";
+            //SqlCommand command1 = new SqlCommand(queryString1, db.getConnection());
+            //while (reader1.Read())
+            //{
+            //    prod[i] = reader.GetDouble(0);
+            //    i++;
+            //}
+            //reader1.Close();
+            
             // test.ItemsSource = test1;
             SolidColorBrush bgcolor = new SolidColorBrush(Color.FromArgb(0xFF, 0xC6, 0xD7, 0xFF));
             for (i = 0; i < 10; i++)
