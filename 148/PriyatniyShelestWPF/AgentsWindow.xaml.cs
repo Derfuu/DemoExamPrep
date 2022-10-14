@@ -32,7 +32,7 @@ namespace PriyatniyShelestWPF
 
         SolidColorBrush bgcolor = new SolidColorBrush(Color.FromArgb(0xFF, 0xC6, 0xD7, 0xFF));
 
-        string connStr = "Data Source=(local); Initial Catalog=priyatniyDEV; Integrated Security=TRUE";
+        string connStr = "Data Source=DESKTOP-0000001; Initial Catalog=priyatniyDEV; Integrated Security=TRUE";
         /*
          FUNCTIONS
         */
@@ -66,7 +66,7 @@ namespace PriyatniyShelestWPF
                 BitmapImage logo = new BitmapImage();
 
                 logo.BeginInit();
-                logo.UriSource = new Uri("/images/unknown.png", UriKind.Relative);
+                logo.UriSource = new Uri("/unknown.png", UriKind.Relative);
                 agentLogo.Stretch = Stretch.UniformToFill;
                 agentLogo.Source = logo;
                 logo.EndInit();
