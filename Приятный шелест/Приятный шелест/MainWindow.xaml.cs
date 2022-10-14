@@ -65,6 +65,8 @@ namespace Приятный_шелест
             //}
             reader.Close();
 
+            int smallFont = 12;
+            int bigFont = 15;
             // test.ItemsSource = test1;
             SolidColorBrush bgcolor = new SolidColorBrush(Color.FromArgb(255,0,0,0));
             for (i = 0; i < 10; i++)
@@ -74,7 +76,7 @@ namespace Приятный_шелест
                 ColumnDefinition img = new ColumnDefinition();
                 ColumnDefinition descript = new ColumnDefinition();
                 ColumnDefinition procent = new ColumnDefinition();
-                img.Width = new GridLength(100);
+                img.Width = new GridLength(110);
                 //descript.Width = new GridLength();
                 procent.Width = new GridLength(100);
 
@@ -84,11 +86,11 @@ namespace Приятный_шелест
                 RowDefinition row3 = new RowDefinition();
                 RowDefinition row4 = new RowDefinition();
                 RowDefinition row5 = new RowDefinition();
-                row1.Height = new GridLength(30);
-                row2.Height = new GridLength(27);
-                row3.Height = new GridLength(27);
-                row4.Height = new GridLength(27);
-                row5.Height = new GridLength(5);
+                row1.Height = new GridLength(25);
+                row2.Height = new GridLength(25);
+                row3.Height = new GridLength(25);
+                row4.Height = new GridLength(25);
+                row5.Height = new GridLength(25);
                 el.RowDefinitions.Add(row1);
                 el.RowDefinitions.Add(row2);
                 el.RowDefinitions.Add(row3);
@@ -104,6 +106,7 @@ namespace Приятный_шелест
                 leftSide.Source = new BitmapImage(new Uri("/picture.png", UriKind.Relative)) { CreateOptions = BitmapCreateOptions.IgnoreImageCache};
                 Grid.SetRowSpan(leftSide, 4);
                 leftSide.Height = 100;
+                leftSide.Width = 100;
                 leftSide.Margin = new Thickness(5);
                 leftSide.VerticalAlignment = VerticalAlignment.Top;
                 Grid.SetColumn(leftSide, 0);
@@ -112,35 +115,37 @@ namespace Приятный_шелест
                 Label agentNameLabel = new Label();
                 agentNameLabel.Content = name[i];
                 agentNameLabel.Margin = new Thickness(0);
-                agentNameLabel.FontSize = 15;
+                agentNameLabel.FontSize = bigFont;
                 Grid.SetRow(agentNameLabel, 0);
                 Grid.SetColumn(agentNameLabel, 1);
 
                 //prod
-                //Label sell = new Label();
-                //sell.Content = prod[i];
+                Label sell = new Label();
+                sell.Content = " Продаж за год";
                 //sell.Margin = new Thickness(0,15,0,15);
-                //Grid.SetColumn(sell, 1);
+                agentNameLabel.FontSize = smallFont;
+                Grid.SetRow(sell, 1);
+                Grid.SetColumn(sell, 1);
 
                 phone[i] = phone[i].Replace(" ", "");
                 Label phoneLabel = new Label();
                 phoneLabel.Content = phone[i];
                 //phoneLabel.Margin = new Thickness(0,17,0,0);
-                phoneLabel.FontSize = 13;
-                Grid.SetRow(phoneLabel, 1);
+                phoneLabel.FontSize = smallFont;
+                Grid.SetRow(phoneLabel, 2);
                 Grid.SetColumn(phoneLabel, 1);
 
 
                 //priorety
                 Label prioretyLabel = new Label();
                 prioretyLabel.Content = "Приоритетность: " + priorety[i];
-                prioretyLabel.FontSize = 13;
+                prioretyLabel.FontSize = smallFont;
                 //prioretyLabel.Margin = new Thickness(0,35,0,0);
-                Grid.SetRow(prioretyLabel, 2);
+                Grid.SetRow(prioretyLabel, 3);
                 Grid.SetColumn(prioretyLabel, 1);
 
 
-                //el.Children.Add(sell);
+                el.Children.Add(sell);
                 el.Children.Add(phoneLabel);
                 el.Children.Add(prioretyLabel);
                 el.Children.Add(leftSide);
