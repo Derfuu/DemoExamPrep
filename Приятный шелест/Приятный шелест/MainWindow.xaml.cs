@@ -36,10 +36,10 @@ namespace Приятный_шелест
             string[] name = new string[10];
             double[] prod = new double[10];
             string[] phone = new string[10];
-            double[] priorety = new double[10];
+            int[] priorety = new int[10];
             // string test = "";
-            string queryString = "select top (10) [Тип агента], agents_b_import2$.[Наименование агента]," +
-                "[Телефон агента], [Приоритет] from agents_b_import2$";
+            string queryString = "select top (10) [AgentType].Title, [Agent].[Title], [Phone], [Priority]" +
+            "from[Agent]  INNER JOIN[AgentType] ON[Agent].[AgentTypeID] = [AgentType].[ID]";
             //"[Телефон агента], [Приоритет], [Количество продукции] from agents_b_import2$, Лист1$";
             //"and select top (10) [Количество продукции] from Лист1$";
             //"select top (10) [Количество продукции] from Лист1$";
@@ -52,7 +52,7 @@ namespace Приятный_шелест
                 //test1[i] = reader.GetString(0);
                 name[i] = reader.GetString(0) + " | " + reader.GetString(1);
                 phone[i] = reader.GetString(2);
-                priorety[i] = reader.GetDouble(3);
+                priorety[i] = reader.GetInt32(3);
                 //prod[i] = reader.GetDouble(4);
                 i++;
             }
