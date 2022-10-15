@@ -17,11 +17,6 @@ using System.Data.SqlClient;
 
 namespace Приятный_шелест
 {
-    /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
-    /// </summary>
-    /// 
-
     public partial class MainWindow : Window
     {
         DB db = new DB();
@@ -29,64 +24,58 @@ namespace Приятный_шелест
         {
             InitializeComponent();
         }
-
+        int Page = 0;
+        int Paginator = 10;
+        int YearsRange = 1;
         private void Window_Initialized(object sender, EventArgs e)
         {
             //string[] test1 = new string[10];
             string[] name = new string[10];
-            int[] prod = new int[10];
+            int[] prod = {0,0,0,0,0,0,0,0,0,0};
+            int[] prodID = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
             string[] phone = new string[10];
             int[] priorety = new int[10];
-            string[] dateString = new string[10];
-            DateTime date = DateTime.Now;
-
-            // string test = "";
-            string queryString = "select top (10) [AgentType].Title, [Agent].[Title], [Phone], [Priority]" +
-            "from[Agent] INNER JOIN[AgentType] ON [Agent].[AgentTypeID] = [AgentType].[ID]";
+            string queryString = "select [AgentType].Title, [Agent].[Title], [Phone], [Priority]" +
+            $"from[Agent] INNER JOIN[AgentType] ON [Agent].[AgentTypeID] = [AgentType].[ID]  where Agent.ID between {Paginator - 10} and {Paginator}";
             SqlCommand command = new SqlCommand(queryString, db.getConnection());
             db.openConnection();
             SqlDataReader reader = command.ExecuteReader();
             int i = 0;
             while (reader.Read())
             {
-                //test1[i] = reader.GetString(0);
                 name[i] = reader.GetString(0) + " | " + reader.GetString(1);
                 phone[i] = reader.GetString(2);
                 priorety[i] = reader.GetInt32(3);
-                //prod[i] = reader.GetDouble(4);
                 i++;
             }
             reader.Close();
-            command = new SqlCommand("select top (10)[ProductSale].ProductCount, [ProductSale].SaleDate FROM [ProductSale]", db.getConnection());
+            command = new SqlCommand("select [ProductSale].AgentID, [ProductSale].ProductCount, [ProductSale].SaleDate from[Agent]"+
+            $"INNER JOIN[ProductSale] ON[Agent].ID = [ProductSale].AgentID where Agent.ID between {Paginator - 10} and {Paginator}" +
+            $"and  DATEDIFF(year, SaleDate, CURRENT_TIMESTAMP) < {YearsRange} ORDER BY AgentID", db.getConnection());
             db.openConnection();
             reader = command.ExecuteReader();
             i = 0;
             while (reader.Read())
             {
-                //test1[i] = reader.GetString(0);
-                prod[i] = reader.GetInt32(0);
-                date = reader.GetDateTime(1);
-                //prod[i] = reader.GetDouble(4);
+                prodID[i] = reader.GetInt32(0);
+                prod[i] = reader.GetInt32(1);
                 i++;
             }
-            dateString[i] = Convert.ToString(date);
-            //MessageBox.Show(Convert.ToString(date));
             reader.Close();
+            int idProdBack = -2;
+            int ContProdFirst = -1;
             int smallFont = 12;
             int bigFont = 15;
-            // test.ItemsSource = test1;
             SolidColorBrush bgcolor = new SolidColorBrush(Color.FromArgb(255,0,0,0));
             for (i = 0; i < 10; i++)
             {
                 Grid el = new Grid();
-                //el.ShowGridLines = true;
                 ColumnDefinition img = new ColumnDefinition();
                 ColumnDefinition descript = new ColumnDefinition();
                 ColumnDefinition procent = new ColumnDefinition();
                 img.Width = new GridLength(110);
                 //descript.Width = new GridLength();
                 procent.Width = new GridLength(100);
-
 
                 RowDefinition row1 = new RowDefinition();
                 RowDefinition row2 = new RowDefinition();
@@ -106,7 +95,6 @@ namespace Приятный_шелест
 
                 el.ColumnDefinitions.Add(img);
                 el.ColumnDefinitions.Add(descript);
-               // el.ColumnDefinitions.Add(procent);
 
                 //agentNameLabel settings
                 Image leftSide = new Image();
@@ -126,18 +114,42 @@ namespace Приятный_шелест
                 Grid.SetRow(agentNameLabel, 0);
                 Grid.SetColumn(agentNameLabel, 1);
 
+                for (int j = 0; j < 10; j++)
+                {
+                    if (prodID[j] == Paginator - 9 + i)
+                    {
+                        if (idProdBack == prodID[j])
+                        {
+                            prod[ContProdFirst] = prod[ContProdFirst] + prod[j];
+                            prodID[j] = -1;
+                            prod[j] = -1;
+                        }
+                        else
+                        {
+                            ContProdFirst = j;
+                        }
+                        idProdBack = prodID[j];
+                    }
+                }
                 //prod
                 Label sell = new Label();
-                sell.Content = " Продаж за год";
-                //sell.Margin = new Thickness(0,15,0,15);
+                sell.Content = "0 Продаж за год";
+                for (int j = 0; j < 10; j++)
+                {
+                    if (prodID[j] == Paginator - 9 + i && prodID[j] != -1)
+                    {
+                        sell.Content = prod[j] + " Продаж за год";
+                        break;
+                    }
+                }
                 agentNameLabel.FontSize = smallFont;
                 Grid.SetRow(sell, 1);
                 Grid.SetColumn(sell, 1);
 
+                //phone 
                 phone[i] = phone[i].Replace(" ", "");
                 Label phoneLabel = new Label();
                 phoneLabel.Content = phone[i];
-                //phoneLabel.Margin = new Thickness(0,17,0,0);
                 phoneLabel.FontSize = smallFont;
                 Grid.SetRow(phoneLabel, 2);
                 Grid.SetColumn(phoneLabel, 1);
@@ -147,26 +159,20 @@ namespace Приятный_шелест
                 Label prioretyLabel = new Label();
                 prioretyLabel.Content = "Приоритетность: " + priorety[i];
                 prioretyLabel.FontSize = smallFont;
-                //prioretyLabel.Margin = new Thickness(0,35,0,0);
                 Grid.SetRow(prioretyLabel, 3);
                 Grid.SetColumn(prioretyLabel, 1);
-
 
                 el.Children.Add(sell);
                 el.Children.Add(phoneLabel);
                 el.Children.Add(prioretyLabel);
                 el.Children.Add(leftSide);
                 el.Children.Add(agentNameLabel);
-                //innerGrid.Children.Add(agentDiscountLabel);
 
                 Border Border1 = new Border();
                 Border1.BorderThickness = new Thickness(1);
-                //Border1.Background = bgcolor;
                 Border1.BorderBrush = bgcolor;
                 Border1.Margin = new Thickness(0, 0, 25, 15);
-                //Grid.SetRow(Border1, 0);
-                //inserting ready row in grid
-                
+
                 RowDefinition rowDef = new RowDefinition();
                 rowDef.MinHeight = 125;
                 rowDef.MaxHeight = 125;
@@ -181,10 +187,6 @@ namespace Приятный_шелест
                 el.UpdateLayout();
             }
             list.UpdateLayout();
-            // Binding binding = new Binding();
-            // binding.ElementName = "test1";
-            // binding.Source = test;
-            // test1.SetBinding(TextBlock.TextProperty, test[0]);
         }
     }
 }
