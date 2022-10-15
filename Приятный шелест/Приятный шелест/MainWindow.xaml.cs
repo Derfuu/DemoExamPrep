@@ -69,7 +69,8 @@ namespace Приятный_шелест
                 //prod[i] = reader.GetDouble(4);
                 i++;
             }
-            MessageBox.Show(Convert.ToString(date));
+            dateString[i] = Convert.ToString(date);
+            //MessageBox.Show(Convert.ToString(date));
             reader.Close();
             int smallFont = 12;
             int bigFont = 15;
