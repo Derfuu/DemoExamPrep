@@ -26,7 +26,7 @@ namespace Приятный_шелест
         }
         int Page = 0;
         int Paginator = 10;
-        int YearsRange = 1;
+        int YearsRange = 10;
         private void Window_Initialized(object sender, EventArgs e)
         {
             //string[] test1 = new string[10];
@@ -35,6 +35,7 @@ namespace Приятный_шелест
             int[] prodID = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
             string[] phone = new string[10];
             int[] priorety = new int[10];
+            decimal[] priceProd = new decimal[10];
             string queryString = "select [AgentType].Title, [Agent].[Title], [Phone], [Priority]" +
             $"from[Agent] INNER JOIN[AgentType] ON [Agent].[AgentTypeID] = [AgentType].[ID]  where Agent.ID between {Paginator - 10} and {Paginator}";
             SqlCommand command = new SqlCommand(queryString, db.getConnection());
@@ -49,9 +50,14 @@ namespace Приятный_шелест
                 i++;
             }
             reader.Close();
-            command = new SqlCommand("select [ProductSale].AgentID, [ProductSale].ProductCount, [ProductSale].SaleDate from[Agent]"+
-            $"INNER JOIN[ProductSale] ON[Agent].ID = [ProductSale].AgentID where Agent.ID between {Paginator - 10} and {Paginator}" +
-            $"and  DATEDIFF(year, SaleDate, CURRENT_TIMESTAMP) < {YearsRange} ORDER BY AgentID", db.getConnection());
+            //command = new SqlCommand("select [ProductSale].AgentID, [ProductSale].ProductCount, [ProductSale].SaleDate from[Agent]"+
+            //$"INNER JOIN[ProductSale] ON[Agent].ID = [ProductSale].AgentID where Agent.ID between {Paginator - 10} and {Paginator}" +
+            //$"and  DATEDIFF(year, SaleDate, CURRENT_TIMESTAMP) < {YearsRange} ORDER BY AgentID", db.getConnection());
+            command = new SqlCommand("select [ProductSale].AgentID, [ProductSale].ProductCount, [Product].MinCostForAgent " +
+            "from [Product], [Agent] " +
+            $"INNER JOIN[ProductSale] ON [Agent].ID = [ProductSale].AgentID where Agent.ID between {Paginator - 10} and {Paginator}" +
+            $"and  DATEDIFF(year, SaleDate, CURRENT_TIMESTAMP) < {YearsRange} and [ProductSale].ProductID = [Product].ID" +
+            $" ORDER BY AgentID", db.getConnection());
             db.openConnection();
             reader = command.ExecuteReader();
             i = 0;
@@ -59,8 +65,12 @@ namespace Приятный_шелест
             {
                 prodID[i] = reader.GetInt32(0);
                 prod[i] = reader.GetInt32(1);
+                priceProd[i] = reader.GetDecimal(2);
                 i++;
             }
+            //string bebr = "";
+            //for (int r = 0; r < 10; r++){bebr += " "+ Convert.ToString(priceProd[r]);}
+            //MessageBox.Show(bebr);
             reader.Close();
             int idProdBack = -2;
             int ContProdFirst = -1;
