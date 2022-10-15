@@ -34,12 +34,15 @@ namespace Приятный_шелест
         {
             //string[] test1 = new string[10];
             string[] name = new string[10];
-            double[] prod = new double[10];
+            int[] prod = new int[10];
             string[] phone = new string[10];
             int[] priorety = new int[10];
+            string[] dateString = new string[10];
+            DateTime date = DateTime.Now;
+
             // string test = "";
             string queryString = "select top (10) [AgentType].Title, [Agent].[Title], [Phone], [Priority]" +
-            "from[Agent] INNER JOIN [AgentType] ON [Agent].[AgentTypeID] = [AgentType].[ID]";
+            "from[Agent] INNER JOIN[AgentType] ON [Agent].[AgentTypeID] = [AgentType].[ID]";
             SqlCommand command = new SqlCommand(queryString, db.getConnection());
             db.openConnection();
             SqlDataReader reader = command.ExecuteReader();
@@ -53,15 +56,21 @@ namespace Приятный_шелест
                 //prod[i] = reader.GetDouble(4);
                 i++;
             }
-            //queryString = "select top (10) [Количество продукции] from Лист1$";
-            //i = 0;
-            //while (reader.Read())
-            //{
-            //    prod[i] = reader.GetDouble(1);
-            //    i++;
-            //}
             reader.Close();
-
+            command = new SqlCommand("select top (10)[ProductSale].ProductCount, [ProductSale].SaleDate FROM [ProductSale]", db.getConnection());
+            db.openConnection();
+            reader = command.ExecuteReader();
+            i = 0;
+            while (reader.Read())
+            {
+                //test1[i] = reader.GetString(0);
+                prod[i] = reader.GetInt32(0);
+                date = reader.GetDateTime(1);
+                //prod[i] = reader.GetDouble(4);
+                i++;
+            }
+            MessageBox.Show(Convert.ToString(date));
+            reader.Close();
             int smallFont = 12;
             int bigFont = 15;
             // test.ItemsSource = test1;
