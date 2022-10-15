@@ -39,7 +39,7 @@ namespace Приятный_шелест
             int[] priorety = new int[10];
             // string test = "";
             string queryString = "select top (10) [AgentType].Title, [Agent].[Title], [Phone], [Priority]" +
-            "from[Agent] INNER JOIN[AgentType] ON [Agent].[AgentTypeID] = [AgentType].[ID]";
+            "from[Agent] INNER JOIN [AgentType] ON [Agent].[AgentTypeID] = [AgentType].[ID]";
             SqlCommand command = new SqlCommand(queryString, db.getConnection());
             db.openConnection();
             SqlDataReader reader = command.ExecuteReader();
