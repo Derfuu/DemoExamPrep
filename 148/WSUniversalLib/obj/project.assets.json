@@ -8,19 +8,19 @@
     ".NETCoreApp,Version=v3.1": []
   },
   "packageFolders": {
-    "C:\\Users\\79397\\.nuget\\packages\\": {}
+    "C:\\Users\\Димчик\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Projects\\C#\\DemoExamPrep\\148\\WSUniversalLib\\WSUniversalLib.csproj",
+      "projectUniqueName": "D:\\Projects\\С#\\git\\DemoExamPrep\\148\\WSUniversalLib\\WSUniversalLib.csproj",
       "projectName": "WSUniversalLib",
-      "projectPath": "D:\\Projects\\C#\\DemoExamPrep\\148\\WSUniversalLib\\WSUniversalLib.csproj",
-      "packagesPath": "C:\\Users\\79397\\.nuget\\packages\\",
-      "outputPath": "D:\\Projects\\C#\\DemoExamPrep\\148\\WSUniversalLib\\obj\\",
+      "projectPath": "D:\\Projects\\С#\\git\\DemoExamPrep\\148\\WSUniversalLib\\WSUniversalLib.csproj",
+      "packagesPath": "C:\\Users\\Димчик\\.nuget\\packages\\",
+      "outputPath": "D:\\Projects\\С#\\git\\DemoExamPrep\\148\\WSUniversalLib\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\79397\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Димчик\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -55,20 +55,6 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[3.1.10, 3.1.10]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Ref",
-            "version": "[3.1.0, 3.1.0]"
-          },
-          {
-            "name": "Microsoft.WindowsDesktop.App.Ref",
-            "version": "[3.1.0, 3.1.0]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"

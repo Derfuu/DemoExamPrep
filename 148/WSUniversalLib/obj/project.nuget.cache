@@ -1,12 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "G1jZD8Sf6jVOZtNCdShOC68bEUA6GwF91mcEtnKephA4KVhNTKczQFUPKs57yK755qIPKepA0I++bUlq1Db+dA==",
+  "dgSpecHash": "bjA/V9KeR7YRr7awosPvNO7/z+srM4UxLs3PbKQMXNmYZReinQ5nBoyBIvYkXzYZwx85bOrbvQ616taqS6aERQ==",
   "success": true,
-  "projectFilePath": "D:\\Projects\\C#\\DemoExamPrep\\148\\WSUniversalLib\\WSUniversalLib.csproj",
-  "expectedPackageFiles": [
-    "C:\\Users\\79397\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.1.10\\microsoft.aspnetcore.app.ref.3.1.10.nupkg.sha512",
-    "C:\\Users\\79397\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\3.1.0\\microsoft.windowsdesktop.app.ref.3.1.0.nupkg.sha512",
-    "C:\\Users\\79397\\.nuget\\packages\\microsoft.netcore.app.ref\\3.1.0\\microsoft.netcore.app.ref.3.1.0.nupkg.sha512"
-  ],
+  "projectFilePath": "D:\\Projects\\С#\\git\\DemoExamPrep\\148\\WSUniversalLib\\WSUniversalLib.csproj",
+  "expectedPackageFiles": [],
   "logs": []
 }

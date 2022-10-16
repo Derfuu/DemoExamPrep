@@ -29,7 +29,6 @@ namespace Приятный_шелест
         int YearsRange = 10;
         private void Window_Initialized(object sender, EventArgs e)
         {
-            //string[] test1 = new string[10];
             string[] name = new string[10];
             int[] prod = {0,0,0,0,0,0,0,0,0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0 , 0};
             int[] prodID = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
@@ -219,6 +218,7 @@ namespace Приятный_шелест
                 rowDef.MinHeight = 125;
                 rowDef.MaxHeight = 125;
                 rowDef.Name = $"rowDel{i}";
+                el.Name = $"gridDel{i}";
                 list.RowDefinitions.Add(rowDef);
                 Grid.SetRow(el, i);
                 Grid.SetColumnSpan(el, 3);

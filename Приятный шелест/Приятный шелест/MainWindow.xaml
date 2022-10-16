@@ -30,5 +30,7 @@
             </Grid>
 
         </ScrollViewer>
+        <Button x:Name="buttonLeft" Grid.Column="1" Content="&lt;" Margin="0,0,100,0" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        <Button x:Name="buttonRight" Grid.Column="1" Content="&gt;" Margin="0,0,0,0" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center"/>
     </Grid>
 </Window>
