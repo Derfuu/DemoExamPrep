@@ -31,11 +31,11 @@ namespace Приятный_шелест
         {
             //string[] test1 = new string[10];
             string[] name = new string[10];
-            int[] prod = {0,0,0,0,0,0,0,0,0,0};
-            int[] prodID = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
+            int[] prod = {0,0,0,0,0,0,0,0,0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0 , 0};
+            int[] prodID = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
             string[] phone = new string[10];
             int[] priorety = new int[10];
-            decimal[] priceProd = new decimal[10];
+            decimal[] priceProd = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
             string queryString = "select [AgentType].Title, [Agent].[Title], [Phone], [Priority]" +
             $"from[Agent] INNER JOIN[AgentType] ON [Agent].[AgentTypeID] = [AgentType].[ID]  where Agent.ID between {Paginator - 10} and {Paginator}";
             SqlCommand command = new SqlCommand(queryString, db.getConnection());
@@ -84,7 +84,7 @@ namespace Приятный_шелест
                 ColumnDefinition descript = new ColumnDefinition();
                 ColumnDefinition procent = new ColumnDefinition();
                 img.Width = new GridLength(110);
-                //descript.Width = new GridLength();
+                descript.Width = new GridLength(1, GridUnitType.Star);
                 procent.Width = new GridLength(100);
 
                 RowDefinition row1 = new RowDefinition();
@@ -105,6 +105,7 @@ namespace Приятный_шелест
 
                 el.ColumnDefinitions.Add(img);
                 el.ColumnDefinitions.Add(descript);
+                el.ColumnDefinitions.Add(procent);
 
                 //agentNameLabel settings
                 Image leftSide = new Image();
@@ -119,10 +120,19 @@ namespace Приятный_шелест
                 //agentNameLabel settings
                 Label agentNameLabel = new Label();
                 agentNameLabel.Content = name[i];
-                agentNameLabel.Margin = new Thickness(0);
                 agentNameLabel.FontSize = bigFont;
                 Grid.SetRow(agentNameLabel, 0);
                 Grid.SetColumn(agentNameLabel, 1);
+
+                //discount settings
+                Label discount = new Label();
+                discount.Content = "0 %";
+                discount.FontSize = bigFont;
+                //Grid.SetRow(discount, 0);
+                discount.VerticalAlignment = VerticalAlignment.Center;
+                Grid.SetRow(discount, 1);
+                Grid.SetRowSpan(discount, 2);
+                Grid.SetColumn(discount, 2);
 
                 for (int j = 0; j < 10; j++)
                 {
@@ -131,8 +141,10 @@ namespace Приятный_шелест
                         if (idProdBack == prodID[j])
                         {
                             prod[ContProdFirst] = prod[ContProdFirst] + prod[j];
+                            priceProd[ContProdFirst] = priceProd[ContProdFirst] + priceProd[j];
                             prodID[j] = -1;
                             prod[j] = -1;
+                            priceProd[j] = 0;
                         }
                         else
                         {
@@ -149,6 +161,25 @@ namespace Приятный_шелест
                     if (prodID[j] == Paginator - 9 + i && prodID[j] != -1)
                     {
                         sell.Content = prod[j] + " Продаж за год";
+                        if (priceProd[j] * prod[j] <= 10000)
+                        {
+                            discount.Content = "0%";
+                        }
+                        if (priceProd[j] * prod[j] > 10000 && priceProd[j] * prod[j] <= 50000)
+                        {
+                            discount.Content = "5%";
+                        }
+                        else if (priceProd[j] * prod[j] > 50000 && priceProd[j] * prod[j] <= 150000) {
+                            discount.Content = "10%";
+                        }
+                        else if (priceProd[j] * prod[j] > 150000 && priceProd[j] * prod[j] <= 500000)
+                        {
+                            discount.Content = "20%";
+                        }
+                        else if (priceProd[j] * prod[j] > 500000)
+                        {
+                            discount.Content = "25%";
+                        }
                         break;
                     }
                 }
@@ -172,6 +203,7 @@ namespace Приятный_шелест
                 Grid.SetRow(prioretyLabel, 3);
                 Grid.SetColumn(prioretyLabel, 1);
 
+                el.Children.Add(discount);
                 el.Children.Add(sell);
                 el.Children.Add(phoneLabel);
                 el.Children.Add(prioretyLabel);
@@ -186,7 +218,7 @@ namespace Приятный_шелест
                 RowDefinition rowDef = new RowDefinition();
                 rowDef.MinHeight = 125;
                 rowDef.MaxHeight = 125;
-                rowDef.Name = $"row{i}";
+                rowDef.Name = $"rowDel{i}";
                 list.RowDefinitions.Add(rowDef);
                 Grid.SetRow(el, i);
                 Grid.SetColumnSpan(el, 3);
