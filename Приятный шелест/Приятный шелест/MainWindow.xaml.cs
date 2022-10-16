@@ -29,15 +29,50 @@ namespace Приятный_шелест
         int YearsRange = 10;
         private void Window_Initialized(object sender, EventArgs e)
         {
+            string queryString1 = "select [AgentType].Title, [Agent].[Title], [Phone], [Priority]" +
+            $"from[Agent] INNER JOIN[AgentType] ON [Agent].[AgentTypeID] = [AgentType].[ID]  where Agent.ID between {Paginator - 10} and {Paginator}";
+            string queryString2 = "select [ProductSale].AgentID, [ProductSale].ProductCount, [Product].MinCostForAgent " +
+            "from [Product], [Agent] " +
+            $"INNER JOIN[ProductSale] ON [Agent].ID = [ProductSale].AgentID where Agent.ID between {Paginator - 10} and {Paginator}" +
+            $"and  DATEDIFF(year, SaleDate, CURRENT_TIMESTAMP) < {YearsRange} and [ProductSale].ProductID = [Product].ID" +
+            $" ORDER BY AgentID";
+            Zapros(queryString1, queryString2);
+        }
+        private void DestroyContent()
+        {
+            //gridDel10
+            for (int i = 0; i < controlsGrid.Length; i++)
+            {
+                //controls[i].= 0;
+                //controlsGrid[i].Children.Remove(controlsRows[i]);
+                list.Children.Remove(controlsGrid[i]);
+                //list.Children.Remove(controlsRows[i]);
+            }
+        }
+
+        private void buttonLeft_Click(object sender, RoutedEventArgs e)
+        {
+            DestroyContent();
+            string queryString1 = "select [AgentType].Title, [Agent].[Title], [Phone], [Priority]" +
+            $"from[Agent] INNER JOIN[AgentType] ON [Agent].[AgentTypeID] = [AgentType].[ID]  where Agent.ID between {Paginator - 10} and {Paginator}";
+            string queryString2 = "select [ProductSale].AgentID, [ProductSale].ProductCount, [Product].MinCostForAgent " +
+            "from [Product], [Agent] " +
+            $"INNER JOIN[ProductSale] ON [Agent].ID = [ProductSale].AgentID where Agent.ID between {Paginator - 10} and {Paginator}" +
+            $"and  DATEDIFF(year, SaleDate, CURRENT_TIMESTAMP) < {YearsRange} and [ProductSale].ProductID = [Product].ID" +
+            $" ORDER BY AgentID";
+            Zapros(queryString1, queryString2);
+        }
+        Grid[] controlsGrid = new Grid[10];
+        RowDefinition[] controlsRows = new RowDefinition[10];
+        private void Zapros(string queryString1, string queryString2)
+        {
             string[] name = new string[10];
-            int[] prod = {0,0,0,0,0,0,0,0,0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0 , 0};
-            int[] prodID = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
+            int[] prod = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+            int[] prodID = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
             string[] phone = new string[10];
             int[] priorety = new int[10];
             decimal[] priceProd = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-            string queryString = "select [AgentType].Title, [Agent].[Title], [Phone], [Priority]" +
-            $"from[Agent] INNER JOIN[AgentType] ON [Agent].[AgentTypeID] = [AgentType].[ID]  where Agent.ID between {Paginator - 10} and {Paginator}";
-            SqlCommand command = new SqlCommand(queryString, db.getConnection());
+            SqlCommand command = new SqlCommand(queryString1, db.getConnection());
             db.openConnection();
             SqlDataReader reader = command.ExecuteReader();
             int i = 0;
@@ -49,14 +84,7 @@ namespace Приятный_шелест
                 i++;
             }
             reader.Close();
-            //command = new SqlCommand("select [ProductSale].AgentID, [ProductSale].ProductCount, [ProductSale].SaleDate from[Agent]"+
-            //$"INNER JOIN[ProductSale] ON[Agent].ID = [ProductSale].AgentID where Agent.ID between {Paginator - 10} and {Paginator}" +
-            //$"and  DATEDIFF(year, SaleDate, CURRENT_TIMESTAMP) < {YearsRange} ORDER BY AgentID", db.getConnection());
-            command = new SqlCommand("select [ProductSale].AgentID, [ProductSale].ProductCount, [Product].MinCostForAgent " +
-            "from [Product], [Agent] " +
-            $"INNER JOIN[ProductSale] ON [Agent].ID = [ProductSale].AgentID where Agent.ID between {Paginator - 10} and {Paginator}" +
-            $"and  DATEDIFF(year, SaleDate, CURRENT_TIMESTAMP) < {YearsRange} and [ProductSale].ProductID = [Product].ID" +
-            $" ORDER BY AgentID", db.getConnection());
+            command = new SqlCommand(queryString2, db.getConnection());
             db.openConnection();
             reader = command.ExecuteReader();
             i = 0;
@@ -67,15 +95,12 @@ namespace Приятный_шелест
                 priceProd[i] = reader.GetDecimal(2);
                 i++;
             }
-            //string bebr = "";
-            //for (int r = 0; r < 10; r++){bebr += " "+ Convert.ToString(priceProd[r]);}
-            //MessageBox.Show(bebr);
             reader.Close();
             int idProdBack = -2;
             int ContProdFirst = -1;
             int smallFont = 12;
             int bigFont = 15;
-            SolidColorBrush bgcolor = new SolidColorBrush(Color.FromArgb(255,0,0,0));
+            SolidColorBrush bgcolor = new SolidColorBrush(Color.FromArgb(255, 0, 0, 0));
             for (i = 0; i < 10; i++)
             {
                 Grid el = new Grid();
@@ -108,7 +133,7 @@ namespace Приятный_шелест
 
                 //agentNameLabel settings
                 Image leftSide = new Image();
-                leftSide.Source = new BitmapImage(new Uri("/picture.png", UriKind.Relative)) { CreateOptions = BitmapCreateOptions.IgnoreImageCache};
+                leftSide.Source = new BitmapImage(new Uri("/picture.png", UriKind.Relative)) { CreateOptions = BitmapCreateOptions.IgnoreImageCache };
                 Grid.SetRowSpan(leftSide, 4);
                 leftSide.Height = 100;
                 leftSide.Width = 100;
@@ -168,7 +193,8 @@ namespace Приятный_шелест
                         {
                             discount.Content = "5%";
                         }
-                        else if (priceProd[j] * prod[j] > 50000 && priceProd[j] * prod[j] <= 150000) {
+                        else if (priceProd[j] * prod[j] > 50000 && priceProd[j] * prod[j] <= 150000)
+                        {
                             discount.Content = "10%";
                         }
                         else if (priceProd[j] * prod[j] > 150000 && priceProd[j] * prod[j] <= 500000)
@@ -227,8 +253,12 @@ namespace Приятный_шелест
                 Grid.SetColumnSpan(Border1, 3);
                 list.Children.Add(Border1);
                 el.UpdateLayout();
+                //controls.Add("gridDel{i}", el);
+                controlsGrid[i] = el;
+                controlsRows[i] = rowDef;
             }
             list.UpdateLayout();
+            
         }
     }
 }

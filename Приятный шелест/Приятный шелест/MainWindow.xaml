@@ -30,7 +30,11 @@
             </Grid>
 
         </ScrollViewer>
-        <Button x:Name="buttonLeft" Grid.Column="1" Content="&lt;" Margin="0,0,100,0" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-        <Button x:Name="buttonRight" Grid.Column="1" Content="&gt;" Margin="0,0,0,0" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        <Button x:Name="buttonLeft" Grid.Column="1" Content="&lt;" Margin="0,0,100,0" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center" Background="White" BorderBrush="White" Click="buttonLeft_Click"/>
+        <Button x:Name="button1" Grid.Column="1" Content=" 1 " Margin="0,0,80,0" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center" Background="White" BorderBrush="White"/>
+        <Button x:Name="button2" Grid.Column="1" Content=" 2 " Margin="0,0,60,0" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center" Background="White" BorderBrush="White"/>
+        <Button x:Name="button3" Grid.Column="1" Content=" 3 " Margin="0,0,40,0" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center" Background="White" BorderBrush="White"/>
+        <Button x:Name="button4" Grid.Column="1" Content=" 4 " Margin="0,0,20,0" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center" Background="White" BorderBrush="White"/>
+        <Button x:Name="buttonRight" Grid.Column="1" Content="&gt;" Margin="0,0,5,0" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center" Background="White" BorderBrush="White"/>
     </Grid>
 </Window>
