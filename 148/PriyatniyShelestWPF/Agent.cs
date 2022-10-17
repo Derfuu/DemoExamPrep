@@ -9,16 +9,17 @@ namespace PriyatniyShelestWPF
     class Agent
     {
         public int ID;
-        public int agentTypeID;
+        public string agentType;
         public string Title;
-        public string Email;
-        public string Phone;
-        public string Logo;
         public string Address;
-        public string priority;
-        public string directorName;
         public string INN;
         public string KPP;
-        public int Discount;
+        public string directorName;
+        public string Phone;
+        public string priority;
+        public string Email;
+        public string Logo;
+        public int Sales;
+        public float TotalSalesBy;
     }
 }

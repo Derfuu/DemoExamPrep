@@ -29,10 +29,11 @@ namespace PriyatniyShelestWPF
         // sortOrder True >> 12345...
         // sortOrder False >> 54321...
         Agent[] agents;
+        AgentType[] agentTypes;
 
         SolidColorBrush bgcolor = new SolidColorBrush(Color.FromArgb(0xFF, 0xC6, 0xD7, 0xFF));
 
-        string connStr = "Data Source=DESKTOP-0000001; Initial Catalog=priyatniyDEV; Integrated Security=TRUE";
+        string connStr = "Data Source=(localdb)\\MSSQLLocalDB; Initial Catalog=priyatniyDEVshitcomp12; Integrated Security=TRUE";
         /*
          FUNCTIONS
         */
@@ -126,39 +127,90 @@ namespace PriyatniyShelestWPF
             centerGrid.UpdateLayout();
         } //wrong width
 
-        int countDiscount(int agentID)
+        void updateFilterTypes(string connectionString)
         {
-            return 0;
+            getAgentTypes(connectionString);
+            FilterBox.Items.Clear();
+            FilterBox.Items.Add("Без фильтра");
+            for(int i = 0; i < agentTypes.Length; i++)
+            {
+                FilterBox.Items.Add("Заглушка");
+                FilterBox.Items.Insert(agentTypes[i].ID, agentTypes[i].Title);
+            }
         }
 
-        void getAgentsFromDB(string connectionString, string searchFor=" ", int filterBy=0, int sortBy=0)
+        void getAgentTypes(string connectionString)
         {
-            string sortType = "";
-
-            string queryString = $"SELECT * FROM dbo.Agent WHERE agentTypeID = '{filterBy}' AND Title IN %{searchFor}% ";
-            string agentsQuantityString = $"SELECT COUNT(*) FROM dbo.Agent WHERE agentTypeID = '{filterBy}' AND Title IN %{searchFor}% ";
-
-            switch (sortBy)
-            {
-                case 0: { sortType = "ORDER BY Title "; ; break; }
-                case 1: { sortType = ""; break; } // Sales
-                case 2: { sortType = ""; break; } // Discount
-                case 3: { sortType = "ORDER BY Priority "; break; }
-            }
-
-            queryString += sortType + ";";
-            agentsQuantityString += ";";
-
+            string queryString = "SELECT COUNT(*) FROM AgentType";
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                SqlCommand command = new SqlCommand(agentsQuantityString, connection);
+                SqlCommand command = new SqlCommand(queryString, connection);
                 connection.Open();
                 SqlDataReader reader = command.ExecuteReader();
 
                 while (reader.Read())
                 {
-                    agents = new Agent[reader.GetInt64(0)];
-                    MessageBox.Show("" + reader.GetInt32(0));
+                    agentTypes = new AgentType[reader.GetInt32(0)];
+                }
+                reader.Close();
+            }
+
+            queryString = "SELECT AgentType.ID, AgentType.Title FROM AgentType";
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                int id = 1;
+                while (reader.Read())
+                {
+                    agentTypes[id] = new AgentType();
+                    agentTypes[id].ID = reader.GetInt32(0);
+                    agentTypes[id].Title = reader.GetString(1);
+                    //MessageBox.Show("" + agentTypes[id].ID + agentTypes[id].Title);
+                }
+                reader.Close();
+            }
+        }
+
+        void getAgentsFromDB(string connectionString, string searchFor="", int filterBy=0, int sortBy=0)
+        {
+            string sortType = "Agent.Title";
+            string filterByType = "%";
+            switch (sortBy)
+            {
+                case 0: { sortType = "Agent.Title "; ; break; }
+                case 1: { sortType = "Sales ASC"; break; } // Sales
+                case 2: { sortType = "TotalSalesBy ASC"; break; } // Discount
+                case 3: { sortType = "Agent.Priority "; break; }
+            }
+
+
+
+
+            int salesForYear = 10;
+            string queryString = "SELECT Agent.ID, AgentType.Title AS 'Type', Agent.Title, " +
+                                "Agent.[Address], Agent.INN, Agent.KPP, " +
+                                "Agent.DirectorName, Agent.Phone, Agent.[Priority], " +
+                                "Agent.Email, Agent.Logo, " +
+                                "(SELECT ISNULL(SUM(ProductSale.ProductCount), 0) " +
+                                "FROM ProductSale " +
+                                $"WHERE ProductSale.AgentID = Agent.ID AND DATEDIFF(YEAR, ProductSale.SaleDate, CURRENT_TIMESTAMP) < {salesForYear}) AS 'Sales', " +
+                                "(SELECT ISNULL(SUM(ProductSale.ProductCount * Product.MinCostForAgent), 0) " +
+                                "FROM ProductSale, Product " +
+                                $"WHERE ProductSale.AgentID = Agent.ID AND ProductSale.ProductID = Product.ID AND DATEDIFF(YEAR, ProductSale.SaleDate, CURRENT_TIMESTAMP) < {salesForYear}) AS 'TotalSalesBy'" +
+                                $"FROM Agent INNER JOIN AgentType ON(Agent.AgentTypeID = AgentType.ID) AND AgentType.Title LIKE('{filterByType}') " +
+                                $"ORDER BY {sortType}";
+
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
                 }
                 reader.Close();
             }
@@ -214,6 +266,7 @@ namespace PriyatniyShelestWPF
 
         private void window_Initialized(object sender, EventArgs e)
         {
+            updateFilterTypes(connStr);
             getAgentsFromDB(connStr);
         }
     }

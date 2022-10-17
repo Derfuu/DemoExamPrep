@@ -9,7 +9,7 @@
         Title="Приятный Шелест (Агенты)"
         Height="600" Width="800"
         Icon="Приятный шелест.ico"
-        FontFamily="Monotype Corsiva" FontSize="20"
+        FontFamily="Monotype Corsiva" FontSize="19.5"
         SizeChanged="window_SizeChanged"
         Initialized="window_Initialized"
         MinWidth="800" MinHeight="600">

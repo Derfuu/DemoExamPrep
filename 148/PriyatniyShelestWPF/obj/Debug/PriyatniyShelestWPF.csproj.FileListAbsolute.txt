@@ -28,3 +28,18 @@ E:\Stu\DemoExamPrep\148\PriyatniyShelestWPF\obj\Debug\PriyatniyShelestWPF.csproj
 E:\Stu\DemoExamPrep\148\PriyatniyShelestWPF\obj\Debug\PriyatniyShelestWPF.csproj.CoreCompileInputs.cache
 E:\Stu\DemoExamPrep\148\PriyatniyShelestWPF\obj\Debug\PriyatniyShelestWPF.exe
 E:\Stu\DemoExamPrep\148\PriyatniyShelestWPF\obj\Debug\PriyatniyShelestWPF.pdb
+\\FSStudy.marstu.net\Study\Пользователи\S1191303308\Рабочий стол\PoS\Задание демо-экзамена 2021\148\PriyatniyShelestWPF\bin\Debug\PriyatniyShelestWPF.exe.config
+\\FSStudy.marstu.net\Study\Пользователи\S1191303308\Рабочий стол\PoS\Задание демо-экзамена 2021\148\PriyatniyShelestWPF\bin\Debug\PriyatniyShelestWPF.exe
+\\FSStudy.marstu.net\Study\Пользователи\S1191303308\Рабочий стол\PoS\Задание демо-экзамена 2021\148\PriyatniyShelestWPF\bin\Debug\PriyatniyShelestWPF.pdb
+\\FSStudy.marstu.net\Study\Пользователи\S1191303308\Рабочий стол\PoS\Задание демо-экзамена 2021\148\PriyatniyShelestWPF\obj\Debug\PriyatniyShelestWPF.csprojAssemblyReference.cache
+\\FSStudy.marstu.net\Study\Пользователи\S1191303308\Рабочий стол\PoS\Задание демо-экзамена 2021\148\PriyatniyShelestWPF\obj\Debug\AgentsWindow.g.cs
+\\FSStudy.marstu.net\Study\Пользователи\S1191303308\Рабочий стол\PoS\Задание демо-экзамена 2021\148\PriyatniyShelestWPF\obj\Debug\App.g.cs
+\\FSStudy.marstu.net\Study\Пользователи\S1191303308\Рабочий стол\PoS\Задание демо-экзамена 2021\148\PriyatniyShelestWPF\obj\Debug\PriyatniyShelestWPF_MarkupCompile.cache
+\\FSStudy.marstu.net\Study\Пользователи\S1191303308\Рабочий стол\PoS\Задание демо-экзамена 2021\148\PriyatniyShelestWPF\obj\Debug\PriyatniyShelestWPF_MarkupCompile.lref
+\\FSStudy.marstu.net\Study\Пользователи\S1191303308\Рабочий стол\PoS\Задание демо-экзамена 2021\148\PriyatniyShelestWPF\obj\Debug\AgentsWindow.baml
+\\FSStudy.marstu.net\Study\Пользователи\S1191303308\Рабочий стол\PoS\Задание демо-экзамена 2021\148\PriyatniyShelestWPF\obj\Debug\PriyatniyShelestWPF.g.resources
+\\FSStudy.marstu.net\Study\Пользователи\S1191303308\Рабочий стол\PoS\Задание демо-экзамена 2021\148\PriyatniyShelestWPF\obj\Debug\PriyatniyShelestWPF.Properties.Resources.resources
+\\FSStudy.marstu.net\Study\Пользователи\S1191303308\Рабочий стол\PoS\Задание демо-экзамена 2021\148\PriyatniyShelestWPF\obj\Debug\PriyatniyShelestWPF.csproj.GenerateResource.cache
+\\FSStudy.marstu.net\Study\Пользователи\S1191303308\Рабочий стол\PoS\Задание демо-экзамена 2021\148\PriyatniyShelestWPF\obj\Debug\PriyatniyShelestWPF.csproj.CoreCompileInputs.cache
+\\FSStudy.marstu.net\Study\Пользователи\S1191303308\Рабочий стол\PoS\Задание демо-экзамена 2021\148\PriyatniyShelestWPF\obj\Debug\PriyatniyShelestWPF.exe
+\\FSStudy.marstu.net\Study\Пользователи\S1191303308\Рабочий стол\PoS\Задание демо-экзамена 2021\148\PriyatniyShelestWPF\obj\Debug\PriyatniyShelestWPF.pdb
