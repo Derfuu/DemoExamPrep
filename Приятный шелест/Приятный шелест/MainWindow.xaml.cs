@@ -19,87 +19,119 @@ namespace Приятный_шелест
 {
     public partial class MainWindow : Window
     {
+  
         DB db = new DB();
         public MainWindow()
         {
+
             InitializeComponent();
         }
-        int Page = 0;
+        int Page = 1;
         int Paginator = 10;
-        int YearsRange = 10;
+        int YearsRange = 5;
+        int MaxPage = 0;
+        private void GetMaxPage()
+        {
+            SqlCommand command = new SqlCommand("select max(Agent.ID) from agent", db.getConnection());
+            db.openConnection();
+            SqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                MaxPage = reader.GetInt32(0);
+            }
+            if (MaxPage % 10 != 0)
+            {
+                MaxPage = MaxPage / 10 + 1;
+            }
+            else
+            {
+                MaxPage = MaxPage / 10;
+            }
+            reader.Close();
+        }
+        //rgb(151, 255, 122);
+        SolidColorBrush green = new SolidColorBrush(Color.FromArgb(50, 151, 255, 122));
+        SolidColorBrush red = new SolidColorBrush(Color.FromArgb(50, 255, 0, 0));
+        SolidColorBrush invisible = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
         private void Window_Initialized(object sender, EventArgs e)
         {
-            string queryString1 = "select [AgentType].Title, [Agent].[Title], [Phone], [Priority]" +
-            $"from[Agent] INNER JOIN[AgentType] ON [Agent].[AgentTypeID] = [AgentType].[ID]  where Agent.ID between {Paginator - 10} and {Paginator}";
-            string queryString2 = "select [ProductSale].AgentID, [ProductSale].ProductCount, [Product].MinCostForAgent " +
-            "from [Product], [Agent] " +
-            $"INNER JOIN[ProductSale] ON [Agent].ID = [ProductSale].AgentID where Agent.ID between {Paginator - 10} and {Paginator}" +
-            $"and  DATEDIFF(year, SaleDate, CURRENT_TIMESTAMP) < {YearsRange} and [ProductSale].ProductID = [Product].ID" +
-            $" ORDER BY AgentID";
-            Zapros(queryString1, queryString2);
+            GetMaxPage();
+            string queryString = $"SELECT Agent.Title, AgentType.Title,Agent.Phone, Agent.[Priority],Agent.Logo, (SELECT ISNULL(SUM(ProductSale.ProductCount), 0) FROM ProductSale WHERE ProductSale.AgentID = Agent.ID and DATEDIFF(year, SaleDate, CURRENT_TIMESTAMP) < {YearsRange}) AS 'Sales',(SELECT ISNULL(SUM((ProductSale.ProductCount * Product.MinCostForAgent)), 0) " +
+            $"FROM ProductSale, Product WHERE ProductSale.AgentID = Agent.ID and ProductSale.ProductID = Product.ID and DATEDIFF(year, SaleDate, CURRENT_TIMESTAMP) < {YearsRange}) AS 'TotalSalesBy'  FROM Agent INNER JOIN AgentType ON(Agent.AgentTypeID = AgentType.ID) " +
+            $"where Agent.ID between {Paginator - 9} and {Paginator}";
+            Zapros(queryString);
         }
-        private void DestroyContent()
+        private void buttonRight_Click(object sender, RoutedEventArgs e)
         {
-            //gridDel10
-            for (int i = 0; i < controlsGrid.Length; i++)
+            if (Page + 1 > MaxPage)
             {
-                //controls[i].= 0;
-                //controlsGrid[i].Children.Remove(controlsRows[i]);
-                list.Children.Remove(controlsGrid[i]);
-                //list.Children.Remove(controlsRows[i]);
+                buttonRight.Background = red;
+            }
+            else
+            {
+                buttonLeft.Background = invisible;
+                buttonRight.Background = invisible;
+                Page += 1;
+                Paginator += 10;
+                DestroyContent();
+                string queryString = $"SELECT Agent.Title, AgentType.Title,Agent.Phone, Agent.[Priority],Agent.Logo, (SELECT ISNULL(SUM(ProductSale.ProductCount), 0) FROM ProductSale WHERE ProductSale.AgentID = Agent.ID and DATEDIFF(year, SaleDate, CURRENT_TIMESTAMP) < {YearsRange}) AS 'Sales',(SELECT ISNULL(SUM((ProductSale.ProductCount * Product.MinCostForAgent)), 0) " +
+                $"FROM ProductSale, Product WHERE ProductSale.AgentID = Agent.ID and ProductSale.ProductID = Product.ID and DATEDIFF(year, SaleDate, CURRENT_TIMESTAMP) < {YearsRange}) AS 'TotalSalesBy'  FROM Agent INNER JOIN AgentType ON(Agent.AgentTypeID = AgentType.ID) " +
+                $"where Agent.ID between {Paginator - 9} and {Paginator}";
+                Zapros(queryString);
             }
         }
 
         private void buttonLeft_Click(object sender, RoutedEventArgs e)
         {
-            DestroyContent();
-            string queryString1 = "select [AgentType].Title, [Agent].[Title], [Phone], [Priority]" +
-            $"from[Agent] INNER JOIN[AgentType] ON [Agent].[AgentTypeID] = [AgentType].[ID]  where Agent.ID between {Paginator - 10} and {Paginator}";
-            string queryString2 = "select [ProductSale].AgentID, [ProductSale].ProductCount, [Product].MinCostForAgent " +
-            "from [Product], [Agent] " +
-            $"INNER JOIN[ProductSale] ON [Agent].ID = [ProductSale].AgentID where Agent.ID between {Paginator - 10} and {Paginator}" +
-            $"and  DATEDIFF(year, SaleDate, CURRENT_TIMESTAMP) < {YearsRange} and [ProductSale].ProductID = [Product].ID" +
-            $" ORDER BY AgentID";
-            Zapros(queryString1, queryString2);
+            if (Page - 1 <= 0)
+            {
+                buttonLeft.Background = red;
+            }
+            else
+            {
+                buttonLeft.Background = invisible;
+                buttonRight.Background = invisible;
+                Page -= 1;
+                Paginator -= 10;
+                DestroyContent();
+                string queryString = $"SELECT Agent.Title, AgentType.Title,Agent.Phone, Agent.[Priority],Agent.Logo, (SELECT ISNULL(SUM(ProductSale.ProductCount), 0) FROM ProductSale WHERE ProductSale.AgentID = Agent.ID and DATEDIFF(year, SaleDate, CURRENT_TIMESTAMP) < {YearsRange}) AS 'Sales',(SELECT ISNULL(SUM((ProductSale.ProductCount * Product.MinCostForAgent)), 0) " +
+                $"FROM ProductSale, Product WHERE ProductSale.AgentID = Agent.ID and ProductSale.ProductID = Product.ID and DATEDIFF(year, SaleDate, CURRENT_TIMESTAMP) < {YearsRange}) AS 'TotalSalesBy'  FROM Agent INNER JOIN AgentType ON(Agent.AgentTypeID = AgentType.ID) " +
+                $"where Agent.ID between {Paginator - 9} and {Paginator}";
+                Zapros(queryString);
+            }
         }
-        Grid[] controlsGrid = new Grid[10];
-        RowDefinition[] controlsRows = new RowDefinition[10];
-        private void Zapros(string queryString1, string queryString2)
+        private void DestroyContent()
         {
+            list.RowDefinitions.Clear();
+            list.Children.Clear();
+        }
+        private void Zapros(string queryString1)
+        {
+            PageInfo.Content = $"Вы на {Page} из {MaxPage}";
             string[] name = new string[10];
-            int[] prod = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-            int[] prodID = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
+            int[] prod = new int[10];
+            //int[] prodID = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
             string[] phone = new string[10];
             int[] priorety = new int[10];
-            decimal[] priceProd = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+            decimal[] priceProd = new decimal[10];
+            string[] logo = new string[10];
             SqlCommand command = new SqlCommand(queryString1, db.getConnection());
             db.openConnection();
             SqlDataReader reader = command.ExecuteReader();
             int i = 0;
             while (reader.Read())
             {
-                name[i] = reader.GetString(0) + " | " + reader.GetString(1);
+                name[i] = reader.GetString(1) + " | " + reader.GetString(0);
                 phone[i] = reader.GetString(2);
                 priorety[i] = reader.GetInt32(3);
+                logo[i] = reader.GetString(4);
+                prod[i] = reader.GetInt32(5);
+                priceProd[i] = reader.GetDecimal(6);
                 i++;
             }
             reader.Close();
-            command = new SqlCommand(queryString2, db.getConnection());
-            db.openConnection();
-            reader = command.ExecuteReader();
-            i = 0;
-            while (reader.Read())
-            {
-                prodID[i] = reader.GetInt32(0);
-                prod[i] = reader.GetInt32(1);
-                priceProd[i] = reader.GetDecimal(2);
-                i++;
-            }
-            reader.Close();
-            int idProdBack = -2;
-            int ContProdFirst = -1;
-            int smallFont = 12;
-            int bigFont = 15;
+            int smallFont = 15;
+            int bigFont = 16;
             SolidColorBrush bgcolor = new SolidColorBrush(Color.FromArgb(255, 0, 0, 0));
             for (i = 0; i < 10; i++)
             {
@@ -133,7 +165,15 @@ namespace Приятный_шелест
 
                 //agentNameLabel settings
                 Image leftSide = new Image();
-                leftSide.Source = new BitmapImage(new Uri("/picture.png", UriKind.Relative)) { CreateOptions = BitmapCreateOptions.IgnoreImageCache };
+                if (logo[i] == "none" || logo[i] == "отсутствует")
+                {
+                    leftSide.Source = new BitmapImage(new Uri("/picture.png", UriKind.Relative)) { CreateOptions = BitmapCreateOptions.IgnoreImageCache };
+                }
+                else
+                {
+                    //MessageBox.Show(logo[i]);
+                    leftSide.Source = new BitmapImage(new Uri(logo[i], UriKind.Relative)) { CreateOptions = BitmapCreateOptions.IgnoreImageCache };
+                }
                 Grid.SetRowSpan(leftSide, 4);
                 leftSide.Height = 100;
                 leftSide.Width = 100;
@@ -158,55 +198,34 @@ namespace Приятный_шелест
                 Grid.SetRowSpan(discount, 2);
                 Grid.SetColumn(discount, 2);
 
-                for (int j = 0; j < 10; j++)
-                {
-                    if (prodID[j] == Paginator - 9 + i)
-                    {
-                        if (idProdBack == prodID[j])
-                        {
-                            prod[ContProdFirst] = prod[ContProdFirst] + prod[j];
-                            priceProd[ContProdFirst] = priceProd[ContProdFirst] + priceProd[j];
-                            prodID[j] = -1;
-                            prod[j] = -1;
-                            priceProd[j] = 0;
-                        }
-                        else
-                        {
-                            ContProdFirst = j;
-                        }
-                        idProdBack = prodID[j];
-                    }
-                }
+                Border Border1 = new Border();
+                Border1.BorderThickness = new Thickness(1);
+                Border1.BorderBrush = bgcolor;
+                Border1.Margin = new Thickness(0, 0, 25, 15);
+
                 //prod
                 Label sell = new Label();
-                sell.Content = "0 Продаж за год";
-                for (int j = 0; j < 10; j++)
+                sell.Content = prod[i] + " Продаж за год";
+                if (priceProd[i] * prod[i] <= 10000)
                 {
-                    if (prodID[j] == Paginator - 9 + i && prodID[j] != -1)
-                    {
-                        sell.Content = prod[j] + " Продаж за год";
-                        if (priceProd[j] * prod[j] <= 10000)
-                        {
-                            discount.Content = "0%";
-                        }
-                        if (priceProd[j] * prod[j] > 10000 && priceProd[j] * prod[j] <= 50000)
-                        {
-                            discount.Content = "5%";
-                        }
-                        else if (priceProd[j] * prod[j] > 50000 && priceProd[j] * prod[j] <= 150000)
-                        {
-                            discount.Content = "10%";
-                        }
-                        else if (priceProd[j] * prod[j] > 150000 && priceProd[j] * prod[j] <= 500000)
-                        {
-                            discount.Content = "20%";
-                        }
-                        else if (priceProd[j] * prod[j] > 500000)
-                        {
-                            discount.Content = "25%";
-                        }
-                        break;
-                    }
+                    discount.Content = "0%";
+                }
+                if (priceProd[i] * prod[i] > 10000 && priceProd[i] * prod[i] <= 50000)
+                {
+                    discount.Content = "5%";
+                }
+                else if (priceProd[i] * prod[i] > 50000 && priceProd[i] * prod[i] <= 150000)
+                {
+                    discount.Content = "10%";
+                }
+                else if (priceProd[i] * prod[i] > 150000 && priceProd[i] * prod[i] <= 500000)
+                {
+                    discount.Content = "20%";
+                }
+                else if (priceProd[i] * prod[i] > 500000)
+                {
+                    discount.Content = "25%";
+                    Border1.Background = green;
                 }
                 agentNameLabel.FontSize = smallFont;
                 Grid.SetRow(sell, 1);
@@ -235,11 +254,6 @@ namespace Приятный_шелест
                 el.Children.Add(leftSide);
                 el.Children.Add(agentNameLabel);
 
-                Border Border1 = new Border();
-                Border1.BorderThickness = new Thickness(1);
-                Border1.BorderBrush = bgcolor;
-                Border1.Margin = new Thickness(0, 0, 25, 15);
-
                 RowDefinition rowDef = new RowDefinition();
                 rowDef.MinHeight = 125;
                 rowDef.MaxHeight = 125;
@@ -253,12 +267,10 @@ namespace Приятный_шелест
                 Grid.SetColumnSpan(Border1, 3);
                 list.Children.Add(Border1);
                 el.UpdateLayout();
-                //controls.Add("gridDel{i}", el);
-                controlsGrid[i] = el;
-                controlsRows[i] = rowDef;
             }
             list.UpdateLayout();
             
         }
+
     }
 }
