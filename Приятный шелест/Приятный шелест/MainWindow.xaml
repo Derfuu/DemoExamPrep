@@ -29,7 +29,6 @@
                     <ColumnDefinition Width="15"/>
                 </Grid.ColumnDefinitions>
             </Grid>
-
         </ScrollViewer>
         <Button x:Name="buttonLeft" Grid.Column="1" Content="&lt;" Margin="0,0,20,0" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center" Background="White" BorderBrush="White" Click="buttonLeft_Click"/>
         <!--<Button x:Name="button1" Grid.Column="1" Content=" 1 " Margin="0,0,80,0" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center" Background="White" BorderBrush="White"/>
@@ -38,5 +37,6 @@
         <Button x:Name="button4" Grid.Column="1" Content=" 4 " Margin="0,0,20,0" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center" Background="White" BorderBrush="White"/> -->
         <Button x:Name="buttonRight" Grid.Column="1" Content="&gt;" Margin="0,0,5,0" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center" Background="White" BorderBrush="White" Click="buttonRight_Click"/>
         <Label Grid.Column="1" Content="" HorizontalAlignment="Left" Grid.Row="2" VerticalAlignment="Center" x:Name="PageInfo" FontSize="16"/>
+        <TextBox Grid.Column="1" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Введите для поиска" Padding="7" VerticalAlignment="Center" Width="385" Height="30"/>
     </Grid>
 </Window>
