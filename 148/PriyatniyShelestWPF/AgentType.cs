@@ -8,7 +8,7 @@ namespace PriyatniyShelestWPF
 {
     class AgentType
     {
-        public int ID;
-        public string Title;
+        public int ID { get; set; }
+        public string Title { get; set; }
     }
 }

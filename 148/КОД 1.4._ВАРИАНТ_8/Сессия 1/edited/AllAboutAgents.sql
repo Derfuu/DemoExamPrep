@@ -9,4 +9,5 @@ WHERE ProductSale.AgentID = Agent.ID AND DATEDIFF(YEAR, ProductSale.SaleDate, CU
 FROM ProductSale, Product
 WHERE ProductSale.AgentID = Agent.ID AND ProductSale.ProductID = Product.ID AND DATEDIFF(YEAR, ProductSale.SaleDate, CURRENT_TIMESTAMP) < 1) AS 'TotalSalesBy'
 FROM Agent INNER JOIN AgentType ON (Agent.AgentTypeID = AgentType.ID) AND AgentType.Title LIKE ('%')
-ORDER BY Agent.Priority
+AND (Agent.Title LIKE '%' OR Agent.Email LIKE '%' OR Agent.Phone LIKE '%')
+ORDER BY Agent.Title OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY
