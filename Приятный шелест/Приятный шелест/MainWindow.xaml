@@ -18,6 +18,58 @@
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="50"></RowDefinition>
         </Grid.RowDefinitions>
+        <TextBox x:Name="findName"
+                 Grid.Column="1" 
+                 HorizontalAlignment="Left" 
+                 TextWrapping="Wrap" 
+                 Text="Введите для поиска" 
+                 Padding="7" 
+                 VerticalAlignment="Center"
+                 Width="385" 
+                 Height="30" AutomationProperties.Name="findName"/>
+        <Border Grid.Column="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="30"/>
+                </Grid.ColumnDefinitions>
+                <ComboBox Grid.Column="0"
+                              x:Name="SortBox"
+                              HorizontalAlignment="Right"
+                              VerticalAlignment="Center"
+                              Margin="0,0,75,0"
+                              BorderBrush="White"
+                              Background="White"
+                              
+                              SelectedIndex="0"
+                              Height="30"
+                              Padding="7">
+                    <TextBlock>Наименование</TextBlock>
+                    <TextBlock>Продажи</TextBlock>
+                    <TextBlock>Размер скидки</TextBlock>
+                    <TextBlock>Приоритет</TextBlock>
+                </ComboBox>
+            </Grid>
+        </Border>
+        <Border Grid.Column="1">
+                <ComboBox x:Name="FilterBox"
+                          HorizontalAlignment="Right"
+                          VerticalAlignment="Center"
+                          Background="White"
+                          SelectionChanged="filter"
+                          SelectedIndex="0"
+                          Height="30"
+                          Padding="7">
+                    <TextBlock>Без фильтра</TextBlock>
+                    <TextBlock>ООО</TextBlock>
+                    <TextBlock>ПАО</TextBlock>
+                    <TextBlock>ОАО</TextBlock>
+                    <TextBlock>МФО</TextBlock>
+                    <TextBlock>ЗАО</TextBlock>
+                    <TextBlock>МКК</TextBlock>
+                </ComboBox>
+            </Border>
+        
         <ScrollViewer Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3">
             <Grid x:Name="list">
                 <Grid.RowDefinitions>
@@ -37,6 +89,5 @@
         <Button x:Name="button4" Grid.Column="1" Content=" 4 " Margin="0,0,20,0" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center" Background="White" BorderBrush="White"/> -->
         <Button x:Name="buttonRight" Grid.Column="1" Content="&gt;" Margin="0,0,5,0" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center" Background="White" BorderBrush="White" Click="buttonRight_Click"/>
         <Label Grid.Column="1" Content="" HorizontalAlignment="Left" Grid.Row="2" VerticalAlignment="Center" x:Name="PageInfo" FontSize="16"/>
-        <TextBox Grid.Column="1" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Введите для поиска" Padding="7" VerticalAlignment="Center" Width="385" Height="30"/>
     </Grid>
 </Window>

@@ -80,7 +80,6 @@ namespace Приятный_шелест
                 Zapros(queryString);
             }
         }
-
         private void buttonLeft_Click(object sender, RoutedEventArgs e)
         {
             if (Page - 1 <= 0)
@@ -272,5 +271,9 @@ namespace Приятный_шелест
             
         }
 
+        private void filter(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }
