@@ -8,27 +8,25 @@
     ".NETCoreApp,Version=v3.1": []
   },
   "packageFolders": {
-    "C:\\Users\\S1191303308\\.nuget\\packages\\": {},
-    "C:\\Microsoft\\Xamarin\\NuGet\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\Alexander\\.nuget\\packages\\": {},
+    "E:\\Programs\\VS\\SDK\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "\\\\FSStudy.marstu.net\\Study\\Пользователи\\S1191303308\\Рабочий стол\\PoS\\Задание демо-экзамена 2021\\148\\WSUniversalLib\\WSUniversalLib.csproj",
+      "projectUniqueName": "E:\\Stu\\DemoExamPrep\\148\\WSUniversalLib\\WSUniversalLib.csproj",
       "projectName": "WSUniversalLib",
-      "projectPath": "\\\\FSStudy.marstu.net\\Study\\Пользователи\\S1191303308\\Рабочий стол\\PoS\\Задание демо-экзамена 2021\\148\\WSUniversalLib\\WSUniversalLib.csproj",
-      "packagesPath": "C:\\Users\\S1191303308\\.nuget\\packages\\",
-      "outputPath": "\\\\FSStudy.marstu.net\\Study\\Пользователи\\S1191303308\\Рабочий стол\\PoS\\Задание демо-экзамена 2021\\148\\WSUniversalLib\\obj\\",
+      "projectPath": "E:\\Stu\\DemoExamPrep\\148\\WSUniversalLib\\WSUniversalLib.csproj",
+      "packagesPath": "C:\\Users\\Alexander\\.nuget\\packages\\",
+      "outputPath": "E:\\Stu\\DemoExamPrep\\148\\WSUniversalLib\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Microsoft\\Xamarin\\NuGet\\",
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        "E:\\Programs\\VS\\SDK\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\S1191303308\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        "C:\\Users\\Alexander\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.1"
@@ -39,6 +37,7 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
           "projectReferences": {}
         }
       },
@@ -50,6 +49,7 @@
     },
     "frameworks": {
       "netcoreapp3.1": {
+        "targetAlias": "netcoreapp3.1",
         "imports": [
           "net461",
           "net462",
@@ -65,7 +65,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.404\\RuntimeIdentifierGraph.json"
       }
     }
   }

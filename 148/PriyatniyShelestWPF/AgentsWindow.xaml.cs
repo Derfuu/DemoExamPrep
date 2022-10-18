@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -26,14 +27,15 @@ namespace PriyatniyShelestWPF
          GLOBAL PROPERTIES 
         */
 
-        // sortOrder True >> 12345...
-        // sortOrder False >> 54321...
         Agent[] agents;
         AgentType[] agentTypes;
 
         SolidColorBrush bgcolor = new SolidColorBrush(Color.FromArgb(0xFF, 0xC6, 0xD7, 0xFF));
 
-        string connStr = "Data Source=(localdb)\\MSSQLLocalDB; Initial Catalog=priyatniyDEVshitcomp12; Integrated Security=TRUE";
+        string execPath = Assembly.GetEntryAssembly().Location;
+
+        string connStr = "Data Source=DESKTOP-0000001; Initial Catalog=priyatniyDEVmain; Integrated Security=TRUE";
+
         /*
          FUNCTIONS
         */
@@ -67,7 +69,7 @@ namespace PriyatniyShelestWPF
                 BitmapImage logo = new BitmapImage();
 
                 logo.BeginInit();
-                logo.UriSource = new Uri("/unknown.png", UriKind.Relative);
+                logo.UriSource = new Uri("agents/no_image.png", UriKind.Relative);
                 agentLogo.Stretch = Stretch.UniformToFill;
                 agentLogo.Source = logo;
                 logo.EndInit();
@@ -165,6 +167,7 @@ namespace PriyatniyShelestWPF
                 while (reader.Read())
                 {
                     agentTypes[id] = new AgentType();
+                    agentTypes[id].ID = new int();
                     agentTypes[id].ID = reader.GetInt32(0);
                     agentTypes[id].Title = reader.GetString(1);
                     //MessageBox.Show("" + agentTypes[id].ID + agentTypes[id].Title);
