@@ -13,4 +13,4 @@ WHERE ProductSale.AgentID = Agent.ID and ProductSale.ProductID = Product.ID
 and DATEDIFF(year, SaleDate, CURRENT_TIMESTAMP) < 10)
 AS 'TotalSalesBy'
 FROM Agent INNER JOIN AgentType ON (Agent.AgentTypeID = AgentType.ID)
-where AgentType.Title like 'ннн' order by Agent.Title OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY
+where AgentType.Title like 'ннн' order by AgentType.ID OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY
