@@ -115,7 +115,6 @@ namespace Приятный_шелест
             DestroyContent();
             string[] name = new string[10];
             int[] prod = new int[10];
-            //int[] prodID = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
             string[] phone = new string[10];
             int[] priorety = new int[10];
             decimal[] priceProd = new decimal[10];
@@ -282,8 +281,7 @@ namespace Приятный_шелест
         private void filter(object sender, SelectionChangedEventArgs e)
         {
             string queryString = $"SELECT Agent.Title, AgentType.Title,Agent.Phone, Agent.[Priority],Agent.Logo, (SELECT ISNULL(SUM(ProductSale.ProductCount), 0) FROM ProductSale WHERE ProductSale.AgentID = Agent.ID and DATEDIFF(year, SaleDate, CURRENT_TIMESTAMP) < {YearsRange}) AS 'Sales',(SELECT ISNULL(SUM((ProductSale.ProductCount * Product.MinCostForAgent)), 0) " +
-                $"FROM ProductSale, Product WHERE ProductSale.AgentID = Agent.ID and ProductSale.ProductID = Product.ID and DATEDIFF(year, SaleDate, CURRENT_TIMESTAMP) < {YearsRange}) AS 'TotalSalesBy'  FROM Agent INNER JOIN AgentType ON(Agent.AgentTypeID = AgentType.ID) " +
-                $"where AgentType.Title between {Paginator - 9} and {Paginator} ";
+                $"FROM ProductSale, Product WHERE ProductSale.AgentID = Agent.ID and ProductSale.ProductID = Product.ID and DATEDIFF(year, SaleDate, CURRENT_TIMESTAMP) < {YearsRange}) AS 'TotalSalesBy'  FROM Agent INNER JOIN AgentType ON(Agent.AgentTypeID = AgentType.ID) ";
             if (FilterBox.SelectedIndex == 0)
             {
                 if (!firstInit)
@@ -291,36 +289,42 @@ namespace Приятный_шелест
                     firstInit = true;
                     return;
                 }
-                Zapros(queryString);
+                Zapros(queryString + $"where AgentType.Title between {Paginator - 9} and {Paginator} ");
             }
             else if (FilterBox.SelectedIndex == 1)
             {
-                queryString += "and AgentType.Title like 'ООО'";
+                queryString += $"where AgentType.Title like 'ООО'" +
+                    $" order by Agent.Title OFFSET {Paginator - 9} ROWS FETCH NEXT {Paginator} ROWS ONLY";
                 Zapros(queryString);
             }
             else if (FilterBox.SelectedIndex == 2)
             {
-                queryString += "and AgentType.Title like 'ПАО'";
+                queryString += $"where AgentType.Title like 'ПАО'" +
+                    $" order by Agent.Title OFFSET {Paginator - 9} ROWS FETCH NEXT {Paginator} ROWS ONLY";
                 Zapros(queryString);
             }
             else if (FilterBox.SelectedIndex == 3)
             {
-                queryString += "and AgentType.Title like 'ОАО'";
+                queryString += $"where AgentType.Title like 'ОАО'" +
+                    $" order by Agent.Title OFFSET {Paginator - 9} ROWS FETCH NEXT {Paginator} ROWS ONLY";
                 Zapros(queryString);
             }
             else if (FilterBox.SelectedIndex == 4)
             {
-                queryString += "and AgentType.Title like 'МФО'";
+                queryString += $"where AgentType.Title like 'МФО'" +
+                    $" order by Agent.Title OFFSET {Paginator - 9} ROWS FETCH NEXT {Paginator} ROWS ONLY";
                 Zapros(queryString);
             }
             else if (FilterBox.SelectedIndex == 5)
             {
-                queryString += "and AgentType.Title like 'ЗАО'";
+                queryString += $"where AgentType.Title like 'ЗАО'" +
+                    $" order by Agent.Title OFFSET {Paginator - 9} ROWS FETCH NEXT {Paginator} ROWS ONLY";
                 Zapros(queryString);
             }
             else if (FilterBox.SelectedIndex == 6)
             {
-                queryString += "and AgentType.Title like 'МКК'";
+                queryString += $"where AgentType.Title like 'МКК'" +
+                    $" order by Agent.Title OFFSET {Paginator - 9} ROWS FETCH NEXT {Paginator} ROWS ONLY";
                 Zapros(queryString);
             }
         }
