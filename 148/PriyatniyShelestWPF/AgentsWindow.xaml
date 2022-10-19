@@ -9,10 +9,8 @@
         Title="Приятный Шелест (Агенты)"
         Height="600" Width="800"
         Icon="Приятный шелест.ico"
-        FontFamily="Monotype Corsiva" FontSize="20"
-        SizeChanged="window_SizeChanged"
-        Initialized="window_Initialized"
-        MinWidth="800" MinHeight="600">
+        FontFamily="Monotype Corsiva" FontSize="19.5"
+        MinWidth="800" MinHeight="600" Loaded="agentsWindow_Loaded">
 
     <Window.Resources>
         <Style TargetType="Border">
@@ -52,8 +50,8 @@
                          TextAlignment="Left"
                          TextWrapping="NoWrap"
                          Margin="1"
-                         BorderBrush="White" 
-                         TextChanged="SearchTextBox_TextChanged">
+                         
+                         BorderBrush="White" TextChanged="SearchBox_TextChanged">
                 </TextBox>
             </Border>
 
@@ -70,7 +68,7 @@
                               Margin="1"
                               BorderBrush="White"
                               Background="White"
-                              SelectionChanged="SortBox_SelectionChanged"
+                              SelectionChanged="SortType_Changed"
                               SelectedIndex="0">
                         <TextBlock>Наименование</TextBlock>
                         <TextBlock>Продажи</TextBlock>
@@ -134,7 +132,7 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <Border Grid.Column="0">
-                        <Button x:Name="updateAgentsButton" Content="Обновить" Background="White" Click="updateAgentsButton_Click"/>
+                        <Button x:Name="updateAgentsButton" Content="Обновить" Background="White"/>
                     </Border>
                 </Grid>
                 
