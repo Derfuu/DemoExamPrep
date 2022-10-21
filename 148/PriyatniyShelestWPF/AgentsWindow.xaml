@@ -120,7 +120,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="2*"/>
                     <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="150"/>
                 </Grid.ColumnDefinitions>
 
                 <Grid x:Name="toolBarGrid"
@@ -136,10 +136,24 @@
                 </Grid>
                 
                 <Grid x:Name="navigationButtonsGrid"
-                      Grid.Column="2">
+                      Grid.Column="2"
+                      Margin="2,2">
                     <Grid.ColumnDefinitions>
-                        <!--PAGE SELECTOR-->
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
+
+                    <Button Grid.Column="0" x:Name="paginatorDownButton" Content="&lt;" Background="White" Click="pagintorSelectionDOWN"/>
+                    <Label x:Name="currentPageText"
+                        Grid.Column="1"
+                        HorizontalContentAlignment="Center"
+                        HorizontalAlignment="Stretch"
+                        VerticalContentAlignment="Stretch"
+                        VerticalAlignment="Stretch">
+                    </Label>
+                    
+                    <Button Grid.Column="2" x:Name="paginatorUpButton" Content=">" Background="White" Click="pagintorSelectionUP"/>
                 </Grid>
                 
             </Grid>

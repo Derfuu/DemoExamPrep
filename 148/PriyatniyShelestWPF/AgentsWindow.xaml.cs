@@ -33,11 +33,14 @@ namespace PriyatniyShelestWPF
         SolidColorBrush bgcolor = new SolidColorBrush(Color.FromArgb(0xFF, 0xC6, 0xD7, 0xFF));
         SolidColorBrush bgcolor25 = new SolidColorBrush(Color.FromArgb(0xFF, 0x00, 0xFF, 0x00));
 
-        string connStr = "Data Source=LAPTOP-TK7JKUOV; Initial Catalog=test; Integrated Security=TRUE";
-        string basePath = AppDomain.CurrentDomain.BaseDirectory;
+        static string basePath = AppDomain.CurrentDomain.BaseDirectory;
+        static string[] config = System.IO.File.ReadAllLines($"{basePath}\\connection.config");
+        string connStr = $"{config[0]}; {config[1]}; {config[2]}";
         int currentPage = 1;
+        int maxPage = 1;
         bool reverseSorting = false;
         bool firstLoad = true;
+
         /*
          FUNCTIONS
         */
@@ -52,15 +55,14 @@ namespace PriyatniyShelestWPF
             int sortIndex = SortBox.SelectedIndex;
             if (sortIndex == -1) { sortIndex = 0; }
 
-            //int totalAgents = getAgentsFromDB(connStr, searchFor: searchString, inFilter: filterIndex, allRecords: true).Length;
+            int totalPages = getMaxPages(connStr, searchFor: searchString, inFilter: filterIndex);
+            maxPage = totalPages;
             int agentsLen = getAgentsFromDB(connStr, onPage: currentPage, searchFor: searchString, inFilter: filterIndex).Length;
-
-            //int totalPages = (int)Math.Ceiling((decimal)(totalAgents % recordsPerPage));
-            //MessageBox.Show(totalPages + "");
 
             agents = new Agent[agentsLen];
             agents = getAgentsFromDB(connStr, onPage: currentPage, searchFor: searchString, inFilter: filterIndex, sortBy: sortIndex, reversed: reverseSorting);
 
+            currentPageText.Content = ""+currentPage;
             centerGrid.RowDefinitions.Clear();
             centerGrid.Children.Clear();
 
@@ -180,6 +182,49 @@ namespace PriyatniyShelestWPF
             centerGrid.UpdateLayout();
         } //make MORE SELECTIONS
 
+        public int getMaxPages(string connectionString, string searchFor = "%", int inFilter = 0, int recordsPerPage = 10)
+        {
+            if (searchFor == "") { searchFor = "%"; } //Search all
+
+            string searchForQuery = $"AND ((Agent.Title LIKE '%{searchFor}%' OR Agent.Email LIKE '%{searchFor}%' OR Agent.Phone LIKE '%{searchFor}%')) ";
+            string filter;
+
+            if (inFilter == 0) { filter = "%"; }
+            else { filter = agentTypes[inFilter].ID.ToString(); }
+
+            int salesForYears = 10;
+            double maxPages;
+            int records = 0;
+
+            string queryString = "SELECT Agent.ID, AgentType.Title AS 'Type', Agent.Title, " +
+                "Agent.[Address], Agent.INN, Agent.KPP, " +
+                "Agent.DirectorName, Agent.Phone, Agent.[Priority], " +
+                "Agent.Email, Agent.Logo, " +
+                "(SELECT ISNULL(SUM(ProductSale.ProductCount), 0) " +
+                "FROM ProductSale " +
+                $"WHERE ProductSale.AgentID = Agent.ID AND DATEDIFF(YEAR, ProductSale.SaleDate, CURRENT_TIMESTAMP) < {salesForYears}) AS 'Sales', " +
+                "(SELECT ISNULL(SUM(ProductSale.ProductCount * Product.MinCostForAgent), 0) " +
+                "FROM ProductSale, Product " +
+                $"WHERE ProductSale.AgentID = Agent.ID AND ProductSale.ProductID = Product.ID AND DATEDIFF(YEAR, ProductSale.SaleDate, CURRENT_TIMESTAMP) < {salesForYears}) AS 'TotalSalesBy'" +
+                $"FROM Agent INNER JOIN AgentType ON(Agent.AgentTypeID = AgentType.ID) AND AgentType.ID LIKE '{filter}' " + searchForQuery;
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    records++;
+                }
+
+                reader.Close();
+            } // counts records
+            maxPages = Math.Ceiling((float)records / 10);
+            return (int)maxPages;
+        }
+
         public void updateFilterTypes()
         {
             string connectionString = connStr;
@@ -234,7 +279,8 @@ namespace PriyatniyShelestWPF
             return Type;
         }
 
-        Agent[] getAgentsFromDB(string connectionString, string searchFor="%", int inFilter=0, int sortBy=0, int onPage = 1, int recordsPerPage = 10, bool reversed=false, bool allRecords=false)
+
+        Agent[] getAgentsFromDB(string connectionString, string searchFor="%", int inFilter=0, int sortBy=0, int onPage = 1, int recordsPerPage = 10, bool reversed=false)
         {
             if (searchFor == "") { searchFor = "%"; } //Search all
 
@@ -244,7 +290,7 @@ namespace PriyatniyShelestWPF
             string filter;
 
             if (inFilter == 0) { filter = "%"; }
-            else { filter = agentTypes[inFilter].Title; }
+            else { filter = agentTypes[inFilter].ID.ToString(); }
             
             switch (sortBy)
             {
@@ -268,9 +314,8 @@ namespace PriyatniyShelestWPF
                 "(SELECT ISNULL(SUM(ProductSale.ProductCount * Product.MinCostForAgent), 0) " +
                 "FROM ProductSale, Product " +
                 $"WHERE ProductSale.AgentID = Agent.ID AND ProductSale.ProductID = Product.ID AND DATEDIFF(YEAR, ProductSale.SaleDate, CURRENT_TIMESTAMP) < {salesForYears}) AS 'TotalSalesBy'" +
-                $"FROM Agent INNER JOIN AgentType ON(Agent.AgentTypeID = AgentType.ID) AND AgentType.Title LIKE('{filter}') " + searchForQuery;
-
-            if (allRecords == false) { queryString = queryString + "ORDER BY " + sortType + paginatorSelectionQuery; }
+                $"FROM Agent INNER JOIN AgentType ON(Agent.AgentTypeID = AgentType.ID) AND AgentType.ID LIKE '{filter}' " + searchForQuery +
+                "ORDER BY " + sortType + paginatorSelectionQuery;
 
             Agent[] recivedAgents = new Agent[recordsPerPage];
 
@@ -302,7 +347,7 @@ namespace PriyatniyShelestWPF
                     id++;
                 }
                 reader.Close();
-            }
+            } // importing agents into array
             return recivedAgents;
         }
 
@@ -320,13 +365,25 @@ namespace PriyatniyShelestWPF
         {
             reverseSorting = !reverseSorting;
             reverseTextCheck();
-            { updateTableConfiguration(); reverseTextCheck(); }
+            { currentPage = 1; updateTableConfiguration(); reverseTextCheck(); }
         }
 
         private void FilterSource_Changed(object sender, RoutedEventArgs e)
         {
             if (firstLoad == false)
-            { updateTableConfiguration(); reverseTextCheck(); }
+            { currentPage = 1; updateTableConfiguration(); reverseTextCheck(); }
+        }
+
+        private void pagintorSelectionUP(object sender, RoutedEventArgs e)
+        {
+            if (currentPage != maxPage)
+            { currentPage++; updateTableConfiguration(); }
+        }
+
+        private void pagintorSelectionDOWN(object sender, RoutedEventArgs e)
+        {
+            if (currentPage != 1)
+            { currentPage--; updateTableConfiguration(); }
         }
 
         private void window_init(object sender, EventArgs e)
