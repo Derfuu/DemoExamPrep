@@ -19,7 +19,6 @@ namespace Приятный_шелест
 {
     public partial class MainWindow : Window
     {
-  
         DB db = new DB();
         public MainWindow()
         {
@@ -29,25 +28,62 @@ namespace Приятный_шелест
         int Page = 1;
         int Paginator = 10;
         int YearsRange = 5;
-        int MaxPage = 0;
-        private void GetMaxPage()
+        long MaxPage = 0;
+        string queryString = $"SELECT Agent.Title, AgentType.Title,Agent.Phone, Agent.[Priority],Agent.Logo, " +
+            $"(SELECT ISNULL(SUM(ProductSale.ProductCount), 0) FROM ProductSale WHERE ProductSale.AgentID = Agent.ID" +
+            $" and DATEDIFF(year, SaleDate, CURRENT_TIMESTAMP) < 1) AS 'Sales'," +
+            $"(SELECT ISNULL(SUM((ProductSale.ProductCount * Product.MinCostForAgent)), 0) " +
+                $"FROM ProductSale, Product WHERE ProductSale.AgentID = Agent.ID and " +
+            $"ProductSale.ProductID = Product.ID and DATEDIFF(year, SaleDate, CURRENT_TIMESTAMP) < 1) " +
+            $"AS 'TotalSalesBy'  FROM Agent INNER JOIN AgentType ON(Agent.AgentTypeID = AgentType.ID) ";
+        string dobavka = "";
+        string chepushilo = "";
+        private void GetMaxPage(string filter = "")
         {
-            SqlCommand command = new SqlCommand("select max(Agent.ID) from agent", db.getConnection());
-            db.openConnection();
-            SqlDataReader reader = command.ExecuteReader();
-            while (reader.Read())
+            int schetBebr = 0;
+            SqlCommand command = new SqlCommand($"select max(Agent.ID) from agent", db.getConnection());
+            if (filter == "" || filter == "0")
             {
-                MaxPage = reader.GetInt32(0);
-            }
-            if (MaxPage % 10 != 0)
-            {
-                MaxPage = MaxPage / 10 + 1;
+                db.openConnection();
+
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    MaxPage = reader.GetInt32(0);
+                }
+                if (MaxPage % 10 != 0)
+                {
+                    MaxPage = MaxPage / 10 + 1;
+                }
+                else
+                {
+                    MaxPage = MaxPage / 10;
+                }
+                reader.Close();
             }
             else
             {
-                MaxPage = MaxPage / 10;
+                command = new SqlCommand($"select row_number() over(ORDER BY Agent.ID) from Agent where AgentTypeID like {filter}", db.getConnection());
+
+                db.openConnection();
+
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    schetBebr++;
+                    MaxPage = reader.GetInt64(0);
+                }
+                reader.Close();
+                if (MaxPage % 10 != 0)
+                {
+                    MaxPage = schetBebr / 10 + 1;
+                }
+                else
+                {
+                    MaxPage = schetBebr / 10;
+                }
             }
-            reader.Close();
+            PageInfo.Content = $"Вы на {Page} из {MaxPage}";
         }
         //rgb(151, 255, 122);
         SolidColorBrush green = new SolidColorBrush(Color.FromArgb(50, 151, 255, 122));
@@ -56,10 +92,8 @@ namespace Приятный_шелест
         private void Window_Initialized(object sender, EventArgs e)
         {
             GetMaxPage();
-            string queryString = $"SELECT Agent.Title, AgentType.Title,Agent.Phone, Agent.[Priority],Agent.Logo, (SELECT ISNULL(SUM(ProductSale.ProductCount), 0) FROM ProductSale WHERE ProductSale.AgentID = Agent.ID and DATEDIFF(year, SaleDate, CURRENT_TIMESTAMP) < {YearsRange}) AS 'Sales',(SELECT ISNULL(SUM((ProductSale.ProductCount * Product.MinCostForAgent)), 0) " +
-               $"FROM ProductSale, Product WHERE ProductSale.AgentID = Agent.ID and ProductSale.ProductID = Product.ID and DATEDIFF(year, SaleDate, CURRENT_TIMESTAMP) < {YearsRange}) AS 'TotalSalesBy'  FROM Agent INNER JOIN AgentType ON(Agent.AgentTypeID = AgentType.ID) " +
-               $"where Agent.ID between {Paginator - 9} and {Paginator} ";
-            Zapros(queryString);
+            dobavka = $"order by AgentType.ID OFFSET {Paginator - 10} ROWS FETCH NEXT 10 ROWS ONLY";
+            Zapros(queryString );
         }
         private void buttonRight_Click(object sender, RoutedEventArgs e)
         {
@@ -74,10 +108,8 @@ namespace Приятный_шелест
                 Page += 1;
                 Paginator += 10;
                 DestroyContent();
-                string queryString = $"SELECT Agent.Title, AgentType.Title,Agent.Phone, Agent.[Priority],Agent.Logo, (SELECT ISNULL(SUM(ProductSale.ProductCount), 0) FROM ProductSale WHERE ProductSale.AgentID = Agent.ID and DATEDIFF(year, SaleDate, CURRENT_TIMESTAMP) < {YearsRange}) AS 'Sales',(SELECT ISNULL(SUM((ProductSale.ProductCount * Product.MinCostForAgent)), 0) " +
-                $"FROM ProductSale, Product WHERE ProductSale.AgentID = Agent.ID and ProductSale.ProductID = Product.ID and DATEDIFF(year, SaleDate, CURRENT_TIMESTAMP) < {YearsRange}) AS 'TotalSalesBy'  FROM Agent INNER JOIN AgentType ON(Agent.AgentTypeID = AgentType.ID) " +
-                $"where Agent.ID between {Paginator - 9} and {Paginator}";
-                Zapros(queryString, true);
+                dobavka = $"order by AgentType.ID OFFSET {Paginator - 10} ROWS FETCH NEXT 10 ROWS ONLY";
+                Zapros(queryString , true);
             }
         }
         private void buttonLeft_Click(object sender, RoutedEventArgs e)
@@ -92,10 +124,8 @@ namespace Приятный_шелест
                 buttonRight.Background = invisible;
                 Page -= 1;
                 Paginator -= 10;
-                string queryString = $"SELECT Agent.Title, AgentType.Title,Agent.Phone, Agent.[Priority],Agent.Logo, (SELECT ISNULL(SUM(ProductSale.ProductCount), 0) FROM ProductSale WHERE ProductSale.AgentID = Agent.ID and DATEDIFF(year, SaleDate, CURRENT_TIMESTAMP) < {YearsRange}) AS 'Sales',(SELECT ISNULL(SUM((ProductSale.ProductCount * Product.MinCostForAgent)), 0) " +
-                $"FROM ProductSale, Product WHERE ProductSale.AgentID = Agent.ID and ProductSale.ProductID = Product.ID and DATEDIFF(year, SaleDate, CURRENT_TIMESTAMP) < {YearsRange}) AS 'TotalSalesBy'  FROM Agent INNER JOIN AgentType ON(Agent.AgentTypeID = AgentType.ID) " +
-                $"where Agent.ID between {Paginator - 9} and {Paginator}";
-                Zapros(queryString, true);
+                dobavka = $"order by AgentType.ID OFFSET {Paginator - 10} ROWS FETCH NEXT 10 ROWS ONLY";
+                Zapros(queryString , true);
             }
         }
         private void DestroyContent()
@@ -108,19 +138,15 @@ namespace Приятный_шелест
         }
         private void Zapros(string queryString1, bool page = false)
         {
-            if (page)
-            {
-                PageInfo.Content = $"Вы на {Page} из {MaxPage}";
-            }
+            if (page) { PageInfo.Content = $"Вы на {Page} из {MaxPage}"; }
             DestroyContent();
             string[] name = new string[10];
             int[] prod = new int[10];
-            //int[] prodID = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
             string[] phone = new string[10];
             int[] priorety = new int[10];
             decimal[] priceProd = new decimal[10];
             string[] logo = new string[10];
-            SqlCommand command = new SqlCommand(queryString1, db.getConnection());
+            SqlCommand command = new SqlCommand(queryString1 + chepushilo + dobavka, db.getConnection());
             db.openConnection();
             SqlDataReader reader = command.ExecuteReader();
             int i = 0;
@@ -281,9 +307,9 @@ namespace Приятный_шелест
         bool firstInit = false;
         private void filter(object sender, SelectionChangedEventArgs e)
         {
-            string queryString = $"SELECT Agent.Title, AgentType.Title,Agent.Phone, Agent.[Priority],Agent.Logo, (SELECT ISNULL(SUM(ProductSale.ProductCount), 0) FROM ProductSale WHERE ProductSale.AgentID = Agent.ID and DATEDIFF(year, SaleDate, CURRENT_TIMESTAMP) < {YearsRange}) AS 'Sales',(SELECT ISNULL(SUM((ProductSale.ProductCount * Product.MinCostForAgent)), 0) " +
-                $"FROM ProductSale, Product WHERE ProductSale.AgentID = Agent.ID and ProductSale.ProductID = Product.ID and DATEDIFF(year, SaleDate, CURRENT_TIMESTAMP) < {YearsRange}) AS 'TotalSalesBy'  FROM Agent INNER JOIN AgentType ON(Agent.AgentTypeID = AgentType.ID) " +
-                $"where AgentType.Title between {Paginator - 9} and {Paginator} ";
+            Page = 1;
+            Paginator = 10;
+            dobavka = $"order by AgentType.ID OFFSET {Paginator - 10} ROWS FETCH NEXT 10 ROWS ONLY";
             if (FilterBox.SelectedIndex == 0)
             {
                 if (!firstInit)
@@ -291,38 +317,47 @@ namespace Приятный_шелест
                     firstInit = true;
                     return;
                 }
+                chepushilo = "";
                 Zapros(queryString);
+                GetMaxPage();
             }
             else if (FilterBox.SelectedIndex == 1)
             {
-                queryString += "and AgentType.Title like 'ООО'";
+                chepushilo = $"where AgentType.Title like 'ООО' ";
                 Zapros(queryString);
+
             }
             else if (FilterBox.SelectedIndex == 2)
             {
-                queryString += "and AgentType.Title like 'ПАО'";
+                chepushilo += $"where AgentType.Title like 'ПАО' ";
                 Zapros(queryString);
+
             }
             else if (FilterBox.SelectedIndex == 3)
             {
-                queryString += "and AgentType.Title like 'ОАО'";
-                Zapros(queryString);
+                chepushilo += $"where AgentType.Title like 'ОАО' ";
+                Zapros(queryString );
+
             }
             else if (FilterBox.SelectedIndex == 4)
             {
-                queryString += "and AgentType.Title like 'МФО'";
-                Zapros(queryString);
+                chepushilo += $"where AgentType.Title like 'МФО' ";
+                Zapros(queryString );
+
             }
             else if (FilterBox.SelectedIndex == 5)
             {
-                queryString += "and AgentType.Title like 'ЗАО'";
-                Zapros(queryString);
+                chepushilo += $"where AgentType.Title like 'ЗАО' ";
+                Zapros(queryString );
+
             }
             else if (FilterBox.SelectedIndex == 6)
             {
-                queryString += "and AgentType.Title like 'МКК'";
-                Zapros(queryString);
+                chepushilo += $"where AgentType.Title like 'МКК' ";
+                Zapros(queryString );
+
             }
+            GetMaxPage(FilterBox.SelectedIndex + "");
         }
     }
 }

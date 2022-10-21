@@ -33,7 +33,7 @@ namespace PriyatniyShelestWPF
         SolidColorBrush bgcolor = new SolidColorBrush(Color.FromArgb(0xFF, 0xC6, 0xD7, 0xFF));
         SolidColorBrush bgcolor25 = new SolidColorBrush(Color.FromArgb(0xFF, 0x00, 0xFF, 0x00));
 
-        string connStr = "Data Source=DESKTOP-0000001; Initial Catalog=priyatniyDEVmain; Integrated Security=TRUE";
+        string connStr = "Data Source=LAPTOP-TK7JKUOV; Initial Catalog=test; Integrated Security=TRUE";
         string basePath = AppDomain.CurrentDomain.BaseDirectory;
         int currentPage = 1;
         bool reverseSorting = false;
