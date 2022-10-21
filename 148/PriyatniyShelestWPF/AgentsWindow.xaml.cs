@@ -36,35 +36,38 @@ namespace PriyatniyShelestWPF
         string connStr = "Data Source=DESKTOP-0000001; Initial Catalog=priyatniyDEVmain; Integrated Security=TRUE";
         string basePath = AppDomain.CurrentDomain.BaseDirectory;
         int currentPage = 1;
-        bool reverse = false;
+        bool reverseSorting = false;
+        bool firstLoad = true;
         /*
          FUNCTIONS
         */
 
-        void updateTableConfiguration(bool isReverse=false)
+        public void updateTableConfiguration()
         {
-            int agentsLen = getAgentsFromDB(connStr,
-                onPage: currentPage,
-                searchFor: SearchBox.Text,
-                inFilter: FilterBox.SelectedIndex).Length;
+            string searchString = SearchBox.Text;
+
+            int filterIndex = FilterBox.SelectedIndex;
+            if (filterIndex == -1) { filterIndex = 0; }
+
+            int sortIndex = SortBox.SelectedIndex;
+            if (sortIndex == -1) { sortIndex = 0; }
+
+            //int totalAgents = getAgentsFromDB(connStr, searchFor: searchString, inFilter: filterIndex, allRecords: true).Length;
+            int agentsLen = getAgentsFromDB(connStr, onPage: currentPage, searchFor: searchString, inFilter: filterIndex).Length;
+
+            //int totalPages = (int)Math.Ceiling((decimal)(totalAgents % recordsPerPage));
+            //MessageBox.Show(totalPages + "");
 
             agents = new Agent[agentsLen];
-
-            agents = getAgentsFromDB(connStr,
-                onPage: currentPage,
-                searchFor: SearchBox.Text,
-                inFilter: FilterBox.SelectedIndex,
-                sortBy: SortBox.SelectedIndex,
-                reversed: isReverse);
-
-            if (agents == null || agents[0] == null) { return; }
+            agents = getAgentsFromDB(connStr, onPage: currentPage, searchFor: searchString, inFilter: filterIndex, sortBy: sortIndex, reversed: reverseSorting);
 
             centerGrid.RowDefinitions.Clear();
             centerGrid.Children.Clear();
-            
+
             for (int i = 0; i < agentsLen; i++)
             {
                 SolidColorBrush usingBgColor;
+                if (agents[i] == null) { break; }
                 if (agents[i].getDiscount() == 25)
                 { usingBgColor = bgcolor25; }
                 else { usingBgColor = bgcolor; }
@@ -81,12 +84,13 @@ namespace PriyatniyShelestWPF
 
                     Label agentTypeNameLabel = new Label();
                     Label agentSalesLabel = new Label();
-                    Label agentPhoneLabel = new Label();
+                    Label agentContactsLabel = new Label();
                     Label agentPriorityLabel = new Label();
 
                     {
                         innerGrid.HorizontalAlignment = HorizontalAlignment.Stretch;
                         descriptionsGrid.VerticalAlignment = VerticalAlignment.Stretch;
+                        descriptionsGrid.Margin = new Thickness(5);
 
                         ColumnDefinition imageColumn = new ColumnDefinition();
                         imageColumn.Width = new GridLength(200);
@@ -97,7 +101,7 @@ namespace PriyatniyShelestWPF
                         innerGrid.ColumnDefinitions.Add(descriptionColumn);
 
                         ColumnDefinition discountColumn = new ColumnDefinition();
-                        discountColumn.Width = new GridLength(100);
+                        discountColumn.Width = new GridLength(50);
                         innerGrid.ColumnDefinitions.Add(discountColumn);
 
                         RowDefinition TypeRow = new RowDefinition();
@@ -132,6 +136,7 @@ namespace PriyatniyShelestWPF
                     {
                         Uri fileUri = new Uri(basePath + agents[i].Logo);
                         agentLogo.Source = new BitmapImage(fileUri);
+                        agentLogo.Margin = new Thickness(10);
                         Grid.SetColumn(agentLogo, 0);
                         innerGrid.Children.Add(agentLogo);
                     }// image setting
@@ -139,16 +144,16 @@ namespace PriyatniyShelestWPF
                     {
                         agentTypeNameLabel.Content = $"{agents[i].AgentType} | {agents[i].Title}  ";
                         Grid.SetRow(agentTypeNameLabel, 0);
-                        agentSalesLabel.Content = $"{agents[i].Sales}  ";
+                        agentSalesLabel.Content = $"Продажи: {agents[i].Sales}  ";
                         Grid.SetRow(agentSalesLabel, 1);
-                        agentPhoneLabel.Content = $"{agents[i].Phone}  ";
-                        Grid.SetRow(agentPhoneLabel, 2);
+                        agentContactsLabel.Content = $"Телефон: {agents[i].Phone} Email: {agents[i].Email}";
+                        Grid.SetRow(agentContactsLabel, 2);
                         agentPriorityLabel.Content = $"Приоритетность: {agents[i].Priority}  ";
                         Grid.SetRow(agentPriorityLabel, 3);
 
                         descriptionsGrid.Children.Add(agentTypeNameLabel);
                         descriptionsGrid.Children.Add(agentSalesLabel);
-                        descriptionsGrid.Children.Add(agentPhoneLabel);
+                        descriptionsGrid.Children.Add(agentContactsLabel);
                         descriptionsGrid.Children.Add(agentPriorityLabel);
                     }// agentDescription setting
 
@@ -171,15 +176,16 @@ namespace PriyatniyShelestWPF
                         centerGrid.Children.Add(innerGrid);
                     }// inserting ready row in grid
                 }
-            }
+            } // creating records on page
             centerGrid.UpdateLayout();
-        } //wrong width
+        } //make MORE SELECTIONS
 
-        void updateFilterTypes(string connectionString)
+        public void updateFilterTypes()
         {
+            string connectionString = connStr;
             agentTypes = getAgentTypes(connectionString);
             FilterBox.Items.Clear();
-            FilterBox.Items.Add("Без фильтра");
+            FilterBox.Items.Add("Все типы");
             for(int i = 1; i < agentTypes.Length; i++)
             {
                 FilterBox.Items.Insert(agentTypes[i].ID, agentTypes[i].Title);
@@ -206,7 +212,7 @@ namespace PriyatniyShelestWPF
             AgentType[] Type = new AgentType[LenOfTypes + 1];
             Type[0] = new AgentType();
             Type[0].ID = 0;
-            Type[0].Title = "None";
+            Type[0].Title = "%";
 
             queryString = "SELECT AgentType.ID, AgentType.Title FROM AgentType";
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -228,50 +234,43 @@ namespace PriyatniyShelestWPF
             return Type;
         }
 
-        Agent[] getAgentsFromDB(string connectionString, string searchFor="", int inFilter=0, int sortBy=0, int onPage = 1, int recordsPerPage = 10, bool reversed=false)
+        Agent[] getAgentsFromDB(string connectionString, string searchFor="%", int inFilter=0, int sortBy=0, int onPage = 1, int recordsPerPage = 10, bool reversed=false, bool allRecords=false)
         {
             if (searchFor == "") { searchFor = "%"; } //Search all
 
-            string searchForQuery = $"AND ((Agent.Title LIKE '{searchFor}' " +
-                $"OR Agent.Email LIKE '{searchFor}' " +
-                $"OR Agent.Phone LIKE '{searchFor}')) ";
-
-            string recordsToGetQuery = $"OFFSET {(onPage * recordsPerPage) - recordsPerPage} ROWS FETCH NEXT {recordsPerPage} ROWS ONLY ";
-
+            string searchForQuery = $"AND ((Agent.Title LIKE '%{searchFor}%' OR Agent.Email LIKE '%{searchFor}%' OR Agent.Phone LIKE '%{searchFor}%')) ";
             string sortType = "Agent.Title ";
-
+            string paginatorSelectionQuery = $"OFFSET {(onPage * recordsPerPage) - recordsPerPage} ROWS FETCH NEXT {recordsPerPage} ROWS ONLY ";
             string filter;
+
             if (inFilter == 0) { filter = "%"; }
-            else { filter = (string)FilterBox.Items[inFilter]; }
+            else { filter = agentTypes[inFilter].Title; }
             
             switch (sortBy)
             {
                 case 0: { sortType = "Agent.Title "; ; break; }
-                case 1: { sortType = "Sales "; break; } // Sales
-                case 2: { sortType = "TotalSalesBy "; break; } // Discount
-                case 3: { sortType = "Agent.Priority "; break; }
+                case 1: { sortType = "TotalSalesBy "; break; } // Discount
+                case 2: { sortType = "Agent.Priority "; break; }
             }
-            if (sortBy != 2) 
-                if( !reversed) { sortType += "DESC "; }
-                else { sortType += "ASC "; }
-            else
-                if (reversed) { sortType += "DESC "; }
-            else { sortType += "ASC "; }
 
-            int salesForYear = 10;
+            if (reversed) { sortType += "DESC "; }
+            else { sortType += "ASC "; }
+            
+            int salesForYears = 10;
+
             string queryString = "SELECT Agent.ID, AgentType.Title AS 'Type', Agent.Title, " +
                 "Agent.[Address], Agent.INN, Agent.KPP, " +
                 "Agent.DirectorName, Agent.Phone, Agent.[Priority], " +
                 "Agent.Email, Agent.Logo, " +
                 "(SELECT ISNULL(SUM(ProductSale.ProductCount), 0) " +
                 "FROM ProductSale " +
-                $"WHERE ProductSale.AgentID = Agent.ID AND DATEDIFF(YEAR, ProductSale.SaleDate, CURRENT_TIMESTAMP) < {salesForYear}) AS 'Sales', " +
+                $"WHERE ProductSale.AgentID = Agent.ID AND DATEDIFF(YEAR, ProductSale.SaleDate, CURRENT_TIMESTAMP) < {salesForYears}) AS 'Sales', " +
                 "(SELECT ISNULL(SUM(ProductSale.ProductCount * Product.MinCostForAgent), 0) " +
                 "FROM ProductSale, Product " +
-                $"WHERE ProductSale.AgentID = Agent.ID AND ProductSale.ProductID = Product.ID AND DATEDIFF(YEAR, ProductSale.SaleDate, CURRENT_TIMESTAMP) < {salesForYear}) AS 'TotalSalesBy'" +
-                $"FROM Agent INNER JOIN AgentType ON(Agent.AgentTypeID = AgentType.ID) AND AgentType.Title LIKE('{filter}') " +
-                searchForQuery +
-                $"ORDER BY {sortType} " + recordsToGetQuery;
+                $"WHERE ProductSale.AgentID = Agent.ID AND ProductSale.ProductID = Product.ID AND DATEDIFF(YEAR, ProductSale.SaleDate, CURRENT_TIMESTAMP) < {salesForYears}) AS 'TotalSalesBy'" +
+                $"FROM Agent INNER JOIN AgentType ON(Agent.AgentTypeID = AgentType.ID) AND AgentType.Title LIKE('{filter}') " + searchForQuery;
+
+            if (allRecords == false) { queryString = queryString + "ORDER BY " + sortType + paginatorSelectionQuery; }
 
             Agent[] recivedAgents = new Agent[recordsPerPage];
 
@@ -307,9 +306,9 @@ namespace PriyatniyShelestWPF
             return recivedAgents;
         }
 
-        void revereTextCheck()
+        public void reverseTextCheck()
         {
-            if (reverse) { ChangeOrderButton.Content = "↓↓"; }
+            if (reverseSorting) { ChangeOrderButton.Content = "↓↓"; }
             else { ChangeOrderButton.Content = "↑↑"; }
         }
 
@@ -319,35 +318,21 @@ namespace PriyatniyShelestWPF
 
         private void ChangeOrderBtn_Click(object sender, RoutedEventArgs e)
         {
-            reverse = !reverse;
-            revereTextCheck();
-            if (SortBox != null && FilterBox != null)
-            { updateTableConfiguration(reverse); }
+            reverseSorting = !reverseSorting;
+            reverseTextCheck();
+            { updateTableConfiguration(); reverseTextCheck(); }
         }
 
-        private void agentsWindow_Loaded(object sender, RoutedEventArgs e)
+        private void FilterSource_Changed(object sender, RoutedEventArgs e)
         {
-            updateFilterTypes(connStr);
-            if (SortBox != null && FilterBox != null)
-            { updateTableConfiguration(); revereTextCheck(); }
+            if (firstLoad == false)
+            { updateTableConfiguration(); reverseTextCheck(); }
         }
 
-        private void SortType_Changed(object sender, RoutedEventArgs e)
+        private void window_init(object sender, EventArgs e)
         {
-            if (SortBox != null && FilterBox != null)
-            { updateTableConfiguration(); revereTextCheck(); }
-        }
-
-        private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (SortBox != null && FilterBox != null && SearchBox.Text != null)
-            { updateTableConfiguration(); revereTextCheck(); }
-        }
-
-        private void FilterBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (SortBox != null && FilterBox != null)
-            { updateTableConfiguration(); revereTextCheck(); }
+            firstLoad = !firstLoad;
+            { updateFilterTypes(); updateTableConfiguration(); reverseTextCheck(); }
         }
     }
 }

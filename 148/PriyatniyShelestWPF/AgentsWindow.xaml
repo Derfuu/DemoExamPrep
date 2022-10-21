@@ -10,7 +10,7 @@
         Height="600" Width="800"
         Icon="Приятный шелест.ico"
         FontFamily="Monotype Corsiva" FontSize="19.5"
-        MinWidth="800" MinHeight="600" Loaded="agentsWindow_Loaded">
+        MinWidth="800" MinHeight="600" Initialized="window_init">
 
     <Window.Resources>
         <Style TargetType="Border">
@@ -50,8 +50,8 @@
                          TextAlignment="Left"
                          TextWrapping="NoWrap"
                          Margin="1"
-                         
-                         BorderBrush="White" TextChanged="SearchBox_TextChanged">
+                         TextChanged="FilterSource_Changed"
+                         BorderBrush="White">
                 </TextBox>
             </Border>
 
@@ -68,10 +68,9 @@
                               Margin="1"
                               BorderBrush="White"
                               Background="White"
-                              SelectionChanged="SortType_Changed"
+                              SelectionChanged="FilterSource_Changed"
                               SelectedIndex="0">
                         <TextBlock>Наименование</TextBlock>
-                        <TextBlock>Продажи</TextBlock>
                         <TextBlock>Размер скидки</TextBlock>
                         <TextBlock>Приоритет</TextBlock>
                     </ComboBox>
@@ -89,7 +88,7 @@
                           VerticalAlignment="Stretch"
                           Margin="1"
                           Background="White"
-                          SelectionChanged="FilterBox_SelectionChanged"
+                          SelectionChanged="FilterSource_Changed"
                           SelectedIndex="0">
                     <TextBlock>Без фильтра</TextBlock>
                     <TextBlock>ООО</TextBlock>
@@ -103,7 +102,7 @@
         </Grid>
 
         <Border Grid.Row="1">
-            <ScrollViewer x:Name="centerScrollBar" VerticalScrollBarVisibility="Auto">
+            <ScrollViewer x:Name="centerScrollBar" VerticalScrollBarVisibility="Auto" Margin="0,2,2,2">
                 <Grid x:Name="centerGrid"
                       VerticalAlignment="Stretch"
                       HorizontalAlignment="Stretch">
