@@ -114,7 +114,11 @@ namespace PriyatniyShelestWPF
 
                     void alterAgent(object sender, EventArgs e)
                     {
-                        MessageBox.Show($"Alter {agents[(int)deleteAgentButton.Tag].Title} ?");
+                        AgentsEditWindow editWindow = new AgentsEditWindow();
+                        editWindow.currentAgent = agents[(int)deleteAgentButton.Tag];
+                        editWindow.isAddingNew = false;
+                        editWindow.updateValues(agentTypes);
+                        editWindow.ShowDialog();
                     }//functions for buttons and checkers
 
                     {

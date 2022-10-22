@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PriyatniyShelestWPF
 {
-    class AgentType
+    public class AgentType
     {
         public int ID { get; set; }
         public string Title { get; set; }

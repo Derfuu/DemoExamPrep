@@ -53,10 +53,6 @@
                            HorizontalAlignment="Left"
                            Text="Предприятие до изменения"/>
             </Border>
-
-            <Border Grid.Column="1">
-
-            </Border>
         </Grid>
 
         <Border Grid.Row="1">
@@ -64,6 +60,7 @@
                     VerticalAlignment="Stretch"
                     HorizontalAlignment="Stretch"
                     Background="#C6D7FF"
+                    
                     ShowGridLines="True">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
@@ -99,7 +96,7 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="100"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Row="0" Grid.Column="0" x:Name="agentLogoPathNew"/>
+                    <TextBlock Grid.Row="0" Grid.Column="0" x:Name="agentLogoPathNew" HorizontalAlignment="Left"/>
                     <Button Grid.Row="0" Grid.Column="1" x:Name="selectLogoBtn" Content="Выбрать" Click="selectImagePath"/>
                 </Grid>
                 <TextBox Grid.Row="4" Grid.Column="1" x:Name="agentAddressNew"/>
