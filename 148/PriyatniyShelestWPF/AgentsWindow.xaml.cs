@@ -39,24 +39,13 @@ namespace PriyatniyShelestWPF
         string connStr = $"{config[0]}; {config[1]}; {config[2]}";
         int currentPage = 1;
         int maxPage = 1;
+        List<int> recordsToAlternate = new List<int>();
         bool reverseSorting = false;
         bool firstLoad = true;
 
         /*
          FUNCTIONS
         */
-
-        public void delAgent(int agentOnPage)
-        {
-            string agentName = agents[agentOnPage].Title;
-            string text = $"Удалить агента {agentName}?";
-            MessageBox.Show(text);
-            if (DialogResult == true)
-            {
-                MessageBox.Show("true");
-            }
-        }
-
         public void updateTableConfiguration()
         {
             string searchString = SearchBox.Text;
@@ -104,9 +93,34 @@ namespace PriyatniyShelestWPF
                     Button editAgentButton = new Button();
                     Button deleteAgentButton = new Button();
 
+                    CheckBox agentSelection = new CheckBox();
+
+                    void addToAlterList(object sender, EventArgs e)
+                    {
+                        recordsToAlternate.Add(agents[(int)deleteAgentButton.Tag].ID);
+                        MessageBox.Show(recordsToAlternate[0]+"");
+                    }//functions for buttons and checkers
+
+                    void removeFromAlterList(object sender, EventArgs e)
+                    {
+                        MessageBox.Show(recordsToAlternate[0] + "");
+                        recordsToAlternate.Remove(agents[(int)deleteAgentButton.Tag].ID);
+                    }//functions for buttons and checkers
+
+                    void delAgent(object sender, EventArgs e)
+                    {
+                        MessageBox.Show($"Delete {agents[(int)deleteAgentButton.Tag].Title} ?");
+                    }//functions for buttons and checkers
+
+                    void alterAgent(object sender, EventArgs e)
+                    {
+                        MessageBox.Show($"Alter {agents[(int)deleteAgentButton.Tag].Title} ?");
+                    }//functions for buttons and checkers
+
                     {
                         innerGrid.HorizontalAlignment = HorizontalAlignment.Stretch;
                         descriptionsGrid.VerticalAlignment = VerticalAlignment.Stretch;
+
                         descriptionsGrid.Margin = new Thickness(5);
                         discountGrid.Margin = new Thickness(5);
 
@@ -201,27 +215,37 @@ namespace PriyatniyShelestWPF
 
                         Thickness thicc = new Thickness(2);
 
-                        agentDiscountLabel.Content = $"{discount}%";
-
-                        editAgentButton.Content = "Изменить";
-                        deleteAgentButton.Content = "Удалить";
-
                         Grid.SetColumn(agentDiscountLabel, 0);
                         Grid.SetRow(agentDiscountLabel, 0);
+                        agentDiscountLabel.Content = $"{discount}%";
                         discountGrid.Children.Add(agentDiscountLabel);
+
+                        Grid.SetColumn(agentSelection, 1);
+                        Grid.SetRow(agentSelection, 0);
+                        if (recordsToAlternate.Contains(agents[i].ID)) { agentSelection.IsChecked = true; }
+                        agentSelection.HorizontalAlignment = HorizontalAlignment.Stretch;
+                        agentSelection.VerticalAlignment = VerticalAlignment.Stretch;
+                        agentSelection.HorizontalContentAlignment = HorizontalAlignment.Center;
+                        agentSelection.Checked += addToAlterList;
+                        agentSelection.Unchecked += removeFromAlterList;
+                        agentSelection.Margin = thicc;
+                        discountGrid.Children.Add(agentSelection);
 
                         Grid.SetColumn(editAgentButton, 0);
                         Grid.SetRow(editAgentButton, 1);
+                        editAgentButton.Content = "Изменить";
+                        editAgentButton.Tag = i;
+                        editAgentButton.Click += alterAgent;
                         editAgentButton.Margin = thicc;
                         discountGrid.Children.Add(editAgentButton);
 
                         Grid.SetColumn(deleteAgentButton, 1);
                         Grid.SetRow(deleteAgentButton, 1);
+                        deleteAgentButton.Content = "Удалить";
                         deleteAgentButton.Margin = thicc;
-                        //deleteAgentButton.AddHandler(Button.ClickEvent, new RoutedEventHandler());
-                        deleteAgentButton.Name = $"btn_{i}";
-                        deleteAgentButton.Tag = "i";
-                        //deleteAgentButton.AddHandler(Button.ClickEvent, new RoutedEventHandler(deleteAgentButton_Click));
+                        deleteAgentButton.Name = $"delBtn_{i}";
+                        deleteAgentButton.Tag = i;
+                        deleteAgentButton.Click += delAgent;
                         discountGrid.Children.Add(deleteAgentButton);
                     }// agentDiscountGrid setting
 
@@ -240,11 +264,6 @@ namespace PriyatniyShelestWPF
                 }
             } // creating records on page
             centerGrid.UpdateLayout();
-        }
-
-        void deleteAgentButton_Click(int item)
-        {
-            throw new NotImplementedException();
         }
 
         public int getMaxPages(string connectionString, string searchFor = "%", int inFilter = 0, int recordsPerPage = 10)

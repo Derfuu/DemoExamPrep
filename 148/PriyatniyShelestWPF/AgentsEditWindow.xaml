@@ -51,7 +51,7 @@
             <Border Grid.Column="0">
                 <TextBlock x:Name="CurrentAction"
                            HorizontalAlignment="Left"
-                           Text="ЗАО Какое-то"/>
+                           Text="Предприятие до изменения"/>
             </Border>
 
             <Border Grid.Column="1">
