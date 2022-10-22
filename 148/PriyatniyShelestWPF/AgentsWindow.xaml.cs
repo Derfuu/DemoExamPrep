@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Data.SqlClient;
+using Microsoft.Win32;
 
 namespace PriyatniyShelestWPF
 {
@@ -44,6 +45,17 @@ namespace PriyatniyShelestWPF
         /*
          FUNCTIONS
         */
+
+        public void delAgent(int agentOnPage)
+        {
+            string agentName = agents[agentOnPage].Title;
+            string text = $"Удалить агента {agentName}?";
+            MessageBox.Show(text);
+            if (DialogResult == true)
+            {
+                MessageBox.Show("true");
+            }
+        }
 
         public void updateTableConfiguration()
         {
@@ -76,6 +88,7 @@ namespace PriyatniyShelestWPF
                 {
                     Grid innerGrid = new Grid();
                     Grid descriptionsGrid = new Grid();
+                    Grid discountGrid = new Grid();
 
                     Border agentDataBorder = new Border();
                     Border agentLogoBorder = new Border();
@@ -83,16 +96,19 @@ namespace PriyatniyShelestWPF
                     Image agentLogo = new Image();
 
                     Label agentDiscountLabel = new Label();
-
                     Label agentTypeNameLabel = new Label();
                     Label agentSalesLabel = new Label();
                     Label agentContactsLabel = new Label();
                     Label agentPriorityLabel = new Label();
 
+                    Button editAgentButton = new Button();
+                    Button deleteAgentButton = new Button();
+
                     {
                         innerGrid.HorizontalAlignment = HorizontalAlignment.Stretch;
                         descriptionsGrid.VerticalAlignment = VerticalAlignment.Stretch;
                         descriptionsGrid.Margin = new Thickness(5);
+                        discountGrid.Margin = new Thickness(5);
 
                         ColumnDefinition imageColumn = new ColumnDefinition();
                         imageColumn.Width = new GridLength(200);
@@ -102,27 +118,48 @@ namespace PriyatniyShelestWPF
                         descriptionColumn.Width = new GridLength(1, GridUnitType.Star);
                         innerGrid.ColumnDefinitions.Add(descriptionColumn);
 
-                        ColumnDefinition discountColumn = new ColumnDefinition();
-                        discountColumn.Width = new GridLength(50);
-                        innerGrid.ColumnDefinitions.Add(discountColumn);
+                        ColumnDefinition propertiesColumn = new ColumnDefinition();
+                        propertiesColumn.Width = new GridLength(200);
+                        innerGrid.ColumnDefinitions.Add(propertiesColumn);
 
-                        RowDefinition TypeRow = new RowDefinition();
-                        TypeRow.Height = new GridLength(30);
-                        descriptionsGrid.RowDefinitions.Add(TypeRow);
+                        {
+                            RowDefinition TypeRow = new RowDefinition();
+                            TypeRow.Height = new GridLength(30);
+                            descriptionsGrid.RowDefinitions.Add(TypeRow);
 
-                        RowDefinition TitleRow = new RowDefinition();
-                        TitleRow.Height = new GridLength(30);
-                        descriptionsGrid.RowDefinitions.Add(TitleRow);
+                            RowDefinition TitleRow = new RowDefinition();
+                            TitleRow.Height = new GridLength(30);
+                            descriptionsGrid.RowDefinitions.Add(TitleRow);
 
-                        RowDefinition PhoneRow = new RowDefinition();
-                        PhoneRow.Height = new GridLength(30);
-                        descriptionsGrid.RowDefinitions.Add(PhoneRow);
+                            RowDefinition PhoneRow = new RowDefinition();
+                            PhoneRow.Height = new GridLength(30);
+                            descriptionsGrid.RowDefinitions.Add(PhoneRow);
 
-                        RowDefinition PriorityRow = new RowDefinition();
-                        PriorityRow.Height = new GridLength(30);
-                        descriptionsGrid.RowDefinitions.Add(PriorityRow);
+                            RowDefinition PriorityRow = new RowDefinition();
+                            PriorityRow.Height = new GridLength(30);
+                            descriptionsGrid.RowDefinitions.Add(PriorityRow);
+                        }//description column
+
+                        {
+                            ColumnDefinition propsColumnOne = new ColumnDefinition();
+                            propsColumnOne.Width = new GridLength(1, GridUnitType.Star);
+                            discountGrid.ColumnDefinitions.Add(propsColumnOne);
+
+                            ColumnDefinition propsColumnTwo = new ColumnDefinition();
+                            propsColumnTwo.Width = new GridLength(1, GridUnitType.Star);
+                            discountGrid.ColumnDefinitions.Add(propsColumnTwo);
+
+                            RowDefinition discountRow = new RowDefinition();
+                            discountRow.Height = new GridLength(1, GridUnitType.Star);
+                            discountGrid.RowDefinitions.Add(discountRow);
+
+                            RowDefinition propsRowOne = new RowDefinition();
+                            propsRowOne.Height = new GridLength(1, GridUnitType.Star);
+                            discountGrid.RowDefinitions.Add(propsRowOne);
+                        }//discount column
 
                         Grid.SetColumn(descriptionsGrid, 1);
+                        Grid.SetColumn(discountGrid, 2);
                         Grid.SetRow(innerGrid, i);
                     }// record creation
 
@@ -161,26 +198,54 @@ namespace PriyatniyShelestWPF
 
                     {
                         int discount = agents[i].getDiscount();
+
+                        Thickness thicc = new Thickness(2);
+
                         agentDiscountLabel.Content = $"{discount}%";
 
-                        Grid.SetColumn(agentDiscountLabel, 2);
-                        innerGrid.Children.Add(agentDiscountLabel);
-                    }// agentDiscountLabel setting
+                        editAgentButton.Content = "Изменить";
+                        deleteAgentButton.Content = "Удалить";
+
+                        Grid.SetColumn(agentDiscountLabel, 0);
+                        Grid.SetRow(agentDiscountLabel, 0);
+                        discountGrid.Children.Add(agentDiscountLabel);
+
+                        Grid.SetColumn(editAgentButton, 0);
+                        Grid.SetRow(editAgentButton, 1);
+                        editAgentButton.Margin = thicc;
+                        discountGrid.Children.Add(editAgentButton);
+
+                        Grid.SetColumn(deleteAgentButton, 1);
+                        Grid.SetRow(deleteAgentButton, 1);
+                        deleteAgentButton.Margin = thicc;
+                        //deleteAgentButton.AddHandler(Button.ClickEvent, new RoutedEventHandler());
+                        deleteAgentButton.Name = $"btn_{i}";
+                        deleteAgentButton.Tag = "i";
+                        //deleteAgentButton.AddHandler(Button.ClickEvent, new RoutedEventHandler(deleteAgentButton_Click));
+                        discountGrid.Children.Add(deleteAgentButton);
+                    }// agentDiscountGrid setting
 
                     {
-                        RowDefinition rowDef = new RowDefinition();
-                        rowDef.Height = new GridLength(150);
-                        rowDef.Name = $"row{i}";
-                        centerGrid.RowDefinitions.Add(rowDef);
+                        RowDefinition recordRow = new RowDefinition();
+                        recordRow.Height = new GridLength(150);
+                        recordRow.Name = $"row{i}";
+                        centerGrid.RowDefinitions.Add(recordRow);
+                        innerGrid.Children.Add(discountGrid);
                         innerGrid.Children.Add(descriptionsGrid);
-                        innerGrid.UpdateLayout();
+                        discountGrid.UpdateLayout();
                         descriptionsGrid.UpdateLayout();
+                        innerGrid.UpdateLayout();
                         centerGrid.Children.Add(innerGrid);
                     }// inserting ready row in grid
                 }
             } // creating records on page
             centerGrid.UpdateLayout();
-        } //make MORE SELECTIONS
+        }
+
+        void deleteAgentButton_Click(int item)
+        {
+            throw new NotImplementedException();
+        }
 
         public int getMaxPages(string connectionString, string searchFor = "%", int inFilter = 0, int recordsPerPage = 10)
         {

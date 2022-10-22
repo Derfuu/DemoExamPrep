@@ -59,3 +59,5 @@ D:\Projects\C#\DemoExamPrep\148\PriyatniyShelestWPF\obj\Debug\PriyatniyShelestWP
 D:\Projects\C#\DemoExamPrep\148\PriyatniyShelestWPF\obj\Debug\PriyatniyShelestWPF.csproj.CoreCompileInputs.cache
 D:\Projects\C#\DemoExamPrep\148\PriyatniyShelestWPF\obj\Debug\PriyatniyShelestWPF.exe
 D:\Projects\C#\DemoExamPrep\148\PriyatniyShelestWPF\obj\Debug\PriyatniyShelestWPF.pdb
+E:\Stu\DemoExamPrep\148\PriyatniyShelestWPF\obj\Debug\AgentsEditWindow.g.cs
+E:\Stu\DemoExamPrep\148\PriyatniyShelestWPF\obj\Debug\AgentsEditWindow.baml
