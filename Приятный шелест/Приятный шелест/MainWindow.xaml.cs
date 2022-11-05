@@ -25,6 +25,9 @@ namespace Приятный_шелест
 
             InitializeComponent();
         }
+        SolidColorBrush green = new SolidColorBrush(Color.FromArgb(50, 151, 255, 122));
+        SolidColorBrush red = new SolidColorBrush(Color.FromArgb(50, 255, 0, 0));
+        SolidColorBrush invisible = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
         int Page = 1;
         int Paginator = 10;
         int YearsRange = 5;
@@ -38,6 +41,8 @@ namespace Приятный_шелест
             $"AS 'TotalSalesBy'  FROM Agent INNER JOIN AgentType ON(Agent.AgentTypeID = AgentType.ID) ";
         string dobavka = "";
         string chepushilo = "";
+
+
         private void GetMaxPage(string filter = "")
         {
             int schetBebr = 0;
@@ -85,16 +90,16 @@ namespace Приятный_шелест
             }
             PageInfo.Content = $"Вы на {Page} из {MaxPage}";
         }
-        //rgb(151, 255, 122);
-        SolidColorBrush green = new SolidColorBrush(Color.FromArgb(50, 151, 255, 122));
-        SolidColorBrush red = new SolidColorBrush(Color.FromArgb(50, 255, 0, 0));
-        SolidColorBrush invisible = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
+
+
         private void Window_Initialized(object sender, EventArgs e)
         {
             GetMaxPage();
             dobavka = $"order by AgentType.ID OFFSET {Paginator - 10} ROWS FETCH NEXT 10 ROWS ONLY";
-            Zapros(queryString );
+            Zapros(queryString);
         }
+
+
         private void buttonRight_Click(object sender, RoutedEventArgs e)
         {
             if (Page + 1 > MaxPage)
@@ -304,6 +309,7 @@ namespace Приятный_шелест
             list.UpdateLayout();
             
         }
+
         bool firstInit = false;
         private void filter(object sender, SelectionChangedEventArgs e)
         {
@@ -329,31 +335,31 @@ namespace Приятный_шелест
             }
             else if (FilterBox.SelectedIndex == 2)
             {
-                chepushilo += $"where AgentType.Title like 'ПАО' ";
+                chepushilo = $"where AgentType.Title like 'ПАО' ";
                 Zapros(queryString);
 
             }
             else if (FilterBox.SelectedIndex == 3)
             {
-                chepushilo += $"where AgentType.Title like 'ОАО' ";
+                chepushilo = $"where AgentType.Title like 'ОАО' ";
                 Zapros(queryString );
 
             }
             else if (FilterBox.SelectedIndex == 4)
             {
-                chepushilo += $"where AgentType.Title like 'МФО' ";
+                chepushilo = $"where AgentType.Title like 'МФО' ";
                 Zapros(queryString );
 
             }
             else if (FilterBox.SelectedIndex == 5)
             {
-                chepushilo += $"where AgentType.Title like 'ЗАО' ";
+                chepushilo = $"where AgentType.Title like 'ЗАО' ";
                 Zapros(queryString );
 
             }
             else if (FilterBox.SelectedIndex == 6)
             {
-                chepushilo += $"where AgentType.Title like 'МКК' ";
+                chepushilo = $"where AgentType.Title like 'МКК' ";
                 Zapros(queryString );
 
             }
