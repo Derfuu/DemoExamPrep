@@ -44,7 +44,7 @@
                               Width="120"
                               Height="40"
                               Padding="12 10.5,0,0"
-                              FontSize="15">
+                              FontSize="15" SelectionChanged="SortBox_SelectionChanged">
                 <TextBlock>Наименование</TextBlock>
                 <TextBlock>Продажи</TextBlock>
                 <TextBlock>Размер скидки</TextBlock>

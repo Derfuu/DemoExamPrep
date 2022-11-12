@@ -251,23 +251,23 @@ namespace Приятный_шелест
                 //prod
                 Label sell = new Label();
                 sell.Content = prod[i] + " Продаж за год";
-                if (priceProd[i] * prod[i] <= 10000)
+                if (priceProd[i] <= 10000)
                 {
                     discount.Content = "0%";
                 }
-                if (priceProd[i] * prod[i] > 10000 && priceProd[i] * prod[i] <= 50000)
+                if (priceProd[i] > 10000 && priceProd[i] <= 50000)
                 {
                     discount.Content = "5%";
                 }
-                else if (priceProd[i] * prod[i] > 50000 && priceProd[i] * prod[i] <= 150000)
+                else if (priceProd[i] > 50000 && priceProd[i] <= 150000)
                 {
                     discount.Content = "10%";
                 }
-                else if (priceProd[i] * prod[i] > 150000 && priceProd[i] * prod[i] <= 500000)
+                else if (priceProd[i] > 150000 && priceProd[i] <= 500000)
                 {
                     discount.Content = "20%";
                 }
-                else if (priceProd[i] * prod[i] > 500000)
+                else if (priceProd[i]> 500000)
                 {
                     discount.Content = "25%";
                     Border1.Background = green;
@@ -317,7 +317,7 @@ namespace Приятный_шелест
             
         }
 
-        bool firstInit = false;
+        bool firstInitFilter = false;
         private void filter(object sender, SelectionChangedEventArgs e)
         {
             Page = 1;
@@ -325,52 +325,69 @@ namespace Приятный_шелест
             SetDobavka();
             if (FilterBox.SelectedIndex == 0)
             {
-                if (!firstInit)
+                if (!firstInitFilter)
                 {
-                    firstInit = true;
+                    firstInitFilter = true;
                     return;
                 }
                 chepushilo = "";
-                Zapros(queryString);
                 GetMaxPage();
             }
             else if (FilterBox.SelectedIndex == 1)
             {
                 chepushilo = $"where AgentType.Title like 'ООО' ";
-                Zapros(queryString);
-
             }
             else if (FilterBox.SelectedIndex == 2)
             {
                 chepushilo = $"where AgentType.Title like 'ПАО' ";
-                Zapros(queryString);
-
             }
             else if (FilterBox.SelectedIndex == 3)
             {
                 chepushilo = $"where AgentType.Title like 'ОАО' ";
-                Zapros(queryString );
-
             }
             else if (FilterBox.SelectedIndex == 4)
             {
                 chepushilo = $"where AgentType.Title like 'МФО' ";
-                Zapros(queryString );
-
             }
             else if (FilterBox.SelectedIndex == 5)
             {
                 chepushilo = $"where AgentType.Title like 'ЗАО' ";
-                Zapros(queryString );
-
             }
             else if (FilterBox.SelectedIndex == 6)
             {
                 chepushilo = $"where AgentType.Title like 'МКК' ";
-                Zapros(queryString );
-
             }
+            Zapros(queryString);
             GetMaxPage(FilterBox.SelectedIndex + "");
+        }
+
+        bool firstInitSort = false;
+        private void SortBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (firstInitSort == false)
+            {
+                firstInitSort = true;
+                return;
+            }
+            //Zapros(queryString, true);
+            if (SortBox.SelectedIndex == 0)
+            {
+                sort = "Agent.Title";
+            }
+            else if (SortBox.SelectedIndex == 1)
+            {
+                sort = "Sales";
+            }
+            else if (SortBox.SelectedIndex == 2)
+            {
+                sort = "TotalSalesBy";
+            }
+            else if (SortBox.SelectedIndex == 3)
+            {
+                sort = "Agent.[Priority]";
+            }
+            SetDobavka();
+            Zapros(queryString);
         }
     }
 }
