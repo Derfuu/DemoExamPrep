@@ -42,12 +42,17 @@ namespace Приятный_шелест
         string sort = "Agent.Title";
         string dobavka = "";
         string chepushilo = "";
-
-
+        string poisk = "";
+        //where Agent.Title like '%' + '' + '%'
         private void GetMaxPage(string filter = "")
         {
+            string tmpPoisk = poisk;
+            //if (tmpPoisk.IndexOf("and") != -1)
+            //{
+            tmpPoisk = tmpPoisk.Replace("and", "where");
+            //}
             int schetBebr = 0;
-            SqlCommand command = new SqlCommand($"select max(Agent.ID) from agent", db.getConnection());
+            SqlCommand command = new SqlCommand($"select max(Agent.ID) from agent " + tmpPoisk, db.getConnection());
             if (filter == "" || filter == "0")
             {
                 db.openConnection();
@@ -55,8 +60,18 @@ namespace Приятный_шелест
                 SqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
                 {
-                    MaxPage = reader.GetInt32(0);
+                    try
+                    {
+                        MaxPage = reader.GetInt32(0);
+                    }
+                    catch {
+                        Page = 0;
+                        MaxPage = 0;
+                        reader.Close();
+                        return;
+                    }
                 }
+                reader.Close();
                 if (MaxPage % 10 != 0)
                 {
                     MaxPage = MaxPage / 10 + 1;
@@ -65,19 +80,28 @@ namespace Приятный_шелест
                 {
                     MaxPage = MaxPage / 10;
                 }
-                reader.Close();
             }
             else
             {
-                command = new SqlCommand($"select row_number() over(ORDER BY Agent.ID) from Agent where AgentTypeID like {filter}", db.getConnection());
+                command = new SqlCommand($"select row_number() over(ORDER BY Agent.ID) from Agent where AgentTypeID like {filter} " + tmpPoisk, db.getConnection());
 
                 db.openConnection();
 
                 SqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
                 {
-                    schetBebr++;
-                    MaxPage = reader.GetInt64(0);
+                    try
+                    {
+                        schetBebr++;
+                        MaxPage = reader.GetInt64(0);
+                    }
+                    catch
+                    {
+                        Page = 0;
+                        MaxPage = 0;
+                        reader.Close();
+                        return;
+                    }
                 }
                 reader.Close();
                 if (MaxPage % 10 != 0)
@@ -91,16 +115,12 @@ namespace Приятный_шелест
             }
             PageInfo.Content = $"Вы на {Page} из {MaxPage}";
         }
-
-
         private void Window_Initialized(object sender, EventArgs e)
         {
             GetMaxPage();
             dobavka = $"order by Agent.Title OFFSET {Paginator - 10} ROWS FETCH NEXT 10 ROWS ONLY";
             Zapros(queryString);
         }
-
-
         private void buttonRight_Click(object sender, RoutedEventArgs e)
         {
             if (Page + 1 > MaxPage)
@@ -150,7 +170,11 @@ namespace Приятный_шелест
         }
         private void Zapros(string queryString1, bool page = false)
         {
-            if (page) { PageInfo.Content = $"Вы на {Page} из {MaxPage}"; }
+            if (page) {
+                Page = 1;
+                Paginator = 10;
+                PageInfo.Content = $"Вы на {Page} из {MaxPage}"; 
+            }
             DestroyContent();
             string[] name = new string[10];
             int[] prod = new int[10];
@@ -158,7 +182,7 @@ namespace Приятный_шелест
             int[] priorety = new int[10];
             decimal[] priceProd = new decimal[10];
             string[] logo = new string[10];
-            SqlCommand command = new SqlCommand(queryString1 + chepushilo + dobavka, db.getConnection());
+            SqlCommand command = new SqlCommand(queryString1 + chepushilo + poisk + dobavka, db.getConnection());
             db.openConnection();
             SqlDataReader reader = command.ExecuteReader();
             int i = 0;
@@ -320,8 +344,6 @@ namespace Приятный_шелест
         bool firstInitFilter = false;
         private void filter(object sender, SelectionChangedEventArgs e)
         {
-            Page = 1;
-            Paginator = 10;
             SetDobavka();
             if (FilterBox.SelectedIndex == 0)
             {
@@ -388,6 +410,40 @@ namespace Приятный_шелест
             }
             SetDobavka();
             Zapros(queryString);
+        }
+
+        private void Poisk(object sender, TextChangedEventArgs e)
+        {
+            if (findName.Text != "")
+            {
+                if (chepushilo == "")
+                {
+                    poisk = $" where Agent.Title like '%' + '{findName.Text}' + '%' ";
+                }
+                else
+                {
+                    poisk = $" and Agent.Title like '%' + '{findName.Text}' + '%' ";
+                }
+            }
+            else
+            {
+                poisk = "";
+            }
+            GetMaxPage();
+            Zapros(queryString, true);
+        }
+
+        private void findName_GotFocus(object sender, RoutedEventArgs e)
+        {
+            PoskLable.Opacity = 0;
+        }
+
+        private void findName_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (findName.Text == "")
+            {
+                PoskLable.Opacity = 1;
+            }
         }
     }
 }
