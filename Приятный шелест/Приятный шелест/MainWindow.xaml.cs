@@ -39,6 +39,7 @@ namespace Приятный_шелест
                 $"FROM ProductSale, Product WHERE ProductSale.AgentID = Agent.ID and " +
             $"ProductSale.ProductID = Product.ID and DATEDIFF(year, SaleDate, CURRENT_TIMESTAMP) < 1) " +
             $"AS 'TotalSalesBy'  FROM Agent INNER JOIN AgentType ON(Agent.AgentTypeID = AgentType.ID) ";
+        string sort = "Agent.Title";
         string dobavka = "";
         string chepushilo = "";
 
@@ -95,7 +96,7 @@ namespace Приятный_шелест
         private void Window_Initialized(object sender, EventArgs e)
         {
             GetMaxPage();
-            dobavka = $"order by AgentType.ID OFFSET {Paginator - 10} ROWS FETCH NEXT 10 ROWS ONLY";
+            dobavka = $"order by Agent.Title OFFSET {Paginator - 10} ROWS FETCH NEXT 10 ROWS ONLY";
             Zapros(queryString);
         }
 
@@ -113,7 +114,8 @@ namespace Приятный_шелест
                 Page += 1;
                 Paginator += 10;
                 DestroyContent();
-                dobavka = $"order by AgentType.ID OFFSET {Paginator - 10} ROWS FETCH NEXT 10 ROWS ONLY";
+                //dobavka = $"order by {sort} OFFSET {Paginator - 10} ROWS FETCH NEXT 10 ROWS ONLY";
+                SetDobavka();
                 Zapros(queryString , true);
             }
         }
@@ -129,9 +131,14 @@ namespace Приятный_шелест
                 buttonRight.Background = invisible;
                 Page -= 1;
                 Paginator -= 10;
-                dobavka = $"order by AgentType.ID OFFSET {Paginator - 10} ROWS FETCH NEXT 10 ROWS ONLY";
+                //dobavka = $"order by {sort} OFFSET {Paginator - 10} ROWS FETCH NEXT 10 ROWS ONLY";
+                SetDobavka();
                 Zapros(queryString , true);
             }
+        }
+        private void SetDobavka()
+        {
+            dobavka = $"order by {sort} OFFSET {Paginator - 10} ROWS FETCH NEXT 10 ROWS ONLY";
         }
         private void DestroyContent()
         {
@@ -228,7 +235,7 @@ namespace Приятный_шелест
 
                 //discount settings
                 Label discount = new Label();
-                discount.Content = "0 %";
+                discount.Content = "0%";
                 discount.FontSize = bigFont;
                 //Grid.SetRow(discount, 0);
                 discount.VerticalAlignment = VerticalAlignment.Center;
@@ -315,7 +322,7 @@ namespace Приятный_шелест
         {
             Page = 1;
             Paginator = 10;
-            dobavka = $"order by AgentType.ID OFFSET {Paginator - 10} ROWS FETCH NEXT 10 ROWS ONLY";
+            SetDobavka();
             if (FilterBox.SelectedIndex == 0)
             {
                 if (!firstInit)
