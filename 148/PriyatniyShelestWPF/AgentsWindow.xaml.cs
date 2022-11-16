@@ -1,20 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Data.SqlClient;
-using Microsoft.Win32;
 
 namespace PriyatniyShelestWPF
 {
@@ -46,6 +36,11 @@ namespace PriyatniyShelestWPF
         /*
          FUNCTIONS
         */
+        bool is_deletion_available(int agent_id)
+        {
+            return false;
+        }
+
         public void updateTableConfiguration()
         {
             string searchString = SearchBox.Text;
@@ -109,12 +104,26 @@ namespace PriyatniyShelestWPF
 
                     void delAgent(object sender, EventArgs e)
                     {
-                        MessageBox.Show($"Delete {agents[(int)deleteAgentButton.Tag].Title} ?");
+                        ;
+                        if (MessageBox.Show($"Удалить {agents[(int)deleteAgentButton.Tag].Title} ?", "Удаление агента",
+                            MessageBoxButton.YesNo,
+                            MessageBoxImage.Question) == MessageBoxResult.Yes)
+                        {
+                            using (SqlConnection connection = new SqlConnection(connStr))
+                            {
+                                string queryString = $@"DELETE CASCADE FROM Agent WHERE Agent.ID='{agents[(int)deleteAgentButton.Tag].ID}'";
+                                SqlCommand command = new SqlCommand(queryString, connection);
+                                connection.Open();
+                                if (is_deletion_available(agents[(int)deleteAgentButton.Tag].ID)) { command.ExecuteNonQuery(); }
+                            }
+                            MessageBox.Show("Выполнено");
+                        }
                     }//functions for buttons and checkers
 
                     void alterAgent(object sender, EventArgs e)
                     {
                         AgentsEditWindow editWindow = new AgentsEditWindow();
+                        editWindow.connectionString = connStr;
                         editWindow.currentAgent = agents[(int)deleteAgentButton.Tag];
                         editWindow.isAddingNew = false;
                         editWindow.updateValues(agentTypes);

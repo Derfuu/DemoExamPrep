@@ -55,7 +55,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="AgentsEditWindow.xaml">
+    <Page Include="AgentEditWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -64,8 +64,8 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="Agent.cs" />
-    <Compile Include="AgentsEditWindow.xaml.cs">
-      <DependentUpon>AgentsEditWindow.xaml</DependentUpon>
+    <Compile Include="AgentEditWindow.xaml.cs">
+      <DependentUpon>AgentEditWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>

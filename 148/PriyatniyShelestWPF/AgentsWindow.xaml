@@ -22,7 +22,10 @@
             <Setter Property="Margin" Value="5"/>
         </Style>
         <Style TargetType="Button">
-            <Setter Property="Background" Value="#C6D7FF"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#46B29D"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Margin" Value="5"/>
         </Style>
     </Window.Resources>
 
@@ -81,6 +84,7 @@
                             Grid.Column="1"
                             Content="↑↑"
                             Background="White"
+                            Margin="0"
                             Click="ChangeOrderBtn_Click"/>
                 </Grid>
             </Border>
@@ -119,10 +123,10 @@
         <Border Grid.Row="2"
                 Background="#C6D7FF"
                 Style="{x:Null}">
-            <Grid Grid.Row="2">
+            <Grid Grid.Row="2" x:Name="BottomNavPanel">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="300"/>
+                    <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="150"/>
                 </Grid.ColumnDefinitions>
 
@@ -130,14 +134,15 @@
                       Grid.Column="0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
+                        <ColumnDefinition Width="1.5*"/>
                     </Grid.ColumnDefinitions>
+
+                    <Button Grid.Column="0" Content="Изменить"/>
+                    <Button Grid.Column="1" Content="Снять выделение"/>
                 </Grid>
-                
+
                 <Grid x:Name="navigationButtonsGrid"
-                      Grid.Column="2"
-                      Margin="2,2">
+                      Grid.Column="2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
@@ -149,16 +154,13 @@
                         Grid.Column="1"
                         HorizontalContentAlignment="Center"
                         HorizontalAlignment="Stretch"
-                        VerticalContentAlignment="Stretch"
-                        VerticalAlignment="Stretch">
+                        VerticalContentAlignment="Center"
+                        VerticalAlignment="Center">
                     </Label>
-                    
+
                     <Button Grid.Column="2" x:Name="paginatorUpButton" Content=">" Background="White" Click="pagintorSelectionUP"/>
                 </Grid>
-                
             </Grid>
-            
         </Border>
-        
     </Grid>
 </Window>
