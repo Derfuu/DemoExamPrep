@@ -63,7 +63,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="Agent.cs" />
+    <Compile Include="classes\Agent.cs" />
     <Compile Include="AgentEditWindow.xaml.cs">
       <DependentUpon>AgentEditWindow.xaml</DependentUpon>
     </Compile>
@@ -77,7 +77,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AgentType.cs" />
+    <Compile Include="classes\AgentType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

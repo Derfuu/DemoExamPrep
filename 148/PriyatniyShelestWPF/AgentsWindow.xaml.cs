@@ -29,6 +29,7 @@ namespace PriyatniyShelestWPF
         string connStr = $"{config[0]}; {config[1]}; {config[2]}";
         int currentPage = 1;
         int maxPage = 1;
+        List<CheckBox> CB_records = new List<CheckBox>();
         List<int> recordsToAlternate = new List<int>();
         bool reverseSorting = false;
         bool firstLoad = true;
@@ -64,11 +65,13 @@ namespace PriyatniyShelestWPF
 
             for (int i = 0; i < agentsLen; i++)
             {
+                CB_records.Clear();
                 SolidColorBrush usingBgColor;
                 if (agents[i] == null) { break; }
                 if (agents[i].getDiscount() == 25)
                 { usingBgColor = bgcolor25; }
                 else { usingBgColor = bgcolor; }
+
                 {
                     Grid innerGrid = new Grid();
                     Grid descriptionsGrid = new Grid();
@@ -92,14 +95,12 @@ namespace PriyatniyShelestWPF
 
                     void addToAlterList(object sender, EventArgs e)
                     {
-                        recordsToAlternate.Add(agents[(int)deleteAgentButton.Tag].ID);
-                        MessageBox.Show(recordsToAlternate[0]+"");
+                        recordsToAlternate.Add(agents[(int)agentSelection.Tag].ID);
                     }//functions for buttons and checkers
 
                     void removeFromAlterList(object sender, EventArgs e)
                     {
-                        MessageBox.Show(recordsToAlternate[0] + "");
-                        recordsToAlternate.Remove(agents[(int)deleteAgentButton.Tag].ID);
+                        recordsToAlternate.Remove(agents[(int)agentSelection.Tag].ID);
                     }//functions for buttons and checkers
 
                     void delAgent(object sender, EventArgs e)
@@ -236,6 +237,8 @@ namespace PriyatniyShelestWPF
                         Grid.SetColumn(agentSelection, 1);
                         Grid.SetRow(agentSelection, 0);
                         if (recordsToAlternate.Contains(agents[i].ID)) { agentSelection.IsChecked = true; }
+                        CB_records.Add(agentSelection);
+                        agentSelection.Tag = i;
                         agentSelection.HorizontalAlignment = HorizontalAlignment.Stretch;
                         agentSelection.VerticalAlignment = VerticalAlignment.Stretch;
                         agentSelection.HorizontalContentAlignment = HorizontalAlignment.Center;
@@ -247,7 +250,6 @@ namespace PriyatniyShelestWPF
                         Grid.SetColumn(editAgentButton, 0);
                         Grid.SetRow(editAgentButton, 1);
                         editAgentButton.Content = "Изменить";
-                        editAgentButton.Tag = i;
                         editAgentButton.Click += alterAgent;
                         editAgentButton.Margin = thicc;
                         discountGrid.Children.Add(editAgentButton);
@@ -257,7 +259,6 @@ namespace PriyatniyShelestWPF
                         deleteAgentButton.Content = "Удалить";
                         deleteAgentButton.Margin = thicc;
                         deleteAgentButton.Name = $"delBtn_{i}";
-                        deleteAgentButton.Tag = i;
                         deleteAgentButton.Click += delAgent;
                         discountGrid.Children.Add(deleteAgentButton);
                     }// agentDiscountGrid setting
@@ -277,6 +278,12 @@ namespace PriyatniyShelestWPF
                 }
             } // creating records on page
             centerGrid.UpdateLayout();
+        }
+
+        public void deselectAllAgents()
+        {
+            recordsToAlternate.Clear();
+            updateTableConfiguration();
         }
 
         public int getMaxPages(string connectionString, string searchFor = "%", int inFilter = 0, int recordsPerPage = 10)
@@ -487,6 +494,11 @@ namespace PriyatniyShelestWPF
         {
             firstLoad = !firstLoad;
             { updateFilterTypes(); updateTableConfiguration(); reverseTextCheck(); }
+        }
+
+        private void deselectAllAgentsBtn_Click(object sender, RoutedEventArgs e)
+        {
+            deselectAllAgents();
         }
     }
 }
