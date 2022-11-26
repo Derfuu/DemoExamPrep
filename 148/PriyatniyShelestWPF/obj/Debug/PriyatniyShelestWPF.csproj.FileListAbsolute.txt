@@ -78,3 +78,5 @@ E:\PoS\Stu\DemoExamPrep\148\PriyatniyShelestWPF\obj\Debug\PriyatniyShelestWPF.ex
 E:\PoS\Stu\DemoExamPrep\148\PriyatniyShelestWPF\obj\Debug\PriyatniyShelestWPF.pdb
 E:\PoS\Stu\DemoExamPrep\148\PriyatniyShelestWPF\obj\Debug\AgentEditWindow.g.cs
 E:\PoS\Stu\DemoExamPrep\148\PriyatniyShelestWPF\obj\Debug\AgentEditWindow.baml
+D:\Projects\C#\DemoExamPrep\148\PriyatniyShelestWPF\obj\Debug\AgentEditWindow.g.cs
+D:\Projects\C#\DemoExamPrep\148\PriyatniyShelestWPF\obj\Debug\AgentEditWindow.baml

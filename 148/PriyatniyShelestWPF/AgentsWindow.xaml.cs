@@ -200,10 +200,8 @@ namespace PriyatniyShelestWPF
                     }// border setting
 
                     {
-                        Uri fileUri = new Uri(basePath + agents[i].Logo);
-                        agentLogo.Source = new BitmapImage(fileUri);
-                        agentLogo.Margin = new Thickness(10);
-                        Grid.SetColumn(agentLogo, 0);
+                        //agentLogo.Margin = new Thickness(10);
+                        //Grid.SetColumn(agentLogo, 0);
                         innerGrid.Children.Add(agentLogo);
                     }// image setting
 
