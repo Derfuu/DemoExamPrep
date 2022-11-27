@@ -249,6 +249,7 @@ namespace PriyatniyShelestWPF
 
                         Grid.SetColumn(editAgentButton, 0);
                         Grid.SetRow(editAgentButton, 1);
+                        editAgentButton.Tag = i;
                         editAgentButton.Content = "Изменить";
                         editAgentButton.Click += alterAgent;
                         editAgentButton.Margin = thicc;
@@ -256,6 +257,7 @@ namespace PriyatniyShelestWPF
 
                         Grid.SetColumn(deleteAgentButton, 1);
                         Grid.SetRow(deleteAgentButton, 1);
+                        deleteAgentButton.Tag = i;
                         deleteAgentButton.Content = "Удалить";
                         deleteAgentButton.Margin = thicc;
                         deleteAgentButton.Name = $"delBtn_{i}";
@@ -499,6 +501,17 @@ namespace PriyatniyShelestWPF
         private void deselectAllAgentsBtn_Click(object sender, RoutedEventArgs e)
         {
             deselectAllAgents();
+        }
+
+        private void alterSelectedAgentsBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (recordsToAlternate.Count >= 1)
+            {
+                PriorityEditWindow priorityWindow = new PriorityEditWindow();
+                priorityWindow.ShowDialog();
+                deselectAllAgents();
+            }
+            else { MessageBox.Show("Не выбран ни один агент.", "Внимание."); }
         }
     }
 }

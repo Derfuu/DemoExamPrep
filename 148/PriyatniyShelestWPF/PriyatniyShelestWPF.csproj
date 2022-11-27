@@ -75,9 +75,16 @@
       <DependentUpon>AgentsWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="PriorityEditWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="classes\AgentType.cs" />
+    <Compile Include="PriorityEditWindow.xaml.cs">
+      <DependentUpon>PriorityEditWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

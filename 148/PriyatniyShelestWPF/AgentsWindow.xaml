@@ -137,7 +137,7 @@
                         <ColumnDefinition Width="1.5*"/>
                     </Grid.ColumnDefinitions>
 
-                    <Button Grid.Column="0" Content="Изменить"/>
+                    <Button x:Name="alterSelectedAgentsBtn" Grid.Column="0" Content="Изменить" Click="alterSelectedAgentsBtn_Click"/>
                     <Button x:Name="deselectAllAgentsBtn" Grid.Column="1" Content="Снять выделение" Click="deselectAllAgentsBtn_Click"/>
                 </Grid>
 
