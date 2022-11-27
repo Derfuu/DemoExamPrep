@@ -1,0 +1,98 @@
+﻿<Window x:Class="PriyatniyShelestWPF.PriorityEditWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PriyatniyShelestWPF"
+        mc:Ignorable="d"
+        Title="Редактирование приоритетов"
+        Height="180" Width="550"
+        Icon="Приятный шелест.ico"
+        FontFamily="Monotype Corsiva" FontSize="19.5"
+        MinWidth="550" MinHeight="180" ResizeMode="NoResize">
+    <Window.Resources>
+        <Style TargetType="Border">
+            <Setter Property="BorderBrush" Value="#46B29D"/>
+            <Setter Property="CornerRadius" Value="2"/>
+            <Setter Property="BorderThickness" Value="1.5"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="Margin" Value="0,1"/>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#46B29D"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid x:Name="mainGrid"
+          ShowGridLines="False">
+        <Grid.RowDefinitions>
+            <RowDefinition MinHeight="40" MaxHeight="40" />
+            <RowDefinition Height="*" />
+            <RowDefinition MinHeight="40" MaxHeight="40" />
+        </Grid.RowDefinitions>
+        <Border Grid.Row="0"
+                Background="#C6D7FF"
+                Style="{x:Null}"/>
+
+        <Grid Grid.Row="0"
+              x:Name="upperBar"
+              ShowGridLines="False">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0">
+                <TextBlock x:Name="CurrentAction"
+                           HorizontalAlignment="Left"
+                           Text="Изменение приоритета предприятий:"/>
+            </Border>
+        </Grid>
+
+        <Border Grid.Row="1">
+            <Grid x:Name="centerGrid"
+                    VerticalAlignment="Stretch"
+                    HorizontalAlignment="Stretch"
+                    Background="#C6D7FF">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="3*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Приоритет:" Height="22" Margin="0,4" Width="115"/>
+                <TextBox Grid.Row="0" Grid.Column="1" x:Name="priority" TextChanged="priorityTextChanged"/>
+
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="2"
+                Background="#C6D7FF"
+                Style="{x:Null}">
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="149*"/>
+                    <ColumnDefinition Width="245*"/>
+                    <ColumnDefinition Width="150"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="2"
+                        x:Name="SaveAgentData" Content="Сохранить"
+                        Click="saveProperties" IsEnabled="False"/>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
