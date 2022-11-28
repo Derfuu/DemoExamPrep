@@ -1,10 +1,17 @@
-from sqlalchemy import select, delete, update, insert, ifnull, where
+import sqlalchemy as sa
+
+from sqlalchemy import select, delete, update, insert
 from sqlalchemy import or_, and_
 from sqlalchemy.sql import func
-from .db import base
+from .db.base import Agent, AgentType, Product, ProductType, ProductSale, engine
 
-# def select_agents():
-#     sales_query = select( ifnull( func.sum(  ), 0 ) )
+def select_agents():
+
+    query = select(
+            Agent.c.ID, Agent.c.Title, Agent.c.Address, Agent.c.INN, Agent.c.KPP, Agent.c.DirectorName, Agent.c.Phone, Agent.c.Email, Agent.c.Logo, Agent.c.Priority
+        )
+    values = engine.execute(query).all()
+    return values
 
 
 # "SELECT Agent.ID, AgentType.Title AS 'Type', Agent.Title, " +

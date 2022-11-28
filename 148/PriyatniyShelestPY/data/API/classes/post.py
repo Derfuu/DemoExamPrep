@@ -7,9 +7,9 @@ class agent(BaseModel):
     ag_address: str = "address"
     ag_director: str = "director"
     ag_email: str = "email"
-    ag_phone: str = "01234567890"
-    ag_inn: str = "01234567890"
-    ag_kpp: str = "012345678"
+    ag_phone: str = "00000000000"
+    ag_inn: str = "00000000000"
+    ag_kpp: str = "000000000"
 
     ag_sales: int = 0
     ag_disc: int = 0

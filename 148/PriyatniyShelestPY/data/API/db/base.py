@@ -68,8 +68,3 @@ ProductType = Table(
 
 def create_tables_if_not_exists():
     meta.create_all()
-    # engine.create(ProductSale)
-    # engine.create(Agent)
-    # engine.create(AgentType)
-    # engine.create(Product)
-    # engine.create(ProductType)
