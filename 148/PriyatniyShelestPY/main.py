@@ -31,6 +31,7 @@ async def create_tables():
 async def agents_get(page: int) -> list[post.agent]:
     return api_ag.agents_get(page)
 
+# BOTTOM FUNCS DON'T HAVE ANY FUNCTIONS BEHIND
 
 @app.put("/agent/alter/one/")
 async def agent_alter(agent: post.agent):
