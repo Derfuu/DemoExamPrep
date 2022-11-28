@@ -46,10 +46,19 @@ namespace Приятный_шелест
         //where Agent.Title like '%' + '' + '%'
         private void GetMaxPage(string filter = "")
         {
-            string tmpPoisk = poisk;
+            string tmpPoisk = "";
+            if (filter=="")
+            {
+                tmpPoisk = poisk;
+            }
+            else
+            {
+                tmpPoisk = ProverkaChepushil(poisk);
+            }
+            //string tmpPoisk = ProverkaChepushil(poisk);
             //if (tmpPoisk.IndexOf("and") != -1)
             //{
-            tmpPoisk = tmpPoisk.Replace("and", "where");
+            //tmpPoisk = tmpPoisk.Replace("and", "where");
             //}
             int schetBebr = 0;
             SqlCommand command = new SqlCommand($"select max(Agent.ID) from agent " + tmpPoisk, db.getConnection());
@@ -114,6 +123,15 @@ namespace Приятный_шелест
                 }
             }
             PageInfo.Content = $"Вы на {Page} из {MaxPage}";
+        }
+        private string ProverkaChepushil(string tmp)
+        {
+            if (chepushilo != "" && poisk !="")
+            {
+                int ind = tmp.IndexOf("where");
+                tmp = tmp.Remove(ind, "where".Length).Insert(ind, "and");
+            }
+            return tmp;
         }
         private void Window_Initialized(object sender, EventArgs e)
         {
@@ -182,7 +200,8 @@ namespace Приятный_шелест
             int[] priorety = new int[10];
             decimal[] priceProd = new decimal[10];
             string[] logo = new string[10];
-            SqlCommand command = new SqlCommand(queryString1 + chepushilo + poisk + dobavka, db.getConnection());
+            string tmPoisk = ProverkaChepushil(poisk);
+            SqlCommand command = new SqlCommand(queryString1 + chepushilo + tmPoisk + dobavka, db.getConnection());
             db.openConnection();
             SqlDataReader reader = command.ExecuteReader();
             int i = 0;
@@ -416,14 +435,14 @@ namespace Приятный_шелест
         {
             if (findName.Text != "")
             {
-                if (chepushilo == "")
-                {
+                //if (chepushilo == "")
+                //{
                     poisk = $" where Agent.Title like '%' + '{findName.Text}' + '%' ";
-                }
-                else
-                {
-                    poisk = $" and Agent.Title like '%' + '{findName.Text}' + '%' ";
-                }
+                //}
+                //else
+                //{
+                //    poisk = $" and Agent.Title like '%' + '{findName.Text}' + '%' ";
+                //}
             }
             else
             {
