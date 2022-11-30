@@ -46,8 +46,8 @@ Product = Table(
     Column("Title", String(150), nullable=False),
     Column("ProductTypeID", Integer, ForeignKey("ProductType.ID"), nullable=False),
     Column("ArticleNumber", String(10), nullable=False),
-    Column("Description", String, nullable=False),
-    Column("Image", String(100), nullable=False),
+    Column("Description", String, nullable=True),
+    Column("Image", String(100), nullable=True),
     Column("ProductPersonCount", Integer, nullable=False),
     Column("ProductWorkshopCount", Integer, nullable=False),
     Column("MinCostForAgent", DECIMAL(10, 2), nullable=False),
@@ -62,9 +62,6 @@ ProductType = Table(
     Column("DefectedPercent", Float, nullable=False),
     # ForeignKeyConstraint( ["ID"], [Product.ID], name="FK_Product_ProductType" )
 )
-
-
-
 
 def create_tables_if_not_exists():
     meta.create_all()

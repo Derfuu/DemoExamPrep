@@ -4,7 +4,9 @@ from fastapi import FastAPI, HTTPException
 
 from fastapi.middleware.cors import CORSMiddleware
 
-from data.API.classes import post
+from data.API.classes.agent import Agent_get as Ag_g
+from data.API.classes.agent import Agent_post as Ag_p
+
 from data.API import api_agent as api_ag
 from data.API.db.base import create_tables_if_not_exists as CTINE
 
@@ -28,31 +30,37 @@ async def create_tables():
 
 
 @app.get("/agents/{page}/")
-async def agents_get(page: int) -> list[post.agent]:
-    return api_ag.agents_get(page)
+async def agents_get(
+        page: int,
+        type: int = 0,
+        search: str = "%",
+        order_by: str = "Title",
+        order: bool = True,
+    ) -> list[Ag_g]:
 
-# BOTTOM FUNCS DON'T HAVE ANY FUNCTIONS BEHIND
+    return api_ag.agents_get(page, 
+        {
+            "search": search,
+            "ag_type": type,
+            "order": order,
+            "order_by": order_by,
+        }
+    )
+
 
 @app.put("/agent/alter/one/")
-async def agent_alter(agent: post.agent):
-    if not agent:
-        raise HTTPException(status_code=400, detail="Смотри API")
-    return agent
-
-@app.put("/agent/alter/multiple/")
-async def agent_alter(agents: list[post.agent]):
-    if not agents:
-        raise HTTPException(status_code=400, detail="Смотри API")
-    return agents
+async def agent_alter(ag_edited: Ag_p):
+    return api_ag.agent_update(ag_edited)
 
 @app.post("/agent/create/")
-async def agent_create(agent: post.agent):
-    if not agent:
-        raise HTTPException(status_code=400, detail="Смотри API")
-    return agent
+async def agent_create(agent: Ag_p):
+    return api_ag.agent_create(agent)
+    
+# BOTTOM FUNCS DON'T HAVE ANY FUNCTIONS BEHIND YET
 
-@app.delete("/agent/delete/")
-async def agent_delete(agent_id: int):
-    if not agent_id:
-        raise HTTPException(status_code=400, detail="Смотри API")
-    return agent_id
+
+# @app.delete("/agent/delete/")
+# async def agent_delete(agent_id: int):
+#     if not agent_id:
+#         raise HTTPException(status_code=400, detail="Смотри API")
+#     return agent_id
