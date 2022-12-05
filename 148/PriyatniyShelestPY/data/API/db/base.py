@@ -3,12 +3,14 @@ from sqlalchemy import Column, Table
 from sqlalchemy import String, Integer, DECIMAL, Float, Date
 from sqlalchemy import ForeignKey, ForeignKeyConstraint, MetaData
 
-engine = create_engine("mssql://:@DESKTOP-0000001/priyatniyDEVsub?driver=ODBC+Driver+17+for+SQL+Server", echo=True)
+from ...settings import conn_string
+
+engine = create_engine(conn_string, echo=True)
 meta = MetaData(engine)
 
 ProductSale = Table(
     "ProductSale", meta,
-    Column("ID", Integer, primary_key=True),
+    Column("ID", Integer, primary_key=True, autoincrement=True),
     Column("AgentID", Integer, ForeignKey("Agent.ID"), nullable=False),
     Column("ProductID", Integer, ForeignKey("Product.ID"), nullable=False),
     Column("SaleDate", Date, nullable=False),
@@ -17,7 +19,7 @@ ProductSale = Table(
 
 Agent = Table(
     "Agent", meta,
-    Column("ID", Integer, primary_key=True),
+    Column("ID", Integer, primary_key=True, autoincrement=True),
     Column("Title", String(150), nullable=False),
     Column("AgentTypeID", Integer, ForeignKey("AgentType.ID"), nullable=False),
     Column("Address", String(300), nullable=False),
@@ -34,7 +36,7 @@ Agent = Table(
 
 AgentType = Table(
     "AgentType", meta,
-    Column("ID", Integer, primary_key=True),
+    Column("ID", Integer, primary_key=True, autoincrement=True),
     Column("Title", String(50), nullable=False),
     # ForeignKeyConstraint( ["ID"], [Agent.ID], name="FK_Agent_AgentType" )
 )
@@ -42,7 +44,7 @@ AgentType = Table(
 
 Product = Table(
     "Product", meta,
-    Column("ID", Integer, primary_key=True),
+    Column("ID", Integer, primary_key=True, autoincrement=True),
     Column("Title", String(150), nullable=False),
     Column("ProductTypeID", Integer, ForeignKey("ProductType.ID"), nullable=False),
     Column("ArticleNumber", String(10), nullable=False),
@@ -57,7 +59,7 @@ Product = Table(
 
 ProductType = Table(
     "ProductType", meta,
-    Column("ID", Integer, primary_key=True),
+    Column("ID", Integer, primary_key=True, autoincrement=True),
     Column("Title", String(50), nullable=False),
     Column("DefectedPercent", Float, nullable=False),
     # ForeignKeyConstraint( ["ID"], [Product.ID], name="FK_Product_ProductType" )

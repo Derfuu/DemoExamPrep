@@ -1,14 +1,19 @@
+import sys
 import sqlalchemy as sa
+
+from fastapi import HTTPException
 
 from sqlalchemy import select, delete, update, insert
 from sqlalchemy import or_, and_
 from sqlalchemy.sql import func
 from .db.base import Agent, AgentType, Product, ProductType, ProductSale, engine
 
-from .classes.agent import Agent_get as Ag_g
-from .classes.agent import Agent_post as Ag_p
+from .classes.agent import AgentBase
+from .classes.agent import AgentFull
 
-def agents_select(page: int, filters: dict):
+sys.setrecursionlimit(1000)
+
+def base_agents_select(page: int, filters: dict) -> list[AgentFull]:
 
     search_ = f"%{filters['search']}%"
     type_ = filters["ag_type"]
@@ -60,36 +65,30 @@ def agents_select(page: int, filters: dict):
 
 def get_type_by_name(type_name: str) -> int:
     query = select(AgentType.c.ID).where(AgentType.c.Title == type_name)
-    value = engine.execute(query).fetchone()
-    # if not value:
-    #     raise ValueError("No agent type ID with this name.")
+    value = engine.execute(query).fetchone()[0]
+    if value == None:
+        return HTTPException(
+            detail="Invalid Value",
+            headers={"Value error": "Name of type not in database"},
+            status_code=400,
+        )
+    else:
+        return value
+
+def get_last_agent_id() -> int:
+    query = select(sa.func.max(Agent.c.ID))
+    value = engine.execute(query).fetchone()[0]
+    if value == None:
+        return 1
     return value
 
-
-def agent_update(ag_edited: Ag_p):
-    type_id = get_type_by_name(ag_edited.ag_type)
-
-    query = update(Agent).where(Agent.c.ID == ag_edited.ag_id).values(
-        Title = ag_edited.ag_title,
-        AgentTypeID = type_id,
-        Address = ag_edited.ag_address,
-        INN = ag_edited.ag_inn,
-        KPP = ag_edited.ag_kpp,
-        DirectorName = ag_edited.ag_director,
-        Phone = ag_edited.ag_phone,
-        Email = ag_edited.ag_email,
-        Logo = ag_edited.ag_logo,
-        Priority = ag_edited.ag_priority,
-    )
-    value = engine.execute(query).fetchone()
-    return value
-
-
-
-def agent_create(agent: Ag_p):
+def base_agent_update(agent: AgentBase):
     type_id = get_type_by_name(agent.ag_type)
 
-    query = insert(Agent).values(
+    if type_id.status_code:
+        return type_id
+
+    query = update(Agent).values(
         Title = agent.ag_title,
         AgentTypeID = type_id,
         Address = agent.ag_address,
@@ -100,6 +99,27 @@ def agent_create(agent: Ag_p):
         Email = agent.ag_email,
         Logo = agent.ag_logo,
         Priority = agent.ag_priority,
+    ).where(Agent.c.ID == agent.ag_id)
+    value = engine.execute(query)
+    return value
+
+
+
+def base_agent_create(agent: AgentBase):
+    type_id = get_type_by_name(agent.ag_type)   
+
+    query = insert(Agent).values(
+        ID = str(get_last_agent_id() + 1),
+        Title = agent.ag_title,
+        AgentTypeID = type_id,
+        Address = agent.ag_address,
+        INN = agent.ag_inn,
+        KPP = agent.ag_kpp,
+        DirectorName = agent.ag_director,
+        Phone = agent.ag_phone,
+        Email = agent.ag_email,
+        Logo = agent.ag_logo_path,
+        Priority = agent.ag_priority,
     )
-    value = engine.execute(query).fetchone()
+    value = engine.execute(query)
     return value

@@ -1,13 +1,15 @@
 # uvicorn --reload main:app --host 26.246.185.101 --port 8000
 
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import RedirectResponse
 
 from fastapi.middleware.cors import CORSMiddleware
 
-from data.API.classes.agent import Agent_get as Ag_g
-from data.API.classes.agent import Agent_post as Ag_p
-
+from data.API.classes.agent import AgentBase
+from data.API.classes.agent import AgentFull
 from data.API import api_agent as api_ag
+from data.API import api_base as api_db
+
 from data.API.db.base import create_tables_if_not_exists as CTINE
 
 
@@ -28,15 +30,25 @@ app.add_middleware(
 async def create_tables():
     CTINE()
 
+@app.get("/")
+async def main_page():
+    return RedirectResponse(url="/docs/", status_code=307)
 
 @app.get("/agents/{page}/")
 async def agents_get(
-        page: int,
+        page: int = 1,
         type: int = 0,
         search: str = "%",
         order_by: str = "Title",
         order: bool = True,
-    ) -> list[Ag_g]:
+    ) -> list[AgentFull]:
+
+    if page < 1:
+        return HTTPException(
+            status_code=400,
+            detail="invalid page",
+            headers={"page": "value must be positive"},
+        )
 
     return api_ag.agents_get(page, 
         {
@@ -49,13 +61,23 @@ async def agents_get(
 
 
 @app.put("/agent/alter/one/")
-async def agent_alter(ag_edited: Ag_p):
+async def agent_alter(ag_edited: AgentBase):
     return api_ag.agent_update(ag_edited)
 
 @app.post("/agent/create/")
-async def agent_create(agent: Ag_p):
+async def agent_create(agent: AgentBase):
     return api_ag.agent_create(agent)
     
+# DEBUG
+
+@app.get("/debug/agentType/{type}/")
+async def debug_agent_type_get_id(type: str):
+    return api_db.get_type_by_name(type)
+
+@app.get("/debug/lastAgentID/")
+async def debug_last_agent_id():
+    return api_db.get_last_agent_id()
+
 # BOTTOM FUNCS DON'T HAVE ANY FUNCTIONS BEHIND YET
 
 

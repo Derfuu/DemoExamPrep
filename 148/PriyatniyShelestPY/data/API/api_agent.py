@@ -1,16 +1,16 @@
-from .classes.agent import Agent_get as Ag_g
-from .classes.agent import Agent_post as Ag_p
+from .classes.agent import AgentBase
+from .classes.agent import AgentFull
 
 from .api_base import *
 
-def agents_get(page: int, filters: dict) -> list[Ag_g]:
-    return agents_select(page, filters)
+def agents_get(page: int, filters: dict) -> list[AgentFull]:
+    return base_agents_select(page, filters)
 
-def agent_update(ag_edited: Ag_p) -> int:
-    return agent_update(ag_edited)
+def agent_update(ag_edited: AgentBase) -> int:
+    return base_agent_update(ag_edited)
 
-def agent_create(agent: Ag_p) -> int:
-    return agent_create(agent)
+def agent_create(agent: AgentBase) -> int:
+    return base_agent_create(agent)
 
 def agents_update():
     return 1
