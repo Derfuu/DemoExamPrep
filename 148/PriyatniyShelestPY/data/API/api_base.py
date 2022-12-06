@@ -129,7 +129,7 @@ def base_agents_select(page: int, filters: dict) -> list[AgentFull]:
             ag_title = ag[1],
             ag_director = ag[2],
             ag_address = ag[3],
-            # ag_phone = str(ag[4]).strip(),
+            ag_phone = ag[4],
             ag_inn = ag[5],
             ag_kpp = ag[6],
             ag_email = ag[7],
