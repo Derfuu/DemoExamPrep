@@ -34,12 +34,17 @@ async def create_tables():
 async def main_page():
     return RedirectResponse(url="/docs/", status_code=307)
 
+@app.get("/agents/types/")
+async def types_get():
+    return api_db.get_agent_types()
+
+
 @app.get("/agents/{page}/")
 async def agents_get(
         page: int = 1,
-        type: int = 0,
+        type: str = "ООО",
         search: str = "%",
-        order_by: str = "Title",
+        order_by: int = 1,
         order: bool = True,
     ) -> list[AgentFull]:
 
